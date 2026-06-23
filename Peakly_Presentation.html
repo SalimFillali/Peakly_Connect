@@ -9,29 +9,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 <style>
   :root{
-    --bg:#0F1117; --card:rgba(24,28,37,0.72); --card-solid:#181C25; --border:rgba(255,255,255,0.05);
-    --text:#F8FAFC; --muted:#CBD5E1;
-    --blue:#3B82F6; --blue-soft:rgba(59,130,246,0.12);
+    /* Palette investisseur 60-30-10 : fond sombre institutionnel / texte clair / or rare en accent */
+    --bg:#0B0F17; --card:rgba(18,24,35,0.82); --card-solid:#121826; --border:rgba(255,255,255,0.06);
+    --text:#F8FAFC; --muted:#AAB6C8;
+    --blue:#2563EB; --blue-soft:rgba(37,99,235,0.12);
     --green:#22C55E; --green-soft:rgba(34,197,94,0.12);
-    --purple:#7C3AED; --purple-soft:rgba(124,58,237,0.14);
     --gold:#D4AF37; --gold-soft:rgba(212,175,55,0.14);
     --red:#F43F5E; --red-soft:rgba(244,63,94,0.13);
-    --kpi-bg:#101828;
+    --kpi-bg:#0F1420;
     --radius:16px;
     --shadow:0 8px 24px rgba(0,0,0,0.20);
+    --nav-h:72px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html,body{height:100%;}
   body{
     background:var(--bg); color:var(--text); font-family:'Inter',Helvetica,Arial,sans-serif; line-height:1.6;
-    position:relative; overflow-x:hidden;
+    position:relative; overflow:hidden;
   }
   a{color:inherit; text-decoration:none;}
   img{max-width:100%;}
   h1,h2,h3,h4{ font-family:'Plus Jakarta Sans',sans-serif; }
   svg.ico{ display:inline-block; vertical-align:middle; flex-shrink:0; }
 
-  header.nav{ position:sticky; top:0; z-index:100; background:rgba(15,17,23,0.82); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+  header.nav{ position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(15,17,23,0.88); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+  .nav-links a.active{ color:#fff; background:var(--blue); }
   .nav-inner{ max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; position:relative; z-index:2;}
   .logo{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.3rem; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:7px; color:var(--text); }
   .logo .ico{ color:var(--blue); }
@@ -40,37 +42,47 @@
   .nav-links a{ font-size:0.72rem; color:var(--muted); padding:7px 10px; border-radius:8px; font-weight:600; transition:.15s; white-space:nowrap;}
   .nav-links a:hover{color:#fff; background:var(--blue);}
 
-  .hero{ position:relative; padding:110px 24px 64px; text-align:center; border-bottom:1px solid var(--border); overflow:hidden; }
+  .hero{ padding:30px 24px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+  .deck > section#presentation{ padding:16px 24px 12px; }
   .hero-bg{ position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
   .hero-bokeh{ position:absolute; border-radius:50%; filter:blur(70px); }
   .hero-bokeh.b1{ width:280px; height:280px; background:var(--blue); opacity:0.16; top:-70px; left:6%; }
   .hero-bokeh.b2{ width:220px; height:220px; background:var(--gold); opacity:0.10; top:30%; right:8%; }
-  .hero-bokeh.b3{ width:240px; height:240px; background:var(--purple); opacity:0.10; bottom:-90px; left:40%; }
+  .hero-bokeh.b3{ width:240px; height:240px; background:var(--blue); opacity:0.08; bottom:-90px; left:40%; }
   .hero-wave{ position:absolute; left:0; right:0; bottom:0; width:100%; height:130px; opacity:0.10; }
   .hero-wave rect{ fill:var(--text); }
   .hero-fade{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,17,23,0.15) 0%, var(--bg) 96%); z-index:1; pointer-events:none; }
   .hero > *:not(.hero-bg):not(.hero-fade){ position:relative; z-index:2; }
   .hero .tag{ display:inline-block; padding:7px 18px; border:1px solid var(--border); border-radius:999px; font-size:0.74rem; color:var(--blue); font-weight:700; letter-spacing:0.6px; margin-bottom:24px; background:var(--blue-soft); }
-  .hero h1{ font-size:3.6rem; font-weight:800; letter-spacing:-1px; line-height:1.05; display:flex; align-items:center; justify-content:center; gap:10px; }
+  .hero h1{ font-size:3rem; font-weight:800; letter-spacing:-1px; line-height:1.05; display:flex; align-items:center; justify-content:center; gap:10px; }
   .hero h1 .ico{ color:var(--blue); width:0.78em; height:0.78em; }
-  .hero-logo{ max-width:460px; width:100%; height:auto; display:block; margin:0 auto; }
-  .hero p.desc{ max-width:700px; margin:26px auto 0; color:var(--muted); font-size:1rem; }
-  .hero-stats{ display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:46px; }
+  .hero-logo{ max-width:300px; width:100%; height:auto; display:block; margin:0 auto; }
+  .hero p.desc{ max-width:640px; margin:10px auto 0; color:var(--muted); font-size:0.8rem; line-height:1.4; }
+  .hero-stats{ display:flex; justify-content:center; gap:26px; flex-wrap:wrap; margin-top:14px; }
   .hero-stats .stat{ text-align:center; }
-  .hero-stats .stat .num{ font-family:'Plus Jakarta Sans',sans-serif; font-size:2rem; font-weight:800; color:var(--blue); }
-  .hero-stats .stat .lab{ font-size:0.72rem; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.6px;}
+  .hero-stats .stat .num{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.4rem; font-weight:800; color:var(--blue); }
+  .hero-stats .stat .lab{ font-size:0.6rem; color:var(--muted); margin-top:3px; text-transform:uppercase; letter-spacing:0.6px;}
 
-  section{ padding:84px 24px; max-width:1240px; margin:0 auto; border-bottom:1px solid var(--border); position:relative; z-index:1;}
-  section:last-of-type{border-bottom:none;}
-  .section-head{ margin-bottom:40px; }
-  .section-head .num{ font-size:0.8rem; color:var(--blue); font-weight:800; letter-spacing:3px; font-family:'Plus Jakarta Sans',sans-serif;}
-  .section-head h2{ font-size:2.1rem; font-weight:800; margin-top:8px; letter-spacing:-0.5px;}
-  .section-head h3.sub{ font-size:1.15rem; font-weight:800; margin:40px 0 18px; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:9px;}
-  .section-head p{ color:var(--muted); margin-top:10px; max-width:780px; font-size:0.98rem;}
-  h3.sub{ font-size:1.15rem; font-weight:800; margin:40px 0 18px; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:9px;}
+  /* ===== Deck plein écran : une slide visible à la fois, navigation par flèches ===== */
+  .deck{ position:fixed; top:var(--nav-h); left:0; right:0; bottom:0; overflow:hidden; }
+  .deck > section{
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    padding:36px 28px 26px; max-width:1240px; margin:0 auto;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+    opacity:0; visibility:hidden; pointer-events:none; z-index:1;
+    display:flex; flex-direction:column; justify-content:center;
+    transition:opacity .45s ease;
+  }
+  .deck > section.active{ opacity:1; visibility:visible; pointer-events:auto; z-index:5; }
+  .section-head{ margin-bottom:20px; flex-shrink:0; }
+  .section-head .num{ font-size:0.74rem; color:var(--blue); font-weight:800; letter-spacing:3px; font-family:'Plus Jakarta Sans',sans-serif;}
+  .section-head h2{ font-size:1.7rem; font-weight:800; margin-top:6px; letter-spacing:-0.5px;}
+  .section-head h3.sub{ font-size:1rem; font-weight:800; margin:18px 0 12px; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:9px;}
+  .section-head p{ color:var(--muted); margin-top:6px; max-width:780px; font-size:0.88rem; }
+  h3.sub{ font-size:1rem; font-weight:800; margin:0 0 12px; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:9px;}
   h3.sub .ico{ color:var(--blue); }
 
-  .grid{ display:grid; gap:18px; }
+  .grid{ display:grid; gap:14px; }
   .grid-2{ grid-template-columns:repeat(2,1fr); }
   .grid-3{ grid-template-columns:repeat(3,1fr); }
   .grid-4{ grid-template-columns:repeat(4,1fr); }
@@ -83,74 +95,73 @@
   }
   @media (max-width:560px){ .grid-2,.grid-3,.grid-4,.grid-5,.grid-6{ grid-template-columns:1fr; } }
 
-  .card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:24px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
-  .card:hover{ border-color:var(--purple); transform:translateY(-3px); box-shadow:var(--shadow); }
-  .card h3{ font-size:1.02rem; font-weight:700; margin-bottom:9px; font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:8px;}
-  .card h3 .role{ color:var(--blue); font-size:0.74rem; font-weight:800; letter-spacing:1px; display:block; margin-bottom:5px;}
-  .card p{ color:var(--muted); font-size:0.9rem; }
-  .card .kpi{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.7rem; font-weight:800; color:var(--blue); }
+  .card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+  .card:hover{ border-color:var(--blue); transform:translateY(-3px); box-shadow:var(--shadow); }
+  .card h3{ font-size:0.94rem; font-weight:700; margin-bottom:7px; font-family:'Plus Jakarta Sans',sans-serif; display:flex; align-items:center; gap:8px;}
+  .card h3 .role{ color:var(--blue); font-size:0.7rem; font-weight:800; letter-spacing:1px; display:block; margin-bottom:4px;}
+  .card p{ color:var(--muted); font-size:0.84rem; }
+  .card .kpi{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.5rem; font-weight:800; color:var(--blue); }
   .card.kpi-card{ text-align:center; background:var(--kpi-bg); }
-  .card.kpi-card .kpi{ font-size:1.85rem; color:var(--blue); }
-  .card.kpi-card .lab{ font-size:0.72rem; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:0.5px;}
+  .card.kpi-card .kpi{ font-size:1.6rem; color:var(--blue); }
+  .card.kpi-card .lab{ font-size:0.68rem; color:var(--muted); margin-top:5px; text-transform:uppercase; letter-spacing:0.5px;}
   .card.highlight{ border-color:var(--blue); box-shadow:0 0 0 1px var(--blue) inset; }
   .card.highlight:hover{ box-shadow:0 0 0 1px var(--blue) inset, var(--shadow); }
 
-  .chart-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:24px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
-  .chart-card:hover{ border-color:var(--purple); transform:translateY(-3px); box-shadow:var(--shadow); }
+  .chart-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:13px 15px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+  .chart-card:hover{ border-color:var(--blue); transform:translateY(-3px); box-shadow:var(--shadow); }
   .chart-card .chead{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;}
-  .chart-card h4{ font-size:0.94rem; font-weight:700; }
-  .chart-card .period{ font-size:0.72rem; color:var(--muted); }
-  .chart-card .src{ font-size:0.72rem; color:var(--muted); margin-top:10px; }
-  .chart-wrap{ position:relative; height:280px; width:100%; margin-top:14px; }
+  .chart-card h4{ font-size:0.82rem; font-weight:700; }
+  .chart-card .period{ font-size:0.66rem; color:var(--muted); }
+  .chart-card .src{ font-size:0.64rem; color:var(--muted); margin-top:5px; }
+  .chart-wrap{ position:relative; height:155px; width:100%; margin-top:6px; }
   .chart-wrap canvas{ position:absolute; top:0; left:0; width:100%!important; height:100%!important; }
-  .insight-tag{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); font-size:0.82rem; color:var(--text); }
-  .insight-tag .lbl{ color:var(--blue); font-weight:800; font-size:0.68rem; letter-spacing:0.6px; text-transform:uppercase; display:block; margin-bottom:4px;}
-  .insight-tag .action{ display:block; margin-top:8px; color:var(--blue); font-weight:700; font-size:0.78rem;}
+  .insight-tag{ margin-top:6px; padding-top:6px; border-top:1px dashed var(--border); font-size:0.72rem; color:var(--text); }
+  .insight-tag .lbl{ color:var(--blue); font-weight:800; font-size:0.62rem; letter-spacing:0.6px; text-transform:uppercase; display:block; margin-bottom:2px;}
+  .insight-tag .action{ display:block; margin-top:5px; color:var(--blue); font-weight:700; font-size:0.7rem;}
   .insight-tag .action .lbl{ color:var(--blue); }
-  .insight-tag.ai{ border-top-color:rgba(124,58,237,0.3); }
-  .insight-tag.ai .lbl{ color:var(--purple); }
+  .insight-tag.ai{ border-top-color:rgba(37,99,235,0.3); }
+  .insight-tag.ai .lbl{ color:var(--blue); }
 
-  table{ width:100%; border-collapse:collapse; font-size:0.86rem; }
-  table th, table td{ padding:15px 18px; border-bottom:1px solid var(--border); text-align:left; }
+  table{ width:100%; border-collapse:collapse; font-size:0.8rem; }
+  table th, table td{ padding:9px 14px; border-bottom:1px solid var(--border); text-align:left; }
   table th{ color:var(--muted); font-weight:700; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.5px;}
   table tr:last-child td{ border-bottom:none; }
   .tbl-wrap{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:8px 16px; overflow-x:auto; transition:border-color .25s ease, box-shadow .25s ease;}
-  .tbl-wrap:hover{ border-color:var(--purple); box-shadow:var(--shadow); }
+  .tbl-wrap:hover{ border-color:var(--blue); box-shadow:var(--shadow); }
   td.ok{ text-align:center;}
   td.no{ text-align:center;}
 
   .pill{ display:inline-block; padding:4px 12px; border-radius:999px; font-size:0.7rem; font-weight:700;}
   .pill.green{ background:var(--green-soft); color:var(--green); border:1px solid rgba(34,197,94,0.35);}
-  .pill.blue{ background:var(--blue-soft); color:var(--blue); border:1px solid rgba(59,130,246,0.35);}
+  .pill.blue{ background:var(--blue-soft); color:var(--blue); border:1px solid rgba(37,99,235,0.35);}
   .pill.gray{ background:rgba(148,163,184,0.12); color:var(--muted); border:1px solid rgba(148,163,184,0.3);}
-  .pill.purple{ background:var(--purple-soft); color:#c4a6ff; border:1px solid rgba(124,58,237,0.4);}
   .pill.red{ background:var(--red-soft); color:var(--red); border:1px solid rgba(244,63,94,0.35);}
 
-  .quote-box{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:var(--radius); padding:34px; font-size:1.2rem; font-weight:600; text-align:center; line-height:1.5; font-family:'Plus Jakarta Sans',sans-serif;}
+  .quote-box{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:var(--radius); padding:22px 26px; font-size:1.05rem; font-weight:600; text-align:center; line-height:1.45; font-family:'Plus Jakarta Sans',sans-serif;}
 
 
-  .pricing-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+  .pricing-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
   @media (max-width:1000px){ .pricing-grid{ grid-template-columns:repeat(2,1fr); } }
-  .price-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:18px; text-align:center; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;}
-  .price-card:hover{ border-color:var(--purple); transform:translateY(-3px); box-shadow:var(--shadow); }
+  .price-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:var(--radius); padding:14px; text-align:center; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;}
+  .price-card:hover{ border-color:var(--blue); transform:translateY(-3px); box-shadow:var(--shadow); }
   .price-card.highlight{ border-color:var(--gold); box-shadow:0 0 0 1px var(--gold) inset; }
   .price-card.highlight:hover{ box-shadow:0 0 0 1px var(--gold) inset, var(--shadow); }
-  .price-card .name{ font-weight:800; font-size:0.8rem; color:var(--gold); font-family:'Plus Jakarta Sans',sans-serif;}
-  .price-card .price{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.4rem; font-weight:800; margin:8px 0; }
-  .price-card .desc{ font-size:0.73rem; color:var(--muted); }
+  .price-card .name{ font-weight:800; font-size:0.74rem; color:var(--gold); font-family:'Plus Jakarta Sans',sans-serif;}
+  .price-card .price{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.2rem; font-weight:800; margin:6px 0; }
+  .price-card .desc{ font-size:0.69rem; color:var(--muted); }
 
   .timeline{ display:flex; flex-direction:column; gap:0; }
-  .tl-item{ display:flex; gap:20px; padding:16px 0; border-bottom:1px solid var(--border); }
+  .tl-item{ display:flex; gap:14px; padding:7px 0; border-bottom:1px solid var(--border); }
   .tl-item:last-child{ border-bottom:none; }
-  .tl-item .dot{ min-width:12px; height:12px; border-radius:50%; background:var(--blue); margin-top:5px; }
-  .tl-item .body strong{ display:block; color:var(--text); font-size:0.96rem; margin-bottom:3px; font-family:'Plus Jakarta Sans',sans-serif;}
-  .tl-item .body span{ color:var(--muted); font-size:0.84rem; }
+  .tl-item .dot{ min-width:9px; height:9px; border-radius:50%; background:var(--blue); margin-top:4px; }
+  .tl-item .body strong{ display:block; color:var(--text); font-size:0.84rem; margin-bottom:2px; font-family:'Plus Jakarta Sans',sans-serif;}
+  .tl-item .body span{ color:var(--muted); font-size:0.74rem; }
   .timeline-gold .dot{ background:var(--gold); }
 
   /* architecture en tuiles / icones */
   .arch-row{ display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; }
-  .arch-tile{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:14px; padding:18px 16px; text-align:center; min-width:130px; flex:1; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;}
-  .arch-tile:hover{ border-color:var(--purple); transform:translateY(-3px); box-shadow:var(--shadow); }
+  .arch-tile{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:14px; padding:12px 10px; text-align:center; min-width:110px; flex:1; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;}
+  .arch-tile:hover{ border-color:var(--blue); transform:translateY(-3px); box-shadow:var(--shadow); }
   .arch-tile .ic{ display:flex; align-items:center; justify-content:center; margin-bottom:8px; color:var(--blue); }
   .arch-tile .ic svg{ width:22px; height:22px; }
   .arch-tile .lbl{ font-weight:700; font-size:0.8rem; font-family:'Plus Jakarta Sans',sans-serif;}
@@ -162,21 +173,39 @@
   .bar-row{ display:flex; align-items:center; gap:14px; margin-bottom:13px; }
   .bar-row .name{ width:160px; font-weight:700; font-size:0.86rem; flex-shrink:0; }
   .bar-row .track{ flex:1; background:rgba(255,255,255,0.05); border-radius:8px; height:12px; overflow:hidden; border:1px solid var(--border);}
-  .bar-row .fill{ height:100%; border-radius:8px; background:linear-gradient(90deg,var(--purple),#a578ff);}
+  .bar-row .fill{ height:100%; border-radius:8px; background:linear-gradient(90deg,var(--blue),#60a5fa);}
   .bar-row .val{ width:46px; text-align:right; font-weight:800; color:var(--text); font-size:0.86rem; flex-shrink:0; font-family:'Plus Jakarta Sans',sans-serif;}
 
-  .rec-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:var(--radius); padding:24px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;}
-  .rec-card:hover{ border-left-color:var(--purple); transform:translateY(-3px); box-shadow:var(--shadow); }
-  .rec-card .num{ font-size:0.72rem; color:var(--blue); font-weight:800; letter-spacing:1px; }
-  .rec-card h3{ margin-top:7px; font-size:1.05rem;}
-  .rec-card .why{ margin-top:10px; font-size:0.84rem; color:var(--muted); font-weight:600;}
+  .rec-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:var(--radius); padding:16px 18px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;}
+  .rec-card:hover{ border-left-color:var(--gold); transform:translateY(-3px); box-shadow:var(--shadow); }
+  .rec-card .num{ font-size:0.68rem; color:var(--blue); font-weight:800; letter-spacing:1px; }
+  .rec-card h3{ margin-top:5px; font-size:0.96rem;}
+  .rec-card .why{ margin-top:7px; font-size:0.8rem; color:var(--muted); font-weight:600;}
 
-  footer{ text-align:center; padding:50px 24px 70px; color:var(--muted); font-size:0.85rem; position:relative; z-index:1;}
+  .footer-line{ text-align:center; margin-top:50px; color:var(--muted); font-size:0.78rem; opacity:0.7; }
 
-  /* scroll reveal */
-  .reveal{ opacity:0.3; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease; }
+  /* reveal (replayed at each entrée de slide) */
+  .reveal{ opacity:0.3; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease; }
   .reveal-in{ opacity:1; transform:translateY(0); }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+  /* ===== Contrôles du deck : flèches, points, compteur ===== */
+  .deck-arrow{ position:fixed; top:50%; transform:translateY(-50%); z-index:300; width:46px; height:46px; border-radius:50%; border:1px solid var(--border); background:rgba(18,24,35,0.78); backdrop-filter:blur(10px); color:var(--text); font-size:1.3rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.2s; }
+  .deck-arrow:hover{ border-color:var(--blue); color:var(--blue); background:rgba(37,99,235,0.12); }
+  .deck-arrow:disabled{ opacity:0.25; cursor:default; }
+  .deck-arrow:disabled:hover{ border-color:var(--border); color:var(--text); background:rgba(18,24,35,0.78); }
+  .deck-arrow.prev{ left:18px; }
+  .deck-arrow.next{ right:18px; }
+  @media (max-width:700px){ .deck-arrow{ width:38px; height:38px; font-size:1.1rem; } .deck-arrow.prev{ left:8px; } .deck-arrow.next{ right:8px; } }
+
+  .deck-dots{ position:fixed; bottom:18px; left:50%; transform:translateX(-50%); z-index:300; display:flex; gap:7px; padding:8px 12px; border-radius:999px; background:rgba(18,24,35,0.78); border:1px solid var(--border); backdrop-filter:blur(10px); max-width:90vw; overflow-x:auto; }
+  .deck-dots .dot{ width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.18); border:none; flex-shrink:0; cursor:pointer; transition:.2s; padding:0; }
+  .deck-dots .dot:hover{ background:rgba(255,255,255,0.4); }
+  .deck-dots .dot.active{ background:var(--gold); width:18px; border-radius:4px; }
+
+  .deck-counter{ position:fixed; bottom:18px; right:18px; z-index:300; font-size:0.72rem; color:var(--muted); background:rgba(18,24,35,0.78); border:1px solid var(--border); border-radius:999px; padding:6px 12px; backdrop-filter:blur(10px); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; }
+  .deck-counter .cur{ color:var(--gold); }
+  @media (max-width:700px){ .deck-counter{ display:none; } }
 </style>
 </head>
 <body>
@@ -191,14 +220,23 @@
       <a href="#probleme">Vision</a>
       <a href="#fonctionnement">Le produit</a>
       <a href="#marche">Market &amp; data</a>
+      <a href="#traction">Traction</a>
       <a href="#business">Business</a>
+      <a href="#recherche">Recherche</a>
       <a href="#remerciements">Remerciements</a>
     </nav>
   </div>
 </header>
 
+<button class="deck-arrow prev" id="deckPrev" aria-label="Diapositive précédente" type="button">&#8249;</button>
+<button class="deck-arrow next" id="deckNext" aria-label="Diapositive suivante" type="button">&#8250;</button>
+<div class="deck-dots" id="deckDots"></div>
+<div class="deck-counter" id="deckCounter"><span class="cur">1</span> / <span class="tot">13</span></div>
+
+<div class="deck" id="deck">
+
 <!-- ================= 1. PRESENTATION ================= -->
-<section class="hero" id="presentation" style="padding-top:96px;">
+<section class="hero" id="presentation">
   <div class="hero-bg" aria-hidden="true">
     <div class="hero-bokeh b1"></div>
     <div class="hero-bokeh b2"></div>
@@ -211,24 +249,24 @@
   </div>
   <div class="hero-fade" aria-hidden="true"></div>
   <img class="hero-logo" src="LOGO%20PEAKLY.png" alt="Peakly">
-  <p class="desc">Peakly Connect est la plateforme de mise en relation musicale qui connecte les artistes amateurs et semi-pros avec les labels, éditeurs et investisseurs musicaux. La donnée marché prouve la taille de l'opportunité, que Peakly Connect vient capturer.</p>
+  <p class="desc">Peakly Connect transforme la découverte de talents musicaux en pipeline data-driven pour labels, éditeurs et investisseurs. Objectif : réduire le temps de sourcing, qualifier les artistes plus vite, et créer une marketplace premium entre talents émergents et professionnels de l'industrie musicale.</p>
   <div class="hero-stats">
-    <div class="stat"><div class="num">7</div><div class="lab">Sources de données</div></div>
-    <div class="stat"><div class="num">~10 900</div><div class="lab">Lignes analysées</div></div>
-    <div class="stat"><div class="num">50+</div><div class="lab">Variables croisées</div></div>
-    <div class="stat"><div class="num">+11.8%</div><div class="lab">CAGR industrie / an</div></div>
+    <div class="stat"><div class="num" style="color:var(--gold);">50 Md$</div><div class="lab">Marché adressable</div></div>
+    <div class="stat"><div class="num">0</div><div class="lab">Concurrent direct identifié</div></div>
+    <div class="stat"><div class="num">2 modèles</div><div class="lab">Revenus B2C &amp; B2B récurrents</div></div>
+    <div class="stat"><div class="num">7</div><div class="lab">Sources de données croisées en PoC</div></div>
   </div>
 </section>
 
 <!-- ================= 2. LE PROBLEME ================= -->
 <section id="probleme">
   <div class="section-head">
-    <div class="num">02</div>
+    <div class="num">01</div>
     <h2>Le contexte</h2>
-    <p>Des milliers d'artistes amateurs essaient de briller. Les labels, eux, ne savent plus où regarder.</p>
+    <p>Le marché musical génère un volume massif de talents émergents, mais les professionnels manquent d'outils structurés pour les identifier, les comparer et les contacter efficacement.</p>
   </div>
 
-  <div class="card" style="margin-bottom:30px;">
+  <div class="card">
     <div class="timeline">
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Un label reçoit jusqu'à 2 000 maquettes</strong><span>par campagne de recrutement, tous canaux confondus (mail, réseaux, bouche-à-oreille).</span></div></div>
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Impossible de tout écouter</strong><span>Aucune équipe ne peut traiter ce volume manuellement : la majorité des dossiers ne sont jamais ouverts.</span></div></div>
@@ -236,6 +274,14 @@
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Peakly Connect trie automatiquement les meilleurs profils</strong><span>CV musical standardisé + Talent Score IA : le label ne voit que ce qui correspond à son besoin.</span></div></div>
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Gain de temps, découverte de nouveaux talents, ROI</strong><span>Moins de temps perdu à trier, plus de signatures pertinentes, plus vite.</span></div></div>
     </div>
+  </div>
+</section>
+
+<!-- ================= 2b. LE PROBLEME EN CHIFFRES ================= -->
+<section id="probleme-stats">
+  <div class="section-head">
+    <div class="num">02</div>
+    <h2>Le problème en chiffres</h2>
   </div>
 
   <div class="grid grid-5">
@@ -245,7 +291,7 @@
     <div class="card kpi-card"><div class="kpi">100+</div><div class="lab">Labels, éditeurs et structures actives identifiées</div></div>
     <div class="card kpi-card"><div class="kpi">0</div><div class="lab">Plateforme dédiée qui les connecte aujourd'hui</div></div>
   </div>
-  <div class="insight-tag ai" style="margin-top:20px;"><span class="lbl">Constat</span>Le problème n'est pas le manque de musique, mais l'impossibilité de trier ce volume pour repérer les profils qui comptent. C'est précisément ce que le Talent Score IA de Peakly Connect est conçu pour automatiser.</div>
+  <div class="insight-tag ai" style="margin-top:16px;"><span class="lbl">Constat</span>Le problème n'est pas le manque de musique, mais l'impossibilité de trier ce volume pour repérer les profils qui comptent. C'est précisément ce que le Talent Score IA de Peakly Connect est conçu pour automatiser.</div>
 </section>
 
 <!-- ================= 3. LA SOLUTION ================= -->
@@ -256,7 +302,7 @@
     <p>Peakly Connect : la plateforme de mise en relation musicale.</p>
   </div>
 
-  <div class="quote-box" style="margin-bottom:30px;">
+  <div class="quote-box" style="margin-bottom:18px;">
     Transformer le talent brut en un CV musical standardisé, évaluable en quelques secondes par un algorithme ou un recruteur.
   </div>
 
@@ -272,79 +318,98 @@
   </div>
 </section>
 
-<!-- ================= 4. COMMENT CA MARCHE ================= -->
+<!-- ================= 4. COMMENT CA MARCHE - ARTISTES ================= -->
 <section id="fonctionnement">
   <div class="section-head">
     <div class="num">04</div>
-    <h2>Comment ça marche</h2>
-    <p>Deux espaces, une seule plateforme : les artistes construisent leur visibilité, les professionnels trouvent et recrutent le talent.</p>
+    <h2>Comment ça marche : espace artistes</h2>
+    <p>Les artistes amateurs &amp; semi-pros construisent leur visibilité.</p>
   </div>
 
-  <h3 class="sub"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Espace artistes amateurs &amp; semi-pros</h3>
-  <div class="grid grid-3" style="margin-bottom:30px;">
+  <div class="grid grid-3">
     <div class="card">
-      <h3><span class="role">01</span>Le CV musical standardisé &amp; dynamique</h3>
-      <ul style="list-style:none; color:var(--muted); font-size:0.86rem; margin-top:6px;">
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Matrice des styles</strong> : genres dominants et sous-genres en %, par exemple Synthwave 70 % / Synthpop 30 %.</li>
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Tracker d'engagement cross-plateforme</strong> : abonnés TikTok, écoutes SoundCloud, vues YouTube et abonnés Instagram, agrégés en temps réel.</li>
-        <li style="padding:7px 0;"><strong style="color:var(--text);">Vitrine audio/vidéo épurée</strong> : lecteur natif de type Spotify, avec les 3 meilleurs morceaux et une vidéo live ou studio.</li>
+      <h3><span class="role">01</span>CV musical standardisé &amp; dynamique</h3>
+      <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Matrice des styles</strong> : genres dominants et sous-genres en %.</li>
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Tracker d'engagement cross-plateforme</strong> : TikTok, SoundCloud, YouTube, Instagram en temps réel.</li>
+        <li style="padding:5px 0;"><strong style="color:var(--text);">Vitrine audio/vidéo épurée</strong> : lecteur natif, 3 meilleurs morceaux + vidéo live ou studio.</li>
       </ul>
     </div>
     <div class="card">
       <h3><span class="role">02</span>Candidature (Job Board)</h3>
-      <ul style="list-style:none; color:var(--muted); font-size:0.86rem; margin-top:6px;">
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Easy Apply en 1 clic</strong> : profil complet, note d'intention de 300 caractères et démo ciblée, envoyés instantanément.</li>
-        <li style="padding:7px 0;"><strong style="color:var(--text);">Statut de candidature transparent</strong>, pour en finir avec le ghosting :</li>
+      <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Easy Apply en 1 clic</strong> : profil, note d'intention et démo ciblée envoyés instantanément.</li>
+        <li style="padding:5px 0;"><strong style="color:var(--text);">Statut de candidature transparent</strong>, pour en finir avec le ghosting :</li>
       </ul>
-      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
         <span class="pill gray">Reçu</span><span class="pill blue">Écouté</span><span class="pill green">Shortlist</span><span class="pill red">Refusé</span>
       </div>
     </div>
     <div class="card">
       <h3><span class="role">03</span>Réseau &amp; contenu</h3>
-      <ul style="list-style:none; color:var(--muted); font-size:0.86rem; margin-top:6px;">
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Feed professionnel</strong> : pas de mèmes, mais des sorties de maquettes, des recherches de featuring et des sessions studio.</li>
-        <li style="padding:7px 0;"><strong style="color:var(--text);">Badge « Open to Work »</strong> : pastille bleue signalant aux directeurs artistiques une recherche active de contrat, de manager ou de label.</li>
+      <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Feed professionnel</strong> : sorties de maquettes, recherches de featuring, sessions studio.</li>
+        <li style="padding:5px 0;"><strong style="color:var(--text);">Badge « Open to Work »</strong> : signale aux directeurs artistiques une recherche active.</li>
       </ul>
     </div>
   </div>
+</section>
 
-  <h3 class="sub"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Espace professionnels (labels, éditeurs, investisseurs)</h3>
-  <div class="grid grid-3" style="margin-bottom:30px;">
+<!-- ================= 4b. COMMENT CA MARCHE - PROS ================= -->
+<section id="fonctionnement-pro">
+  <div class="section-head">
+    <div class="num">05</div>
+    <h2>Comment ça marche : espace professionnels</h2>
+    <p>Labels, éditeurs et investisseurs trouvent et recrutent le talent.</p>
+  </div>
+
+  <div class="grid grid-3">
     <div class="card">
       <h3><span class="role">01</span>Hub de recrutement</h3>
-      <ul style="list-style:none; color:var(--muted); font-size:0.86rem; margin-top:6px;">
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Fiches de poste ultra-ciblées</strong>, par exemple : « Chanteuse Pop/R&amp;B (toplineuse), timbre proche de Dua Lipa, Paris, Q4 2026, cession de droits ».</li>
-        <li style="padding:7px 0;"><strong style="color:var(--text);">Pipeline intelligent de découverte musicale</strong> : un lecteur fixe en bas d'écran permet au directeur artistique de faire défiler les CV musicaux et de valider ou refuser en continu.</li>
+      <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Offres ultra-ciblées</strong> par genre, profil vocal, localisation, droits, calendrier.</li>
+        <li style="padding:5px 0;"><strong style="color:var(--text);">Pipeline intelligent de découverte</strong> : lecteur fixe pour valider ou refuser en continu.</li>
       </ul>
     </div>
     <div class="card">
       <h3><span class="role">02</span>Data &amp; scoring : l'effet Peakly</h3>
-      <ul style="list-style:none; color:var(--muted); font-size:0.86rem; margin-top:6px;">
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Talent Score IA</strong> : analyse de la qualité du mix, de la structure couplet/refrain et de la croissance sur les réseaux sociaux.</li>
-        <li style="padding:7px 0;"><strong style="color:var(--text);">Vérification des droits (clearing)</strong> : une IA de type anti-plagiat détecte les samples non autorisés, garantissant des données « propres ».</li>
+      <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Talent Score IA</strong> : qualité du mix, structure couplet/refrain, croissance réseaux.</li>
+        <li style="padding:5px 0;"><strong style="color:var(--text);">Vérification des droits (clearing)</strong> : IA anti-plagiat, données « propres ».</li>
       </ul>
-      <div class="bar-row" style="margin-top:10px;"><div class="name">Talent Score (exemple : artiste X)</div><div class="track"><div class="fill" style="width:78%;"></div></div><div class="val">78</div></div>
+      <div class="bar-row" style="margin-top:8px;"><div class="name">Talent Score (ex. artiste X)</div><div class="track"><div class="fill" style="width:78%;"></div></div><div class="val">78</div></div>
     </div>
     <div class="card">
       <h3><span class="role">03</span>Business &amp; contractuel</h3>
-      <ul style="list-style:none; color:var(--muted); font-size:0.86rem; margin-top:6px;">
-        <li style="padding:7px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Virtual Deal Room</strong> : échanges chiffrés, envoi de contrats (artiste, édition, licence) et planification d'auditions en visioconférence.</li>
-        <li style="padding:7px 0;"><strong style="color:var(--text);">Pool de co-investissement</strong> : des business angels non spécialisés cofinancent un talent avec un label expert, en échange d'un pourcentage sur les futurs revenus de streaming.</li>
+      <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Virtual Deal Room</strong> : contrats et auditions en visioconférence.</li>
+        <li style="padding:5px 0;"><strong style="color:var(--text);">Pool de co-investissement</strong> : business angels et labels cofinancent un talent.</li>
       </ul>
     </div>
   </div>
+</section>
 
-  <h3 class="sub">Cas d'usage : recherche guidée par la donnée</h3>
-  <div class="card" style="margin-bottom:30px;">
+<!-- ================= 4c. CAS D'USAGE DATA ================= -->
+<section id="fonctionnement-cas">
+  <div class="section-head">
+    <div class="num">06</div>
+    <h2>Cas d'usage : recherche guidée par la donnée</h2>
+  </div>
+  <div class="card">
     <p>Un investisseur filtre directement dans Peakly Connect : <em>« Montrez-moi uniquement les artistes Pop qui ont pris +20% d'abonnés ce mois-ci. »</em> Le Talent Score IA et le tracker d'engagement cross-platform font le tri à sa place.</p>
-    <div class="bar-row" style="margin-top:14px;"><div class="name">Artiste A (Pop)</div><div class="track"><div class="fill" style="width:84%; background:linear-gradient(90deg,var(--blue),#60a5fa);"></div></div><div class="val">84</div></div>
+    <div class="bar-row" style="margin-top:12px;"><div class="name">Artiste A (Pop)</div><div class="track"><div class="fill" style="width:84%; background:linear-gradient(90deg,var(--blue),#60a5fa);"></div></div><div class="val">84</div></div>
     <div class="bar-row"><div class="name">Artiste B (Pop)</div><div class="track"><div class="fill" style="width:71%; background:linear-gradient(90deg,var(--blue),#60a5fa);"></div></div><div class="val">71</div></div>
     <div class="bar-row"><div class="name">Artiste C (Pop)</div><div class="track"><div class="fill" style="width:52%; background:linear-gradient(90deg,var(--blue),#60a5fa);"></div></div><div class="val">52</div></div>
-    <div class="insight-tag ai" style="margin-top:14px;"><span class="lbl">Insight</span>Le Talent Score classe automatiquement les profils correspondant au filtre, si bien que l'investisseur n'écoute en priorité que les dossiers les plus pertinents.</div>
+    <div class="insight-tag ai" style="margin-top:10px;"><span class="lbl">Insight</span>Le Talent Score classe automatiquement les profils correspondant au filtre, si bien que l'investisseur n'écoute en priorité que les dossiers les plus pertinents.</div>
   </div>
+</section>
 
-  <h3 class="sub"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold);"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le facteur clé de succès : modération et barrière à l'entrée</h3>
+<!-- ================= 4d. MODERATION ================= -->
+<section id="fonctionnement-moderation">
+  <div class="section-head">
+    <div class="num">07</div>
+    <h2>Le facteur clé de succès : modération et barrière à l'entrée</h2>
+  </div>
   <div class="grid grid-2">
     <div class="rec-card">
       <div class="num">CÔTÉ PRO</div>
@@ -362,7 +427,7 @@
 <!-- ================= 5. LE MARCHE ================= -->
 <section id="marche">
   <div class="section-head">
-    <div class="num">05</div>
+    <div class="num">08</div>
     <h2>Pourquoi le marché est énorme</h2>
     <p>Trois chiffres suffisent à comprendre la taille du terrain de jeu de Peakly Connect.</p>
   </div>
@@ -373,53 +438,66 @@
   </div>
 </section>
 
-<!-- ================= 6. LES ANALYSES DATA ================= -->
+<!-- ================= 6. LES ANALYSES DATA - PIPELINE ================= -->
 <section id="analyses">
   <div class="section-head">
-    <div class="num">06</div>
+    <div class="num">09</div>
     <h2>Les analyses data</h2>
     <p>La preuve chiffrée derrière les trois chiffres précédents : un pipeline qui croise 7 sources pour confirmer la dynamique du marché.</p>
-    <p style="color:var(--muted); font-size:0.85rem; margin-top:8px; max-width:780px;">Précision méthodologique : ces ~10 900 lignes constituent un proof of concept (PoC) volontairement ciblé pour valider la faisabilité technique, et non une base Big Data en production. L'objectif de cette étape est de prouver le concept avant l'industrialisation.</p>
+    <p style="color:var(--muted); font-size:0.8rem; margin-top:6px; max-width:780px;">Précision méthodologique : ces ~10 900 lignes constituent un proof of concept (PoC) volontairement ciblé pour valider la faisabilité technique, et non une base Big Data en production. L'objectif de cette étape est de prouver le concept avant l'industrialisation.</p>
   </div>
 
-  <div class="arch-row" style="margin-bottom:40px;">
+  <div class="arch-row">
     <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.25a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></span><span class="lbl">Spotify API, Yahoo Finance, Songkick, Business of Apps</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg></span><span class="lbl">50+ variables</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="lbl">~10 900 lignes</span></div>
     <div class="arch-arrow">→</div>
-    <div class="arch-tile final"><span class="ic" style="color:var(--purple);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/></svg></span><span class="lbl">IA</span></div>
+    <div class="arch-tile final"><span class="ic" style="color:var(--blue);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/></svg></span><span class="lbl">IA</span></div>
   </div>
+</section>
 
-  <div class="grid grid-2" style="margin-bottom:30px;">
+<!-- ================= 6b. CROISSANCE SPOTIFY ================= -->
+<section id="analyses-spotify">
+  <div class="section-head">
+    <div class="num">10</div>
+    <h2>Croissance du streaming (Spotify)</h2>
+  </div>
+  <div class="grid grid-2">
     <div class="chart-card">
       <div class="chead"><h4>Évolution des revenus Spotify</h4><span class="period">2016–2024</span></div>
       <div class="chart-wrap"><canvas id="chartRevenue"></canvas></div>
       <div class="src">Source : Business of Apps (données entreprise)</div>
       <div class="insight-tag"><span class="lbl">Insight</span>Quasi-quintuplement des revenus en 8 ans malgré une concurrence accrue (Apple Music, YouTube Music, Amazon).
-        <span class="action"><span class="lbl">Lecture</span>Le modèle économique du streaming est validé sur le long terme, preuve que le secteur génère une vraie valeur économique.</span>
+        <span class="action"><span class="lbl">Lecture</span>Le modèle économique du streaming est validé sur le long terme.</span>
       </div>
     </div>
     <div class="chart-card">
       <div class="chead"><h4>Utilisateurs vs abonnés Spotify</h4><span class="period">2015–2024</span></div>
       <div class="chart-wrap"><canvas id="chartUsers"></canvas></div>
       <div class="src">Source : Business of Apps (données entreprise, Q2)</div>
-      <div class="insight-tag"><span class="lbl">Insight</span>626 millions d'utilisateurs en 2024, soit +712% depuis 2015. Le taux de conversion abonnés/utilisateurs reste stable autour de 39%.
-        <span class="action"><span class="lbl">Lecture</span>Le marché n'est pas saturé : la base d'abonnés a encore une marge de croissance importante.</span>
+      <div class="insight-tag"><span class="lbl">Insight</span>626 M d'utilisateurs en 2024, +712% depuis 2015. Conversion abonnés/utilisateurs stable autour de 39%.
+        <span class="action"><span class="lbl">Lecture</span>Le marché n'est pas saturé : marge de croissance importante.</span>
       </div>
     </div>
   </div>
+</section>
 
-  <h3 class="sub">Marchés financiers</h3>
-  <p style="color:var(--muted); font-size:0.85rem; margin:-6px 0 20px;">Les performances boursières des grands acteurs du secteur (Spotify, Universal, Warner, Live Nation), reflet de la dynamique financière du marché de la musique.</p>
+<!-- ================= 6c. MARCHES FINANCIERS ================= -->
+<section id="analyses-marches">
+  <div class="section-head">
+    <div class="num">11</div>
+    <h2>Marchés financiers</h2>
+    <p>Les performances boursières des grands acteurs du secteur (Spotify, Universal, Warner, Live Nation), reflet de la dynamique financière du marché de la musique.</p>
+  </div>
   <div class="grid grid-2">
     <div class="chart-card">
       <div class="chead"><h4>Variation annuelle des cours boursiers</h4><span class="period">2018–2025</span></div>
       <div class="chart-wrap"><canvas id="chartStocks"></canvas></div>
       <div class="src">SPOT / UMG / WMG / LYV (yfinance, 6 340 lignes)</div>
-      <div class="insight-tag"><span class="lbl">Insight</span>SPOT et LYV affichent la plus forte volatilité mais aussi les meilleurs rendements cumulés ; UMG et WMG sont plus stables, moins haussiers.
-        <span class="action"><span class="lbl">Lecture</span>Preuve que l'écosystème streaming et live est le segment le plus dynamique du secteur, soit le terrain de jeu de Peakly Connect.</span>
+      <div class="insight-tag"><span class="lbl">Insight</span>SPOT et LYV affichent la plus forte volatilité mais aussi les meilleurs rendements cumulés ; UMG et WMG sont plus stables.
+        <span class="action"><span class="lbl">Lecture</span>L'écosystème streaming et live est le segment le plus dynamique du secteur, le terrain de jeu de Peakly Connect.</span>
       </div>
     </div>
     <div class="chart-card">
@@ -433,23 +511,50 @@
   </div>
 </section>
 
-<!-- ================= 7. NOTRE AVANTAGE ================= -->
+<!-- ================= 7. TRACTION & VALIDATION ================= -->
+<section id="traction">
+  <div class="section-head">
+    <div class="num">12</div>
+    <h2>Traction &amp; validation</h2>
+    <p>Projet en phase early-stage, déjà appuyé par un travail data approfondi et une première validation des hypothèses de marché.</p>
+  </div>
+
+  <div class="grid grid-4" style="margin-bottom:24px;">
+    <div class="card kpi-card"><div class="kpi" style="color:var(--gold); font-size:1.3rem;">Prototype</div><div class="lab">Maquette produit avancée : CV musical, Job Board, Talent Score</div></div>
+    <div class="card kpi-card"><div class="kpi" style="color:var(--gold);">7</div><div class="lab">Sources de données croisées et analysées</div></div>
+    <div class="card kpi-card"><div class="kpi" style="color:var(--gold);">~10 900</div><div class="lab">Lignes exploitées en preuve de concept</div></div>
+    <div class="card kpi-card"><div class="kpi" style="color:var(--gold);">4</div><div class="lab">Segments clients identifiés et qualifiés</div></div>
+  </div>
+
+  <div class="card">
+    <h3>Segments clients qualifiés</h3>
+    <p>Artistes semi-pros, labels indépendants, éditeurs et investisseurs musicaux : quatre profils identifiés et confrontés aux données de marché pour valider la demande avant le développement du produit final.</p>
+  </div>
+</section>
+
+<!-- ================= 8. NOTRE AVANTAGE ================= -->
 <section id="avantage">
   <div class="section-head">
-    <div class="num">07</div>
+    <div class="num">13</div>
     <h2>Notre avantage</h2>
     <p>Chaque marketplace qui a gagné a connecté deux camps qui ne se trouvaient pas encore.</p>
   </div>
 
-  <div class="grid grid-4" style="margin-bottom:30px;">
+  <div class="grid grid-4">
     <div class="card"><h3>LinkedIn</h3><p>connecte professionnels ↕ professionnels</p></div>
     <div class="card"><h3>Airbnb</h3><p>connecte propriétaires ↕ voyageurs</p></div>
     <div class="card"><h3>Uber</h3><p>connecte chauffeurs ↕ clients</p></div>
     <div class="card highlight"><h3>Peakly</h3><p>connecte labels ↕ artistes</p></div>
   </div>
+</section>
 
-  <h3 class="sub">Pourquoi Peakly ? Parce que personne ne fait ça.</h3>
-  <div class="tbl-wrap" style="margin-bottom:20px;">
+<!-- ================= 8b. TABLEAU COMPARATIF ================= -->
+<section id="avantage-tableau">
+  <div class="section-head">
+    <div class="num">14</div>
+    <h2>Pourquoi Peakly ? Parce que personne ne fait ça.</h2>
+  </div>
+  <div class="tbl-wrap">
     <table>
       <tr><th>Fonction</th><th>Peakly</th><th>Bloomberg</th><th>Chartmetric</th></tr>
       <tr><td>Streaming</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="ok"><span class="pill green">✔</span></td></tr>
@@ -459,41 +564,46 @@
       <tr><td>Talent Score IA</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td></tr>
     </table>
   </div>
-
   <div class="card">
     <p>Talent Score IA, vérification des droits, Deal Room et pool de co-investissement créent une rente de données impossible à répliquer pour Bloomberg ou Chartmetric, qui n'ont pas accès au vivier d'artistes amateurs.</p>
   </div>
 </section>
 
-<!-- ================= 8. BUSINESS MODEL ================= -->
+<!-- ================= 9. BUSINESS MODEL - PRICING ================= -->
 <section id="business">
   <div class="section-head">
-    <div class="num">08</div>
+    <div class="num">15</div>
     <h2>Business model</h2>
     <p>Cinq niveaux d'abonnement, des deux côtés de la plateforme.</p>
   </div>
 
-  <div class="pricing-grid" style="margin-bottom:30px;">
+  <div class="pricing-grid">
     <div class="price-card"><div class="name">FREEMIUM</div><div class="price">0€</div><div class="desc">CV musical basique, 3 candidatures/mois</div></div>
     <div class="price-card highlight"><div class="name">PREMIUM ARTISTE</div><div class="price">29€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Candidatures illimitées, badge Open to Work, Talent Score visible</div></div>
     <div class="price-card"><div class="name">PRO LABEL</div><div class="price">79€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Pipeline ATS illimité, Talent Score IA, filtres avancés</div></div>
     <div class="price-card"><div class="name">BUSINESS B2B</div><div class="price">499€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Multi-utilisateurs, Virtual Deal Room, API complète</div></div>
     <div class="price-card"><div class="name">ENTERPRISE</div><div class="price">Sur devis</div><div class="desc">Pool de co-investissement, scoring sur-mesure, SLA dédié</div></div>
   </div>
-
-  <h3 class="sub">Projections</h3>
-  <div class="grid grid-3">
-    <div class="card"><h3>An 2</h3><div class="kpi" style="color:var(--gold);">342 780 €</div><p>ARR visé (revenu annuel récurrent)</p><p style="margin-top:8px; font-size:0.78rem;">Hypothèse : ≈700 artistes Premium + 80 labels Pro + 4 comptes Business</p></div>
-    <div class="card"><h3>An 5</h3><div class="kpi" style="color:var(--gold);">~9,5 M€</div><p>Chiffre d'affaires total projeté</p><p style="margin-top:8px; font-size:0.78rem;">Hypothèse : ≈15 000 artistes Premium + 3 500 labels Pro + 150 comptes Business</p></div>
-    <div class="card"><h3>An 7-10</h3><div class="kpi" style="color:var(--gold);">50–200 M€</div><p>Valorisation cible (acquisition ou IPO)</p><p style="margin-top:8px; font-size:0.78rem;">Hypothèse : ARR cible de 18–20 M€ valorisé à un multiple de 3x à 10x, cohérent avec les standards SaaS B2B/B2C</p></div>
-  </div>
-  <p style="color:var(--muted); font-size:0.76rem; margin-top:16px;">Ces hypothèses sont illustratives, destinées à montrer la mécanique du modèle, et seront affinées avec des données d'usage réelles.</p>
 </section>
 
-<!-- ================= 9. ROADMAP ================= -->
+<!-- ================= 9b. PROJECTIONS ================= -->
+<section id="business-projections">
+  <div class="section-head">
+    <div class="num">16</div>
+    <h2>Projections</h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card"><h3>An 2</h3><div class="kpi" style="color:var(--gold);">342 780 €</div><p>ARR visé (revenu annuel récurrent)</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ≈700 artistes Premium + 80 labels Pro + 4 comptes Business</p></div>
+    <div class="card"><h3>An 5</h3><div class="kpi" style="color:var(--gold);">~9,5 M€</div><p>Chiffre d'affaires total projeté</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ≈15 000 artistes Premium + 3 500 labels Pro + 150 comptes Business</p></div>
+    <div class="card"><h3>An 7-10</h3><div class="kpi" style="color:var(--gold);">Cible stratégique</div><p>Devenir une cible d'acquisition pour un acteur de la musique, du recrutement créatif ou de la data entertainment</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ARR cible de 18–20 M€, sous réserve de validation commerciale et d'adoption marché</p></div>
+  </div>
+  <p style="color:var(--muted); font-size:0.74rem; margin-top:12px;">Ces hypothèses sont illustratives, destinées à montrer la mécanique du modèle, et seront affinées avec des données d'usage réelles.</p>
+</section>
+
+<!-- ================= 10. ROADMAP ================= -->
 <section id="roadmap">
   <div class="section-head">
-    <div class="num">09</div>
+    <div class="num">17</div>
     <h2>Roadmap</h2>
     <p>Du produit minimal à la marketplace d'investissement, en quatre étapes.</p>
   </div>
@@ -507,25 +617,52 @@
   </div>
 </section>
 
-<!-- ================= 10. CONCLUSION ================= -->
+<!-- ================= 11. CE QUE NOUS RECHERCHONS ================= -->
+<section id="recherche">
+  <div class="section-head">
+    <div class="num">18</div>
+    <h2>Ce que nous recherchons</h2>
+    <p>Nous recherchons des partenaires financiers et stratégiques pour lancer le MVP commercial de Peakly Connect.</p>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:24px;">
+    <div class="rec-card">
+      <div class="num">LEVÉE</div>
+      <h3>Usage des fonds</h3>
+      <p class="why">Produit &amp; data/scoring, acquisition utilisateurs, partenariats labels, juridique &amp; conformité.</p>
+    </div>
+    <div class="rec-card">
+      <div class="num">OBJECTIF 12 MOIS</div>
+      <h3>MVP public &amp; premiers revenus</h3>
+      <p class="why">Lancement du MVP commercial, premiers artistes et professionnels actifs, premières souscriptions Premium et Pro.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <h3>Profil recherché</h3>
+    <p>Investisseurs musique, SaaS, marketplace ou entertainment tech, capables d'apporter à la fois du capital et un réseau dans l'industrie.</p>
+  </div>
+</section>
+
+<!-- ================= 12. CONCLUSION ================= -->
 <section id="conclusion">
   <div class="section-head">
-    <div class="num">10</div>
+    <div class="num">19</div>
     <h2>Conclusion</h2>
   </div>
 
-  <div class="quote-box" style="margin-bottom:30px;">
+  <div class="quote-box" style="margin-bottom:16px;">
     Peakly s'appuie sur une analyse approfondie du marché et répond à un besoin encore peu adressé : une plateforme de mise en relation dédiée aux professionnels et talents de l'industrie musicale, positionnée sur un marché en forte croissance où l'offre reste limitée.
   </div>
 
-  <div class="arch-row" style="margin-bottom:30px;">
+  <div class="arch-row" style="margin-bottom:16px;">
     <div class="arch-tile"><span class="ic" style="color:var(--gold);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="lbl">50 Md$ marché</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="lbl">0 concurrent direct</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic" style="color:var(--green);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11.18 4H4v7.18l9.41 9.41a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.83Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></span><span class="lbl">Freemium</span></div>
     <div class="arch-arrow">→</div>
-    <div class="arch-tile"><span class="ic" style="color:var(--purple);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/></svg></span><span class="lbl">IA</span></div>
+    <div class="arch-tile"><span class="ic" style="color:var(--blue);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/></svg></span><span class="lbl">IA</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 0 10h-3M9 17H6a5 5 0 0 1 0-10h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span><span class="lbl">Effet réseau</span></div>
     <div class="arch-arrow">→</div>
@@ -534,24 +671,24 @@
 
   <div class="card">
     <h3>Pourquoi Peakly peut devenir une vraie entreprise</h3>
-    <p>Avec une exécution rigoureuse, une protection IP rapide (marque, code, algorithme tenu secret) et un focus initial sur 1 000 premiers utilisateurs payants réels, Peakly peut atteindre 1 M€ d'ARR en 24 mois et se positionner en vue d'une sortie stratégique : acquisition (Bloomberg, UMG, Sony) ou introduction en bourse sur Euronext Growth.</p>
+    <p>Avec une exécution rigoureuse, une protection IP rapide (marque, code, algorithme tenu secret) et un focus initial sur 1 000 premiers utilisateurs payants réels, Peakly vise 1 M€ d'ARR en 24 mois. À long terme, Peakly peut devenir une cible stratégique pour les acteurs de la musique, du recrutement créatif ou de la data entertainment, sous réserve de validation commerciale et d'adoption marché.</p>
   </div>
 </section>
 
 <!-- ================= 11. REMERCIEMENTS ================= -->
-<section id="remerciements" style="text-align:center;">
-  <img src="LOGO%20PEAKLY.png" alt="Peakly" style="max-width:420px; width:100%; height:auto; margin:0 auto 26px; display:block;">
-  <p style="color:var(--muted); font-size:1.15rem;">Merci de nous avoir fait confiance.</p>
+<section id="remerciements" style="text-align:center; display:flex; flex-direction:column; justify-content:center;">
+  <img src="LOGO%20PEAKLY.png" alt="Peakly" style="max-width:340px; width:100%; height:auto; margin:0 auto 18px; display:block;">
+  <p style="color:var(--text); font-size:1.1rem; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif; max-width:640px; margin:0 auto;">Investir dans Peakly, c'est investir dans l'infrastructure de sourcing de la prochaine génération d'artistes.</p>
+  <p style="color:var(--muted); font-size:0.86rem; margin-top:10px;">Structurer la découverte musicale. Accélérer l'investissement dans les talents émergents.</p>
+  <p class="footer-line" style="margin-top:24px;">© 2025–2026 Peakly, document de présentation du projet, Wild Code School.</p>
 </section>
 
-<footer>
-  <p>© 2025–2026 Peakly, document de présentation du projet, Wild Code School.</p>
-</footer>
+</div><!-- /.deck -->
 
 <script>
-const palette = { blue: '#3B82F6', green: '#22C55E', gray: '#94A3B8', slate: '#475569', purple: '#7C3AED', gold: '#D4AF37' };
+const palette = { blue: '#2563EB', green: '#22C55E', gray: '#94A3B8', slate: '#475569', gold: '#D4AF37' };
 
-Chart.defaults.color = '#CBD5E1';
+Chart.defaults.color = '#AAB6C8';
 Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
 Chart.defaults.font.family = "'Inter', Helvetica, Arial, sans-serif";
 
@@ -561,8 +698,8 @@ function baseOpts(extra){
     maintainAspectRatio: false,
     plugins: { legend: { labels: { color: '#F8FAFC', boxWidth: 12, font: { size: 11 } } } },
     scales: {
-      x: { ticks: { color: '#CBD5E1', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.06)' } },
-      y: { ticks: { color: '#CBD5E1', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.06)' } }
+      x: { ticks: { color: '#AAB6C8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.06)' } },
+      y: { ticks: { color: '#AAB6C8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.06)' } }
     }
   };
   if (extra) {
@@ -593,7 +730,7 @@ try {
   new Chart(document.getElementById('chartRevenue'), {
     type: 'bar',
     data: { labels: ['2016','2017','2018','2019','2020','2021','2022','2023','2024'],
-      datasets: [{ label: 'Revenus (Mds€)', data: [2.94,4.62,5.25,6.76,7.88,9.66,11.72,13.24,15.62], backgroundColor: makeGradient('rgba(59,130,246,0.25)', '#3B82F6'), borderRadius: 5 }] },
+      datasets: [{ label: 'Revenus (Mds€)', data: [2.94,4.62,5.25,6.76,7.88,9.66,11.72,13.24,15.62], backgroundColor: makeGradient('rgba(37,99,235,0.25)', '#2563EB'), borderRadius: 5 }] },
     options: baseOpts({ plugins: { legend: { display: false } } })
   });
 } catch(e) { console.error('chartRevenue', e); }
@@ -628,20 +765,119 @@ try {
   new Chart(document.getElementById('chartDemo'), {
     type: 'bar',
     data: { labels: ['18-24','25-34','35-44','45-54','55+'],
-      datasets: [{ label: '% utilisateurs', data: [26,29,16,11,19], backgroundColor: makeGradient('rgba(59,130,246,0.25)', '#3B82F6'), borderRadius: 5 }] },
+      datasets: [{ label: '% utilisateurs', data: [26,29,16,11,19], backgroundColor: makeGradient('rgba(37,99,235,0.25)', '#2563EB'), borderRadius: 5 }] },
     options: baseOpts({ plugins: { legend: { display: false } } })
   });
 } catch(e) { console.error('chartDemo', e); }
 
 document.addEventListener('DOMContentLoaded', function(){
-  var els = document.querySelectorAll('.section-head, .card, .chart-card, .rec-card, .price-card, .quote-box, .arch-tile, .tbl-wrap');
-  els.forEach(function(el){ el.classList.add('reveal'); });
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting) { entry.target.classList.add('reveal-in'); obs.unobserve(entry.target); }
+  /* marque les blocs animables à l'intérieur de chaque slide */
+  document.querySelectorAll('.section-head, .card, .chart-card, .rec-card, .price-card, .quote-box, .arch-tile, .tbl-wrap').forEach(function(el){
+    el.classList.add('reveal');
+  });
+
+  /* ===== Deck : navigation par slide (flèches clavier, boutons, points) ===== */
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.children).filter(function(el){ return el.tagName === 'SECTION'; });
+  var current = 0;
+
+  function syncNavHeight(){
+    var h = document.querySelector('header.nav').offsetHeight;
+    document.documentElement.style.setProperty('--nav-h', h + 'px');
+  }
+  syncNavHeight();
+  window.addEventListener('resize', syncNavHeight);
+
+  /* points de pagination */
+  var dotsWrap = document.getElementById('deckDots');
+  slides.forEach(function(s, i){
+    var dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.type = 'button';
+    dot.setAttribute('aria-label', 'Aller à la diapositive ' + (i + 1));
+    dot.addEventListener('click', function(){ goTo(i); });
+    dotsWrap.appendChild(dot);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  var counterCur = document.querySelector('#deckCounter .cur');
+  var counterTot = document.querySelector('#deckCounter .tot');
+  counterTot.textContent = slides.length;
+
+  var prevBtn = document.getElementById('deckPrev');
+  var nextBtn = document.getElementById('deckNext');
+
+  /* correspondance liens du menu -> index de slide */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  navLinks.forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = link.getAttribute('href').replace('#', '');
+      var idx = slides.findIndex(function(s){ return s.id === id; });
+      if (idx > -1) goTo(idx);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(function(el){ obs.observe(el); });
+  });
+
+  function replayReveal(slide){
+    var items = slide.querySelectorAll('.reveal');
+    items.forEach(function(el){ el.classList.remove('reveal-in'); });
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        items.forEach(function(el){ el.classList.add('reveal-in'); });
+      });
+    });
+  }
+
+  function goTo(index){
+    index = Math.max(0, Math.min(slides.length - 1, index));
+    if (index === current) return;
+    slides[current].classList.remove('active');
+    current = index;
+    var slide = slides[current];
+    slide.classList.add('active');
+    slide.scrollTop = 0;
+    replayReveal(slide);
+
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === current); });
+    counterCur.textContent = current + 1;
+    navLinks.forEach(function(link){
+      link.classList.toggle('active', link.getAttribute('href') === '#' + slide.id);
+    });
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
+  }
+
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  document.addEventListener('keydown', function(e){
+    if (['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key) > -1) { e.preventDefault(); next(); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) > -1) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(slides.length - 1); }
+  });
+
+  /* swipe tactile basique */
+  var touchStartX = null;
+  deck.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, { passive: true });
+  deck.addEventListener('touchend', function(e){
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+    touchStartX = null;
+  }, { passive: true });
+
+  /* initialisation : première slide active */
+  slides[0].classList.add('active');
+  dots[0].classList.add('active');
+  navLinks.forEach(function(link){
+    link.classList.toggle('active', link.getAttribute('href') === '#' + slides[0].id);
+  });
+  prevBtn.disabled = true;
+  replayReveal(slides[0]);
 });
 </script>
 
