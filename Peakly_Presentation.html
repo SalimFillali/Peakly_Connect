@@ -252,7 +252,7 @@
   <p class="desc">Peakly Connect transforme la découverte de talents musicaux en pipeline data-driven pour labels, éditeurs et investisseurs. Objectif : réduire le temps de sourcing, qualifier les artistes plus vite, et créer une marketplace premium entre talents émergents et professionnels de l'industrie musicale.</p>
   <div class="hero-stats">
     <div class="stat"><div class="num" style="color:var(--gold);">50 Md$</div><div class="lab">Marché adressable</div></div>
-    <div class="stat"><div class="num">0</div><div class="lab">Concurrent direct identifié</div></div>
+    <div class="stat"><div class="num">B2B</div><div class="lab">Monétisation prioritaire (labels &amp; éditeurs)</div></div>
     <div class="stat"><div class="num">2 modèles</div><div class="lab">Revenus B2C &amp; B2B récurrents</div></div>
     <div class="stat"><div class="num">7</div><div class="lab">Sources de données croisées en PoC</div></div>
   </div>
@@ -289,7 +289,7 @@
     <div class="card kpi-card"><div class="kpi">90%</div><div class="lab">N'atteignent jamais plus de quelques dizaines d'écoutes</div></div>
     <div class="card kpi-card"><div class="kpi">10 000+</div><div class="lab">Artistes amateurs/semi-pros actifs (estimation France)</div></div>
     <div class="card kpi-card"><div class="kpi">100+</div><div class="lab">Labels, éditeurs et structures actives identifiées</div></div>
-    <div class="card kpi-card"><div class="kpi">0</div><div class="lab">Plateforme dédiée qui les connecte aujourd'hui</div></div>
+    <div class="card kpi-card"><div class="kpi">Fragmenté</div><div class="lab">Aucun outil ne combine recrutement, scoring IA et deal room</div></div>
   </div>
   <div class="insight-tag ai" style="margin-top:16px;"><span class="lbl">Constat</span>Le problème n'est pas le manque de musique, mais l'impossibilité de trier ce volume pour repérer les profils qui comptent. C'est précisément ce que le Talent Score IA de Peakly Connect est conçu pour automatiser.</div>
 </section>
@@ -374,7 +374,7 @@
     <div class="card">
       <h3><span class="role">02</span>Data &amp; scoring : l'effet Peakly</h3>
       <ul style="list-style:none; color:var(--muted); font-size:0.8rem; margin-top:4px;">
-        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Talent Score IA</strong> : qualité du mix, structure couplet/refrain, croissance réseaux.</li>
+        <li style="padding:5px 0; border-bottom:1px solid var(--border);"><strong style="color:var(--text);">Talent Score IA</strong> : V1 basée sur des métriques publiques transparentes (croissance réseaux, régularité de sortie, engagement), affinée progressivement avec les retours des labels partenaires.</li>
         <li style="padding:5px 0;"><strong style="color:var(--text);">Vérification des droits (clearing)</strong> : IA anti-plagiat, données « propres ».</li>
       </ul>
       <div class="bar-row" style="margin-top:8px;"><div class="name">Talent Score (ex. artiste X)</div><div class="track"><div class="fill" style="width:78%;"></div></div><div class="val">78</div></div>
@@ -428,20 +428,35 @@
 <section id="marche">
   <div class="section-head">
     <div class="num">08</div>
-    <h2>Pourquoi le marché est énorme</h2>
-    <p>Trois chiffres suffisent à comprendre la taille du terrain de jeu de Peakly Connect.</p>
+    <h2>Le contexte macro du marché</h2>
+    <p>L'industrie musicale est en forte croissance, mais Peakly Connect ne capte qu'une fraction de ce terrain de jeu : voir le calcul du marché réellement adressable sur la slide suivante.</p>
   </div>
   <div class="grid grid-3">
-    <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">50 Md$</div><div class="lab">Industrie musicale mondiale</div></div>
+    <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">50 Md$</div><div class="lab">Industrie musicale mondiale (contexte)</div></div>
     <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">919 M</div><div class="lab">Abonnés streaming dans le monde</div></div>
     <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">35 Md$</div><div class="lab">Marché du live</div></div>
   </div>
 </section>
 
+<!-- ================= 5b. MARCHE REELLEMENT ADRESSABLE ================= -->
+<section id="marche-tam">
+  <div class="section-head">
+    <div class="num">09</div>
+    <h2>Le marché réellement adressable</h2>
+    <p>Calcul bottom-up sur la cible réelle de Peakly Connect (labels indépendants, éditeurs, managers), pas sur l'industrie musicale entière.</p>
+  </div>
+  <div class="grid grid-3">
+    <div class="card kpi-card"><div class="kpi">~8 000</div><div class="lab">Structures B2B ciblées en Europe (estimation, à partir des 100+ identifiées en France)</div></div>
+    <div class="card kpi-card"><div class="kpi">~10,8 M€</div><div class="lab">TAM B2B annuel récurrent (8 000 × ARPU pondéré ≈ 1 350 €/an)</div></div>
+    <div class="card kpi-card highlight"><div class="kpi">~3,8 M€</div><div class="lab">SAM à 5 ans (marchés prioritaires FR / UK / DE / Benelux)</div></div>
+  </div>
+  <div class="insight-tag ai" style="margin-top:14px;"><span class="lbl">Méthodologie</span>Estimation bottom-up illustrative, à affiner avec les entretiens de validation client (voir slide stratégie de lancement). Le revenu artiste (Freemium / Boost) est volontairement exclu de ce calcul : il reste un complément, pas le moteur du modèle.</div>
+</section>
+
 <!-- ================= 6. LES ANALYSES DATA - PIPELINE ================= -->
 <section id="analyses">
   <div class="section-head">
-    <div class="num">09</div>
+    <div class="num">10</div>
     <h2>Les analyses data</h2>
     <p>La preuve chiffrée derrière les trois chiffres précédents : un pipeline qui croise 7 sources pour confirmer la dynamique du marché.</p>
     <p style="color:var(--muted); font-size:0.8rem; margin-top:6px; max-width:780px;">Précision méthodologique : ces ~10 900 lignes constituent un proof of concept (PoC) volontairement ciblé pour valider la faisabilité technique, et non une base Big Data en production. L'objectif de cette étape est de prouver le concept avant l'industrialisation.</p>
@@ -461,7 +476,7 @@
 <!-- ================= 6b. CROISSANCE SPOTIFY ================= -->
 <section id="analyses-spotify">
   <div class="section-head">
-    <div class="num">10</div>
+    <div class="num">11</div>
     <h2>Croissance du streaming (Spotify)</h2>
   </div>
   <div class="grid grid-2">
@@ -487,7 +502,7 @@
 <!-- ================= 6c. MARCHES FINANCIERS ================= -->
 <section id="analyses-marches">
   <div class="section-head">
-    <div class="num">11</div>
+    <div class="num">12</div>
     <h2>Marchés financiers</h2>
     <p>Les performances boursières des grands acteurs du secteur (Spotify, Universal, Warner, Live Nation), reflet de la dynamique financière du marché de la musique.</p>
   </div>
@@ -514,7 +529,7 @@
 <!-- ================= 7. TRACTION & VALIDATION ================= -->
 <section id="traction">
   <div class="section-head">
-    <div class="num">12</div>
+    <div class="num">13</div>
     <h2>Traction &amp; validation</h2>
     <p>Projet en phase early-stage, déjà appuyé par un travail data approfondi et une première validation des hypothèses de marché.</p>
   </div>
@@ -532,10 +547,34 @@
   </div>
 </section>
 
+<!-- ================= 7b. STRATEGIE DE VALIDATION ET DE LANCEMENT ================= -->
+<section id="validation-gtm">
+  <div class="section-head">
+    <div class="num">14</div>
+    <h2>Stratégie de validation et de lancement</h2>
+    <p>Avant de scaler les deux côtés du marketplace, on valide la demande et on sécurise l'offre.</p>
+  </div>
+  <div class="grid grid-3">
+    <div class="card">
+      <h3><span class="role">PHASE 1</span>Validation terrain</h3>
+      <p>15 à 20 entretiens qualitatifs avec des labels indépendants, éditeurs et artistes semi-pros pour valider la douleur réelle et l'intention de payer, avant tout développement supplémentaire.</p>
+    </div>
+    <div class="card">
+      <h3><span class="role">PHASE 2</span>Labels partenaires exclusifs</h3>
+      <p>Recrutement manuel de 10 à 20 labels et éditeurs partenaires engagés à recruter sur la plateforme dès son ouverture, pour casser l'effet d'œuf de poule du marketplace biface.</p>
+    </div>
+    <div class="card">
+      <h3><span class="role">PHASE 3</span>Ouverture côté artistes</h3>
+      <p>Lancement du côté artiste une fois la demande professionnelle prouvée, pour garantir un ratio offre/demande sain dès le premier jour.</p>
+    </div>
+  </div>
+  <div class="insight-tag ai" style="margin-top:14px;"><span class="lbl">Pourquoi</span>La majorité des marketplaces biface échouent en lançant les deux côtés simultanément sans demande prouvée. Peakly inverse l'ordre : la preuve de demande professionnelle précède l'acquisition d'artistes.</div>
+</section>
+
 <!-- ================= 8. NOTRE AVANTAGE ================= -->
 <section id="avantage">
   <div class="section-head">
-    <div class="num">13</div>
+    <div class="num">15</div>
     <h2>Notre avantage</h2>
     <p>Chaque marketplace qui a gagné a connecté deux camps qui ne se trouvaient pas encore.</p>
   </div>
@@ -551,37 +590,38 @@
 <!-- ================= 8b. TABLEAU COMPARATIF ================= -->
 <section id="avantage-tableau">
   <div class="section-head">
-    <div class="num">14</div>
-    <h2>Pourquoi Peakly ? Parce que personne ne fait ça.</h2>
+    <div class="num">16</div>
+    <h2>Positionnement face aux acteurs existants</h2>
+    <p>Peakly ne prétend pas être seul sur le marché : voici les comparables réels et où se situe la différenciation.</p>
   </div>
   <div class="tbl-wrap">
     <table>
-      <tr><th>Fonction</th><th>Peakly</th><th>Bloomberg</th><th>Chartmetric</th></tr>
-      <tr><td>Streaming</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="ok"><span class="pill green">✔</span></td></tr>
-      <tr><td>Finance</td><td class="ok"><span class="pill green">✔</span></td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td></tr>
-      <tr><td>Concerts</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="ok"><span class="pill green">✔</span></td></tr>
-      <tr><td>Mise en relation artistes ↔ labels</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td></tr>
-      <tr><td>Talent Score IA</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td></tr>
+      <tr><th>Fonction</th><th>Peakly</th><th>Groover</th><th>Chartmetric</th><th>Spotify for Artists</th></tr>
+      <tr><td>Découverte / soumission</td><td class="ok"><span class="pill green">✔</span></td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="ok"><span class="pill green">✔</span></td></tr>
+      <tr><td>Scoring data / analytics</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td></tr>
+      <tr><td>Candidature / recrutement (ATS)</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td></tr>
+      <tr><td>Deal Room &amp; contrats</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td></tr>
+      <tr><td>Co-investissement</td><td class="ok"><span class="pill green">✔</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td><td class="no"><span class="pill red">✘</span></td></tr>
     </table>
   </div>
   <div class="card">
-    <p>Talent Score IA, vérification des droits, Deal Room et pool de co-investissement créent une rente de données impossible à répliquer pour Bloomberg ou Chartmetric, qui n'ont pas accès au vivier d'artistes amateurs.</p>
+    <p>Groover adresse la découverte/promo, Chartmetric l'analytics, Spotify for Artists le pitch éditorial : aucun ne combine recrutement structuré, scoring et deal room. C'est cette zone que vise Peakly, pas l'absence totale de concurrence.</p>
   </div>
 </section>
 
 <!-- ================= 9. BUSINESS MODEL - PRICING ================= -->
 <section id="business">
   <div class="section-head">
-    <div class="num">15</div>
+    <div class="num">17</div>
     <h2>Business model</h2>
-    <p>Cinq niveaux d'abonnement, des deux côtés de la plateforme.</p>
+    <p>Monétisation centrée B2B : le côté artiste reste majoritairement gratuit pour maximiser le volume et l'attractivité auprès des professionnels.</p>
   </div>
 
   <div class="pricing-grid">
-    <div class="price-card"><div class="name">FREEMIUM</div><div class="price">0€</div><div class="desc">CV musical basique, 3 candidatures/mois</div></div>
-    <div class="price-card highlight"><div class="name">PREMIUM ARTISTE</div><div class="price">29€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Candidatures illimitées, badge Open to Work, Talent Score visible</div></div>
-    <div class="price-card"><div class="name">PRO LABEL</div><div class="price">79€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Pipeline ATS illimité, Talent Score IA, filtres avancés</div></div>
-    <div class="price-card"><div class="name">BUSINESS B2B</div><div class="price">499€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Multi-utilisateurs, Virtual Deal Room, API complète</div></div>
+    <div class="price-card"><div class="name">FREEMIUM ARTISTE</div><div class="price">0€</div><div class="desc">CV musical, 3 candidatures/mois — offre par défaut pour la majorité des artistes</div></div>
+    <div class="price-card"><div class="name">BOOST ARTISTE</div><div class="price">9€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Candidatures illimitées, badge Open to Work — option, pas un moteur de revenu</div></div>
+    <div class="price-card highlight"><div class="name">PRO LABEL</div><div class="price">79€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Pipeline ATS illimité, Talent Score IA, filtres avancés — revenu principal</div></div>
+    <div class="price-card highlight"><div class="name">BUSINESS B2B</div><div class="price">499€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Multi-utilisateurs, Virtual Deal Room, API complète — revenu principal</div></div>
     <div class="price-card"><div class="name">ENTERPRISE</div><div class="price">Sur devis</div><div class="desc">Pool de co-investissement, scoring sur-mesure, SLA dédié</div></div>
   </div>
 </section>
@@ -589,21 +629,21 @@
 <!-- ================= 9b. PROJECTIONS ================= -->
 <section id="business-projections">
   <div class="section-head">
-    <div class="num">16</div>
+    <div class="num">18</div>
     <h2>Projections</h2>
   </div>
   <div class="grid grid-3">
-    <div class="card"><h3>An 2</h3><div class="kpi" style="color:var(--gold);">342 780 €</div><p>ARR visé (revenu annuel récurrent)</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ≈700 artistes Premium + 80 labels Pro + 4 comptes Business</p></div>
-    <div class="card"><h3>An 5</h3><div class="kpi" style="color:var(--gold);">~9,5 M€</div><p>Chiffre d'affaires total projeté</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ≈15 000 artistes Premium + 3 500 labels Pro + 150 comptes Business</p></div>
-    <div class="card"><h3>An 7-10</h3><div class="kpi" style="color:var(--gold);">Cible stratégique</div><p>Devenir une cible d'acquisition pour un acteur de la musique, du recrutement créatif ou de la data entertainment</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ARR cible de 18–20 M€, sous réserve de validation commerciale et d'adoption marché</p></div>
+    <div class="card"><h3>An 2</h3><div class="kpi" style="color:var(--gold);">~70 000 €</div><p>ARR visé (revenu annuel récurrent)</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ≈50 labels Pro + 3 comptes Business, revenu artiste Boost marginal</p></div>
+    <div class="card"><h3>An 5</h3><div class="kpi" style="color:var(--gold);">~0,8 M€</div><p>Chiffre d'affaires total projeté</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ≈280 labels Pro + 20 comptes Business + 3 Enterprise + ≈3 000 artistes Boost</p></div>
+    <div class="card"><h3>An 7-10</h3><div class="kpi" style="color:var(--gold);">Cible stratégique</div><p>Devenir une cible d'acquisition pour un acteur de la musique, du recrutement créatif ou de la data entertainment</p><p style="margin-top:6px; font-size:0.74rem;">Hypothèse : ARR cible de 3 à 5 M€, sous réserve de validation commerciale et d'adoption marché</p></div>
   </div>
-  <p style="color:var(--muted); font-size:0.74rem; margin-top:12px;">Ces hypothèses sont illustratives, destinées à montrer la mécanique du modèle, et seront affinées avec des données d'usage réelles.</p>
+  <p style="color:var(--muted); font-size:0.74rem; margin-top:12px;">Projections recalculées à partir du marché réellement adressable (bottom-up), pas de l'industrie musicale mondiale. Hypothèses illustratives, à affiner avec des données d'usage réelles.</p>
 </section>
 
 <!-- ================= 10. ROADMAP ================= -->
 <section id="roadmap">
   <div class="section-head">
-    <div class="num">17</div>
+    <div class="num">19</div>
     <h2>Roadmap</h2>
     <p>Du produit minimal à la marketplace d'investissement, en quatre étapes.</p>
   </div>
@@ -620,34 +660,34 @@
 <!-- ================= 11. CE QUE NOUS RECHERCHONS ================= -->
 <section id="recherche">
   <div class="section-head">
-    <div class="num">18</div>
+    <div class="num">20</div>
     <h2>Ce que nous recherchons</h2>
-    <p>Nous recherchons des partenaires financiers et stratégiques pour lancer le MVP commercial de Peakly Connect.</p>
+    <p>Une levée séquencée, alignée sur les preuves à apporter plutôt que sur les ambitions de long terme.</p>
   </div>
 
   <div class="grid grid-2" style="margin-bottom:24px;">
     <div class="rec-card">
-      <div class="num">LEVÉE</div>
-      <h3>Usage des fonds</h3>
-      <p class="why">Produit &amp; data/scoring, acquisition utilisateurs, partenariats labels, juridique &amp; conformité.</p>
+      <div class="num">PHASE 1 — PRÉ-AMORÇAGE</div>
+      <h3>Financer la validation</h3>
+      <p class="why">Love money / business angels musique pour financer les entretiens clients, un MVP léger et les premiers labels partenaires (phases 1 et 2 de la stratégie de lancement).</p>
     </div>
     <div class="rec-card">
-      <div class="num">OBJECTIF 12 MOIS</div>
-      <h3>MVP public &amp; premiers revenus</h3>
-      <p class="why">Lancement du MVP commercial, premiers artistes et professionnels actifs, premières souscriptions Premium et Pro.</p>
+      <div class="num">PHASE 2 — AMORÇAGE</div>
+      <h3>Scaler après preuves</h3>
+      <p class="why">Levée plus large une fois la demande professionnelle prouvée (labels engagés, premiers revenus Pro), pour ouvrir le côté artiste et accélérer l'acquisition.</p>
     </div>
   </div>
 
   <div class="card highlight">
-    <h3>Profil recherché</h3>
-    <p>Investisseurs musique, SaaS, marketplace ou entertainment tech, capables d'apporter à la fois du capital et un réseau dans l'industrie.</p>
+    <h3>Profil recherché (phase 1)</h3>
+    <p>Business angels musique ou SaaS B2B, incubateurs entertainment tech : capital modeste mais surtout un réseau dans l'industrie pour accélérer les phases de validation et de lancement.</p>
   </div>
 </section>
 
 <!-- ================= 12. CONCLUSION ================= -->
 <section id="conclusion">
   <div class="section-head">
-    <div class="num">19</div>
+    <div class="num">21</div>
     <h2>Conclusion</h2>
   </div>
 
@@ -658,7 +698,7 @@
   <div class="arch-row" style="margin-bottom:16px;">
     <div class="arch-tile"><span class="ic" style="color:var(--gold);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="lbl">50 Md$ marché</span></div>
     <div class="arch-arrow">→</div>
-    <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="lbl">0 concurrent direct</span></div>
+    <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="lbl">B2B-first</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic" style="color:var(--green);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11.18 4H4v7.18l9.41 9.41a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.83Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></span><span class="lbl">Freemium</span></div>
     <div class="arch-arrow">→</div>
@@ -671,7 +711,7 @@
 
   <div class="card">
     <h3>Pourquoi Peakly peut devenir une vraie entreprise</h3>
-    <p>Avec une exécution rigoureuse, une protection IP rapide (marque, code, algorithme tenu secret) et un focus initial sur 1 000 premiers utilisateurs payants réels, Peakly vise 1 M€ d'ARR en 24 mois. À long terme, Peakly peut devenir une cible stratégique pour les acteurs de la musique, du recrutement créatif ou de la data entertainment, sous réserve de validation commerciale et d'adoption marché.</p>
+    <p>Avec une exécution rigoureuse, une validation terrain avant le scale, et un focus initial sur quelques dizaines de labels partenaires réels, Peakly vise une demande professionnelle prouvée et un ARR à six chiffres à horizon 24 mois. À long terme, Peakly peut devenir une cible stratégique pour les acteurs de la musique, du recrutement créatif ou de la data entertainment, sous réserve de validation commerciale et d'adoption marché.</p>
   </div>
 </section>
 

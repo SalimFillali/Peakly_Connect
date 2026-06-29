@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Wave Records, Profil professionnel Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bleu-nuit:#11141C; --bleu-nuit-clair:#1B2030;
+    --or:#D4AF37; --or-clair:#E9CD6B;
+    --bleu-electrique:#2F6FED; --vert-menthe:#2BD9A6; --corail:#FF6B5E;
+    --texte-clair:#F7F7FA; --texte-fonce:#161922; --gris-texte:#5B6472;
+    --gris-clair-fond:#F4F5F8; --bordure:rgba(255,255,255,0.08); --bordure-claire:#E6E8EE;
+    --rayon:14px; --ombre:0 12px 30px rgba(17,20,28,0.12);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Inter', Arial, sans-serif; color:var(--texte-fonce); background:#fff; line-height:1.6; }
+  h1,h2,h3{ font-family:'Plus Jakarta Sans', Arial, sans-serif; line-height:1.2; }
+  a{ text-decoration:none; color:inherit; }
+  .conteneur{ max-width:1100px; margin:0 auto; padding:0 24px; }
+  section{ padding:56px 0; }
+  @media (max-width:700px){ section{ padding:36px 0; } }
+
+  .bouton-principal, .bouton-secondaire, .bouton-discret{
+    display:inline-block; font-family:'Plus Jakarta Sans', Arial, sans-serif; font-weight:700;
+    font-size:0.92rem; padding:12px 22px; border-radius:12px; border:none; cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .bouton-principal{ background:linear-gradient(135deg, var(--or-clair), var(--or)); color:var(--bleu-nuit); }
+  .bouton-principal:hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(212,175,55,0.3); }
+  .bouton-secondaire{ background:var(--bleu-nuit); color:var(--texte-clair); }
+  .bouton-secondaire:hover{ background:var(--bleu-nuit-clair); }
+  .bouton-discret{ background:transparent; color:var(--gris-texte); border:1.5px solid var(--bordure-claire); }
+  .bouton-discret:hover{ border-color:var(--or); color:var(--texte-fonce); }
+
+  header.entete{ background:var(--bleu-nuit); border-bottom:1px solid var(--bordure); position:sticky; top:0; z-index:50; }
+  .entete-interieur{ max-width:1100px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .logo{ display:flex; align-items:center; }
+  .logo img{ height:32px; width:auto; display:block; }
+  nav.liens-entete{ display:flex; gap:24px; }
+  nav.liens-entete a{ color:var(--texte-clair); opacity:0.85; font-size:0.9rem; font-weight:600; }
+  nav.liens-entete a:hover{ opacity:1; color:var(--or); }
+  @media (max-width:800px){ nav.liens-entete{ display:none; } }
+
+  /* bannière de profil professionnel */
+  .banniere{ background:linear-gradient(120deg, var(--bleu-nuit) 0%, #1a2030 55%, #1f2a3d 100%); color:var(--texte-clair); padding:48px 0 0; }
+  .fiche-profil{ display:flex; gap:24px; align-items:flex-end; padding-bottom:32px; flex-wrap:wrap; }
+  .logo-structure{
+    width:104px; height:104px; border-radius:20px; flex-shrink:0;
+    background:var(--bleu-nuit-clair); border:1.5px solid rgba(255,255,255,0.15);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:1.7rem; color:var(--or);
+  }
+  .infos-profil{ flex:1; min-width:260px; }
+  .badge-verifie{
+    display:inline-flex; align-items:center; gap:6px; background:rgba(47,111,237,0.14);
+    border:1px solid rgba(47,111,237,0.4); color:#7da3ff; font-size:0.74rem; font-weight:700;
+    padding:5px 12px; border-radius:999px; margin-bottom:10px; letter-spacing:0.3px;
+  }
+  .infos-profil h1{ font-size:1.8rem; font-weight:800; }
+  .infos-profil .type-structure{ color:var(--or-clair); font-weight:700; font-size:0.92rem; margin-top:2px; }
+  .meta-profil{ display:flex; gap:14px; flex-wrap:wrap; margin-top:12px; font-size:0.86rem; color:rgba(247,247,250,0.75); }
+  .tags-genre{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .tag-genre{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); padding:5px 12px; border-radius:999px; font-size:0.78rem; }
+  .actions-profil{ display:flex; gap:10px; flex-wrap:wrap; }
+
+  .grille-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:-30px; position:relative; z-index:2; }
+  @media (max-width:900px){ .grille-stats{ grid-template-columns:repeat(2,1fr); } }
+  .carte-stat{ background:#fff; border:1px solid var(--bordure-claire); border-radius:var(--rayon); padding:20px 18px; box-shadow:var(--ombre); }
+  .carte-stat .valeur{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:1.5rem; color:var(--bleu-nuit); }
+  .carte-stat .libelle{ font-size:0.76rem; color:var(--gris-texte); margin-top:4px; text-transform:uppercase; letter-spacing:0.4px; }
+
+  .titre-bloc{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:10px; }
+  .titre-bloc h2{ font-size:1.4rem; color:var(--texte-fonce); }
+  .titre-bloc .info-bloc{ font-size:0.84rem; color:var(--gris-texte); }
+
+  .bio{ background:var(--gris-clair-fond); border-radius:var(--rayon); padding:24px 26px; color:var(--texte-fonce); font-size:0.96rem; }
+
+  /* offres actives */
+  .liste-offres{ display:flex; flex-direction:column; gap:12px; margin-top:24px; }
+  .offre{ display:flex; align-items:center; gap:16px; padding:16px 18px; border:1px solid var(--bordure-claire); border-radius:12px; background:#fff; flex-wrap:wrap; }
+  .offre .details-offre{ flex:1; min-width:200px; }
+  .offre .titre-offre{ font-weight:700; font-size:0.96rem; }
+  .offre .sous-details-offre{ font-size:0.8rem; color:var(--gris-texte); margin-top:3px; }
+  .badge-statut-offre{ padding:5px 13px; border-radius:999px; font-size:0.76rem; font-weight:700; background:rgba(43,217,166,0.12); color:var(--vert-menthe); flex-shrink:0; }
+  .compteur-candidatures{ font-size:0.8rem; color:var(--gris-texte); flex-shrink:0; }
+
+  /* pipeline de découverte */
+  .ligne-pipeline{ display:flex; align-items:center; gap:16px; padding:14px 18px; border:1px solid var(--bordure-claire); border-radius:12px; background:#fff; margin-bottom:12px; flex-wrap:wrap; }
+  .ligne-pipeline .avatar-mini{
+    width:40px; height:40px; border-radius:10px; flex-shrink:0;
+    background:linear-gradient(135deg, var(--corail), var(--or)); color:var(--bleu-nuit);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem;
+  }
+  .ligne-pipeline .nom-artiste{ font-weight:700; font-size:0.92rem; min-width:140px; }
+  .ligne-pipeline .genre-artiste{ font-size:0.78rem; color:var(--gris-texte); min-width:110px; }
+  .ligne-pipeline .piste-score{ flex:1; min-width:120px; background:var(--gris-clair-fond); border-radius:8px; height:11px; overflow:hidden; border:1px solid var(--bordure-claire); }
+  .ligne-pipeline .remplissage-score{ height:100%; border-radius:8px; background:linear-gradient(90deg, var(--bleu-electrique), #6f9bff); }
+  .ligne-pipeline .valeur-score{ width:34px; text-align:right; font-weight:800; font-size:0.86rem; flex-shrink:0; }
+
+  .badge-statut{ display:inline-block; padding:4px 12px; border-radius:999px; font-size:0.74rem; font-weight:700; flex-shrink:0; }
+  .badge-statut.shortlist{ background:rgba(43,217,166,0.12); color:var(--vert-menthe); }
+  .badge-statut.ecoute{ background:rgba(47,111,237,0.1); color:var(--bleu-electrique); }
+
+  footer{ background:var(--bleu-nuit); padding:30px 0; margin-top:20px; }
+  footer .pied-interieur{ max-width:1100px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  footer p{ color:rgba(247,247,250,0.5); font-size:0.82rem; }
+
+</style>
+</head>
+<body>
+
+<header class="entete">
+  <div class="entete-interieur">
+    <div class="logo"><img src="LOGO PEAKLY NAV.png" alt="Peakly"></div>
+    <nav class="liens-entete">
+      <a href="#">Accueil</a>
+      <a href="#">Artistes</a>
+      <a href="#">Professionnels</a>
+      <a href="#">Tarifs</a>
+    </nav>
+    <a href="#" class="bouton-principal">Connexion</a>
+  </div>
+</header>
+
+<!-- ============== BANNIÈRE DE PROFIL PROFESSIONNEL ============== -->
+<!-- Exemple de profil label fictif, à remplacer par les vraies données dès la connexion aux comptes. -->
+<div class="banniere">
+  <div class="conteneur">
+    <div class="fiche-profil">
+      <div class="logo-structure">NW</div>
+      <div class="infos-profil">
+        <span class="badge-verifie">Structure vérifiée SIRET</span>
+        <h1>Nova Wave Records</h1>
+        <div class="type-structure">Label indépendant</div>
+        <div class="meta-profil">
+          <span>Paris, France</span>
+          <span>12 artistes signés</span>
+          <span>Sur Peakly depuis janvier 2026</span>
+        </div>
+        <div class="tags-genre">
+          <span class="tag-genre">Pop urbaine</span>
+          <span class="tag-genre">RnB</span>
+          <span class="tag-genre">Électro</span>
+        </div>
+      </div>
+      <div class="actions-profil">
+        <a href="#" class="bouton-principal">Publier une offre</a>
+        <a href="#" class="bouton-secondaire">Contacter le label</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== STATISTIQUES ============== -->
+<div class="conteneur">
+  <div class="grille-stats">
+    <div class="carte-stat"><div class="valeur">312</div><div class="libelle">Candidatures reçues ce mois</div></div>
+    <div class="carte-stat"><div class="valeur">28</div><div class="libelle">Profils en shortlist actuellement</div></div>
+    <div class="carte-stat"><div class="valeur">6</div><div class="libelle">Signatures réalisées via Peakly</div></div>
+    <div class="carte-stat"><div class="valeur">2,4 j</div><div class="libelle">Temps moyen avant premier retour</div></div>
+  </div>
+</div>
+
+<!-- ============== A PROPOS DU LABEL ============== -->
+<section>
+  <div class="conteneur">
+    <div class="titre-bloc"><h2>À propos de Nova Wave Records</h2></div>
+    <div class="bio">Nova Wave Records est un label indépendant basé à Paris, spécialisé dans la pop urbaine et le RnB francophone. La structure accompagne actuellement douze artistes, de la sortie de leurs premiers singles jusqu'à la production d'un album complet. Nova Wave recrute en continu de nouveaux talents par le biais de son pipeline de découverte Peakly, pour réduire le temps passé à trier les candidatures reçues par mail.</div>
+  </div>
+</section>
+
+<!-- ============== OFFRES ACTIVES ============== -->
+<section style="background:var(--gris-clair-fond);">
+  <div class="conteneur">
+    <div class="titre-bloc">
+      <h2>Offres actives</h2>
+      <span class="info-bloc">Offres ciblées par genre, profil vocal et zone géographique</span>
+    </div>
+    <div class="liste-offres">
+      <div class="offre">
+        <div class="details-offre">
+          <div class="titre-offre">Auteur compositeur pop urbaine</div>
+          <div class="sous-details-offre">Île-de-France, signature en vue d'un EP de 5 titres</div>
+        </div>
+        <div class="compteur-candidatures">47 candidatures</div>
+        <span class="badge-statut-offre">Ouverte</span>
+      </div>
+      <div class="offre">
+        <div class="details-offre">
+          <div class="titre-offre">Featuring RnB pour single été 2026</div>
+          <div class="sous-details-offre">À distance, livraison sous 4 semaines</div>
+        </div>
+        <div class="compteur-candidatures">63 candidatures</div>
+        <span class="badge-statut-offre">Ouverte</span>
+      </div>
+      <div class="offre">
+        <div class="details-offre">
+          <div class="titre-offre">Catalogue édition francophone, profils émergents</div>
+          <div class="sous-details-offre">France et Belgique, contrat d'édition</div>
+        </div>
+        <div class="compteur-candidatures">29 candidatures</div>
+        <span class="badge-statut-offre">Ouverte</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PIPELINE DE DÉCOUVERTE ============== -->
+<section>
+  <div class="conteneur">
+    <div class="titre-bloc">
+      <h2>Pipeline de découverte</h2>
+      <span class="info-bloc">Profils classés par Talent Score sur l'offre Auteur compositeur pop urbaine</span>
+    </div>
+
+    <div class="ligne-pipeline">
+      <div class="avatar-mini">LK</div>
+      <div class="nom-artiste">Léa K. (LUNARA)</div>
+      <div class="genre-artiste">Pop urbaine</div>
+      <div class="piste-score"><div class="remplissage-score" style="width:78%;"></div></div>
+      <div class="valeur-score">78</div>
+      <span class="badge-statut shortlist">Shortlist</span>
+    </div>
+    <div class="ligne-pipeline">
+      <div class="avatar-mini">MT</div>
+      <div class="nom-artiste">Malo Tessier</div>
+      <div class="genre-artiste">Pop urbaine</div>
+      <div class="piste-score"><div class="remplissage-score" style="width:71%;"></div></div>
+      <div class="valeur-score">71</div>
+      <span class="badge-statut ecoute">Écouté</span>
+    </div>
+    <div class="ligne-pipeline">
+      <div class="avatar-mini">SN</div>
+      <div class="nom-artiste">Saana N.</div>
+      <div class="genre-artiste">Pop urbaine</div>
+      <div class="piste-score"><div class="remplissage-score" style="width:64%;"></div></div>
+      <div class="valeur-score">64</div>
+      <span class="badge-statut ecoute">Écouté</span>
+    </div>
+    <div class="ligne-pipeline">
+      <div class="avatar-mini">RD</div>
+      <div class="nom-artiste">Rayan D.</div>
+      <div class="genre-artiste">Pop urbaine</div>
+      <div class="piste-score"><div class="remplissage-score" style="width:52%;"></div></div>
+      <div class="valeur-score">52</div>
+      <span class="badge-statut ecoute">Écouté</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="pied-interieur">
+    <p>Profil de démonstration, données fictives à but illustratif.</p>
+    <p>© 2026 Peakly</p>
+  </div>
+</footer>
+
+</body>
+</html>
+   
