@@ -3,299 +3,825 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Léa K. (LUNARA), Profil artiste Peakly</title>
+<meta name="description" content="Profil artiste Peakly : Marcus J. (SOLARIS), artiste Afrobeat basé à Marseille. Talent Score 92/100. Disponible pour signatures et collaborations.">
+<meta name="theme-color" content="#0A0D14">
+<meta property="og:title" content="Marcus J. (SOLARIS) sur Peakly">
+<meta property="og:description" content="Profil artiste Peakly. Talent Score 92/100. Afrobeat, Marseille.">
+<meta property="og:type" content="profile">
+<meta property="og:image" content="LOGO PEAKLY.png">
+<title>Marcus J. (SOLARIS) : profil artiste Peakly</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
+  /* =============================================================
+     1. VARIABLES
+     ============================================================= */
   :root{
-    --bleu-nuit:#11141C; --bleu-nuit-clair:#1B2030;
-    --or:#D4AF37; --or-clair:#E9CD6B;
-    --bleu-electrique:#2F6FED; --vert-menthe:#2BD9A6; --corail:#FF6B5E;
-    --texte-clair:#F7F7FA; --texte-fonce:#161922; --gris-texte:#5B6472;
-    --gris-clair-fond:#F4F5F8; --bordure:rgba(255,255,255,0.08); --bordure-claire:#E6E8EE;
-    --rayon:14px; --ombre:0 12px 30px rgba(17,20,28,0.12);
+    --bleu-nuit:         #0A0D14;
+    --bleu-nuit-clair:   #111622;
+    --bleu-nuit-hover:   #1A2133;
+    --or-peakly:         #E5C158;
+    --or-peakly-hover:   #C9A53F;
+    --texte-principal:   #F1F3F9;
+    --texte-secondaire:  #94A3B8;
+    --texte-fonce:       #0A0D14;
+    --corail:            #FF6B5E;
+    --bordure:           rgba(255,255,255,0.07);
+    --bordure-carte:     rgba(255,255,255,0.05);
+    --rayon-carte:       8px;
+    --rayon-btn:         10px;
   }
+
+  /* =============================================================
+     2. BASE
+     ============================================================= */
   *{ box-sizing:border-box; margin:0; padding:0; }
-  body{ font-family:'Inter', Arial, sans-serif; color:var(--texte-fonce); background:#fff; line-height:1.6; }
-  h1,h2,h3{ font-family:'Plus Jakarta Sans', Arial, sans-serif; line-height:1.2; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Inter',Arial,sans-serif;
+    color:var(--texte-secondaire);
+    background:var(--bleu-nuit);
+    line-height:1.6;
+  }
   a{ text-decoration:none; color:inherit; }
+  h1,h2,h3,h4{
+    font-family:'Plus Jakarta Sans',Arial,sans-serif;
+    line-height:1.25; color:var(--texte-principal);
+  }
   .conteneur{ max-width:1100px; margin:0 auto; padding:0 24px; }
-  section{ padding:56px 0; }
-  @media (max-width:700px){ section{ padding:36px 0; } }
 
-  .bouton-principal, .bouton-secondaire, .bouton-discret{
-    display:inline-block; font-family:'Plus Jakarta Sans', Arial, sans-serif; font-weight:700;
-    font-size:0.92rem; padding:12px 22px; border-radius:12px; border:none; cursor:pointer;
-    transition:transform .2s ease, box-shadow .2s ease;
+  .passer-au-contenu{
+    position:absolute; top:-60px; left:16px;
+    background:var(--or-peakly); color:var(--texte-fonce);
+    padding:10px 18px; border-radius:8px; font-weight:700; font-size:0.88rem;
+    z-index:200; transition:top .2s;
   }
-  .bouton-principal{ background:linear-gradient(135deg, var(--or-clair), var(--or)); color:var(--bleu-nuit); }
-  .bouton-principal:hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(212,175,55,0.3); }
-  .bouton-secondaire{ background:var(--bleu-nuit); color:var(--texte-clair); }
-  .bouton-secondaire:hover{ background:var(--bleu-nuit-clair); }
-  .bouton-discret{ background:transparent; color:var(--gris-texte); border:1.5px solid var(--bordure-claire); }
-  .bouton-discret:hover{ border-color:var(--or); color:var(--texte-fonce); }
+  .passer-au-contenu:focus{ top:8px; }
 
-  /* en-tête du site */
-  header.entete{ background:var(--bleu-nuit); border-bottom:1px solid var(--bordure); position:sticky; top:0; z-index:50; }
-  .entete-interieur{ max-width:1100px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
-  .logo{ display:flex; align-items:center; }
-  .logo img{ height:32px; width:auto; display:block; }
-  nav.liens-entete{ display:flex; gap:24px; }
-  nav.liens-entete a{ color:var(--texte-clair); opacity:0.85; font-size:0.9rem; font-weight:600; }
-  nav.liens-entete a:hover{ opacity:1; color:var(--or); }
-  @media (max-width:800px){ nav.liens-entete{ display:none; } }
+  /* =============================================================
+     3. BOUTONS
+     ============================================================= */
+  .bouton-principal{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Plus Jakarta Sans',Arial,sans-serif; font-weight:700; font-size:0.9rem;
+    padding:11px 22px; border-radius:var(--rayon-btn);
+    background:var(--or-peakly); color:var(--texte-fonce);
+    border:none; cursor:pointer; transition:background .2s,transform .2s,box-shadow .2s;
+  }
+  .bouton-principal:hover{
+    background:var(--or-peakly-hover); transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(229,193,88,0.28);
+  }
+  .bouton-secondaire{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Plus Jakarta Sans',Arial,sans-serif; font-weight:700; font-size:0.9rem;
+    padding:10px 22px; border-radius:var(--rayon-btn);
+    background:transparent; color:var(--texte-secondaire);
+    border:1px solid var(--bordure); cursor:pointer; transition:border-color .2s,color .2s;
+  }
+  .bouton-secondaire:hover{ border-color:var(--or-peakly); color:var(--or-peakly); }
 
-  /* bannière de profil */
-  .banniere{ background:linear-gradient(120deg, var(--bleu-nuit) 0%, #1d2436 60%, #2a2110 100%); color:var(--texte-clair); padding:48px 0 0; }
-  .fiche-profil{ display:flex; gap:24px; align-items:flex-end; padding-bottom:32px; flex-wrap:wrap; }
-  .avatar{
-    width:104px; height:104px; border-radius:20px; flex-shrink:0;
-    background:linear-gradient(135deg, var(--corail), var(--or));
+  /* =============================================================
+     4. EN-TETE FIXE (barre de navigation commune)
+     ============================================================= */
+  body{ padding-top:58px; }
+  header.header-app{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    height:58px;
+    background:rgba(10,13,20,0.97);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--bordure);
+    display:flex; align-items:center;
+  }
+  .header-interieur{
+    width:100%; max-width:1280px; margin:0 auto;
+    padding:0 20px; display:flex; align-items:center; gap:16px;
+  }
+  .header-logo{ flex-shrink:0; display:flex; align-items:center; }
+  .header-logo img{ height:28px; width:auto; }
+  .barre-recherche{
+    flex:1; max-width:420px; position:relative; display:flex; align-items:center;
+  }
+  .barre-recherche input{
+    width:100%; padding:9px 14px 9px 38px;
+    background:var(--bleu-nuit-clair); border:1px solid var(--bordure);
+    border-radius:999px; font-size:0.84rem; color:var(--texte-principal);
+    font-family:'Inter',Arial,sans-serif; transition:border-color .15s;
+  }
+  .barre-recherche input:focus{ outline:none; border-color:rgba(229,193,88,0.45); }
+  .barre-recherche input::placeholder{ color:rgba(148,163,184,0.5); }
+  .barre-recherche svg{ position:absolute; left:12px; color:var(--texte-secondaire); pointer-events:none; }
+  .nav-icones{ margin-left:auto; display:flex; align-items:center; gap:4px; }
+  .nav-icone{
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    padding:6px 12px; border-radius:7px; background:none; border:none;
+    color:var(--texte-secondaire); font-size:0.65rem; font-weight:600;
+    transition:color .15s,background .15s; position:relative; white-space:nowrap;
+    cursor:pointer; font-family:'Inter',Arial,sans-serif; text-decoration:none;
+  }
+  .nav-icone:hover{ color:var(--texte-principal); background:var(--bleu-nuit-hover); }
+  .nav-icone.actif{ color:var(--or-peakly); }
+  .nav-icone.actif::after{
+    content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+    width:24px; height:2px; background:var(--or-peakly); border-radius:2px;
+  }
+  .notif-badge{
+    position:absolute; top:4px; right:8px; width:16px; height:16px; border-radius:50%;
+    background:var(--corail); color:#fff; font-size:0.58rem; font-weight:800;
+    display:flex; align-items:center; justify-content:center; border:2px solid var(--bleu-nuit);
+  }
+  .avatar-header{
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg,#E5C158,#C9A53F);
+    border:2px solid var(--or-peakly); display:flex; align-items:center; justify-content:center;
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.72rem;
+    color:var(--texte-fonce); flex-shrink:0;
+  }
+  @media(max-width:600px){
+    .nav-icone span{ display:none; }
+    .nav-icone{ padding:6px 8px; }
+    .barre-recherche{ max-width:140px; }
+  }
+
+  /* =============================================================
+     5. BANNIERE DU PROFIL
+     ============================================================= */
+  .banniere-cover{
+    height:180px;
+    background:linear-gradient(135deg,#1A2133 0%,rgba(229,193,88,0.12) 50%,#0A0D14 100%);
+    border-bottom:1px solid var(--bordure);
+  }
+  .banniere-corps{
+    background:var(--bleu-nuit-clair);
+    border-bottom:1px solid var(--bordure);
+  }
+  .fiche-profil{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:0 0 24px;
+    flex-wrap:wrap; gap:16px;
+  }
+  .fiche-profil-gauche{
+    display:flex; gap:20px; align-items:flex-end; flex:1;
+  }
+  .avatar-profil{
+    width:88px; height:88px; border-radius:16px; flex-shrink:0;
+    background:linear-gradient(135deg,#E5C158,#C9A53F);
+    border:3px solid var(--or-peakly);
     display:flex; align-items:center; justify-content:center;
-    font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:2rem; color:var(--bleu-nuit);
-    border:3px solid rgba(255,255,255,0.15);
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.9rem;
+    color:var(--texte-fonce); margin-top:-44px; position:relative; z-index:1;
   }
-  .infos-profil{ flex:1; min-width:240px; }
-  .badge-ouvert{
-    display:inline-flex; align-items:center; gap:6px; background:rgba(43,217,166,0.14);
-    border:1px solid rgba(43,217,166,0.4); color:var(--vert-menthe); font-size:0.74rem; font-weight:700;
-    padding:5px 12px; border-radius:999px; margin-bottom:10px; letter-spacing:0.3px;
+  .infos-profil{ padding-top:12px; }
+  .nom-artiste{
+    font-size:1.5rem; font-weight:800; margin-bottom:3px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
   }
-  .badge-ouvert .point{ width:7px; height:7px; border-radius:50%; background:var(--vert-menthe); }
-  .infos-profil h1{ font-size:1.8rem; font-weight:800; }
-  .infos-profil .nom-scene{ color:var(--or-clair); font-weight:700; font-size:0.95rem; margin-top:2px; }
-  .meta-profil{ display:flex; gap:14px; flex-wrap:wrap; margin-top:12px; font-size:0.86rem; color:rgba(247,247,250,0.75); }
-  .tags-genre{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
-  .tag-genre{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); padding:5px 12px; border-radius:999px; font-size:0.78rem; }
-  .actions-profil{ display:flex; gap:10px; flex-wrap:wrap; }
-
-  /* cartes de statistiques */
-  .grille-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:-30px; position:relative; z-index:2; }
-  @media (max-width:900px){ .grille-stats{ grid-template-columns:repeat(2,1fr); } }
-  .carte-stat{
-    background:#fff; border:1px solid var(--bordure-claire); border-radius:var(--rayon);
-    padding:20px 18px; box-shadow:var(--ombre);
+  .badge-score{
+    background:var(--or-peakly); color:var(--texte-fonce);
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.72rem;
+    padding:4px 9px; border-radius:999px; flex-shrink:0;
   }
-  .carte-stat .valeur{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:1.5rem; color:var(--bleu-nuit); }
-  .carte-stat .valeur .variation{ font-size:0.75rem; font-weight:700; color:var(--vert-menthe); margin-left:6px; }
-  .carte-stat .libelle{ font-size:0.76rem; color:var(--gris-texte); margin-top:4px; text-transform:uppercase; letter-spacing:0.4px; }
-
-  /* titres de section */
-  .titre-bloc{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:10px; }
-  .titre-bloc h2{ font-size:1.4rem; color:var(--texte-fonce); }
-  .titre-bloc .info-bloc{ font-size:0.84rem; color:var(--gris-texte); }
-
-  /* bio */
-  .bio{ background:var(--gris-clair-fond); border-radius:var(--rayon); padding:24px 26px; color:var(--texte-fonce); font-size:0.96rem; }
-
-  /* matrice des styles */
-  .matrice{ margin-top:26px; }
-  .ligne-style{ display:flex; align-items:center; gap:14px; margin-bottom:14px; }
-  .ligne-style .nom-style{ width:140px; font-weight:700; font-size:0.86rem; flex-shrink:0; }
-  .ligne-style .piste{ flex:1; background:var(--gris-clair-fond); border-radius:8px; height:11px; overflow:hidden; border:1px solid var(--bordure-claire); }
-  .ligne-style .remplissage{ height:100%; border-radius:8px; background:linear-gradient(90deg, var(--bleu-electrique), #6f9bff); }
-  .ligne-style .pourcentage{ width:42px; text-align:right; font-weight:800; font-size:0.84rem; color:var(--texte-fonce); }
-
-  /* morceaux */
-  .liste-morceaux{ display:flex; flex-direction:column; gap:12px; margin-top:24px; }
-  .morceau{
-    display:flex; align-items:center; gap:16px; padding:14px 18px; border:1px solid var(--bordure-claire);
-    border-radius:12px; background:#fff;
+  .sous-nom{ font-size:0.88rem; color:var(--texte-secondaire); margin-bottom:6px; }
+  .meta-profil{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    font-size:0.8rem; color:var(--texte-secondaire);
   }
-  .morceau .lecture{
-    width:38px; height:38px; border-radius:50%; background:var(--bleu-nuit); color:var(--or);
-    display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0;
+  .meta-profil span{ display:flex; align-items:center; gap:5px; }
+  .tag-statut{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 10px; border-radius:999px;
+    font-size:0.75rem; font-weight:700;
+    background:rgba(46,213,115,0.12); color:#2ED573;
+    border:1px solid rgba(46,213,115,0.25);
   }
-  .morceau .details{ flex:1; min-width:120px; }
-  .morceau .titre-morceau{ font-weight:700; font-size:0.94rem; }
-  .morceau .sous-details{ font-size:0.78rem; color:var(--gris-texte); margin-top:2px; }
-  .morceau .barre-son{ flex:2; display:flex; align-items:center; gap:2px; height:24px; min-width:120px; }
-  .morceau .barre-son span{ width:3px; background:var(--bleu-electrique); border-radius:2px; opacity:0.55; }
-  .morceau .duree{ font-size:0.8rem; color:var(--gris-texte); width:42px; text-align:right; flex-shrink:0; }
 
-  /* vidéo */
-  .carte-video{
-    border:1px solid var(--bordure-claire); border-radius:var(--rayon); overflow:hidden; max-width:420px; margin-top:24px;
+  .fiche-profil-droite{
+    display:flex; flex-direction:column; align-items:flex-end; gap:8px; padding-top:12px;
   }
-  .carte-video .vignette{
-    background:linear-gradient(135deg, var(--bleu-nuit), #2a2110); height:220px; display:flex; align-items:center; justify-content:center; color:var(--or);
+  .actions-profil{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .bouton-partager{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'Plus Jakarta Sans',Arial,sans-serif; font-weight:700; font-size:0.82rem;
+    padding:9px 14px; border-radius:var(--rayon-btn);
+    background:transparent; color:var(--texte-secondaire);
+    border:1px solid var(--bordure); cursor:pointer; transition:border-color .2s,color .2s;
   }
-  .carte-video .vignette .bouton-lecture{
-    width:56px; height:56px; border-radius:50%; background:rgba(247,247,250,0.12); border:1.5px solid rgba(247,247,250,0.4);
-    display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:var(--texte-clair);
+  .bouton-partager:hover{ border-color:var(--or-peakly); color:var(--or-peakly); }
+  .info-partage{
+    font-size:0.72rem; color:var(--or-peakly); display:none;
   }
-  .carte-video .legende{ padding:14px 16px; }
-  .carte-video .legende .titre-video{ font-weight:700; font-size:0.92rem; }
-  .carte-video .legende .sous-titre-video{ font-size:0.78rem; color:var(--gris-texte); margin-top:2px; }
+  .info-partage.visible{ display:block; }
+  .reseaux-sociaux{ display:flex; gap:10px; }
+  .lien-reseau{
+    width:30px; height:30px; border-radius:8px;
+    background:var(--bleu-nuit); border:1px solid var(--bordure);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--texte-secondaire); transition:border-color .2s,color .2s;
+  }
+  .lien-reseau:hover{ border-color:var(--or-peakly); color:var(--or-peakly); }
 
-  /* suivi des candidatures */
-  .tableau-candidatures{ width:100%; border-collapse:collapse; margin-top:20px; font-size:0.88rem; }
-  .tableau-candidatures th{ text-align:left; padding:10px 14px; color:var(--gris-texte); font-size:0.74rem; text-transform:uppercase; letter-spacing:0.4px; border-bottom:1px solid var(--bordure-claire); }
-  .tableau-candidatures td{ padding:14px; border-bottom:1px solid var(--bordure-claire); }
-  .badge-statut{ display:inline-block; padding:4px 12px; border-radius:999px; font-size:0.74rem; font-weight:700; }
-  .badge-statut.recu{ background:rgba(91,100,114,0.1); color:var(--gris-texte); }
-  .badge-statut.ecoute{ background:rgba(47,111,237,0.1); color:var(--bleu-electrique); }
-  .badge-statut.shortlist{ background:rgba(43,217,166,0.12); color:var(--vert-menthe); }
-  .badge-statut.refuse{ background:rgba(255,107,94,0.12); color:var(--corail); }
+  /* =============================================================
+     6. CORPS DU PROFIL : 2 COLONNES
+     ============================================================= */
+  .corps-profil{ padding:32px 0 64px; }
+  .bio-matrice-grille{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media(max-width:860px){ .bio-matrice-grille{ grid-template-columns:1fr; } }
 
-  footer{ background:var(--bleu-nuit); padding:30px 0; margin-top:20px; }
-  footer .pied-interieur{ max-width:1100px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
-  footer p{ color:rgba(247,247,250,0.5); font-size:0.82rem; }
+  .bloc-section{
+    background:var(--bleu-nuit-clair);
+    border:1px solid var(--bordure-carte);
+    border-radius:var(--rayon-carte);
+    padding:22px 20px;
+    margin-bottom:16px;
+  }
+  .bloc-section:last-child{ margin-bottom:0; }
+  .bloc-section-titre{
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:700;
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.6px;
+    color:rgba(241,243,249,0.3); margin-bottom:14px;
+  }
+
+  /* =============================================================
+     7. BIOGRAPHIE STRUCTUREE
+     ============================================================= */
+  .pitch-corps{ font-size:0.92rem; color:var(--texte-secondaire); line-height:1.78; }
+  .pitch-corps strong{ color:var(--texte-principal); }
+
+  .bloc-info{
+    padding:12px 14px; border-radius:7px;
+    background:var(--bleu-nuit); border-left:2px solid var(--or-peakly);
+    margin-bottom:8px;
+  }
+  .bloc-info:last-child{ margin-bottom:0; }
+  .bloc-info-label{
+    font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    color:var(--or-peakly); margin-bottom:4px;
+  }
+  .bloc-info-contenu{ font-size:0.86rem; color:var(--texte-secondaire); line-height:1.6; }
+  .bloc-info-contenu strong{ color:var(--texte-principal); }
+  .bloc-info-contenu em{ color:var(--texte-principal); font-style:italic; }
+
+  .equipe-liste{ display:flex; flex-direction:column; gap:8px; }
+  .equipe-membre{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px;
+    background:var(--bleu-nuit); border:1px solid var(--bordure-carte);
+    border-radius:7px;
+  }
+  .equipe-avatar{
+    width:32px; height:32px; border-radius:8px; flex-shrink:0;
+    background:linear-gradient(135deg,#2F6FED,#E5C158);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.72rem;
+    color:var(--texte-fonce);
+  }
+  .equipe-role{ font-size:0.7rem; color:var(--texte-secondaire); }
+  .equipe-nom{ font-size:0.84rem; font-weight:700; color:var(--texte-principal); }
+
+  .docs-liste{ display:flex; flex-direction:column; gap:6px; }
+  .doc-item{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px;
+    background:var(--bleu-nuit); border:1px solid var(--bordure-carte);
+    border-radius:7px; transition:border-color .15s;
+  }
+  .doc-item:hover{ border-color:var(--or-peakly); }
+  .doc-item svg{ color:var(--or-peakly); flex-shrink:0; }
+  .doc-info{ flex:1; min-width:0; }
+  .doc-nom{ font-size:0.83rem; font-weight:700; color:var(--texte-principal); }
+  .doc-meta{ font-size:0.7rem; color:var(--texte-secondaire); }
+  .doc-dl{
+    font-size:0.7rem; font-weight:700; color:var(--texte-secondaire);
+    padding:4px 10px; border-radius:6px; border:1px solid var(--bordure);
+    white-space:nowrap; transition:color .15s,border-color .15s;
+  }
+  .doc-item:hover .doc-dl{ color:var(--or-peakly); border-color:var(--or-peakly); }
+
+  .tags-collab{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .tag-collab{
+    padding:4px 11px; border-radius:999px; font-size:0.74rem; font-weight:600;
+    background:rgba(229,193,88,0.07); border:1px solid rgba(229,193,88,0.18);
+    color:var(--texte-secondaire);
+  }
+
+  /* =============================================================
+     8. MATRICE + TRACKLIST (colonne droite)
+     ============================================================= */
+  .tags-groupe{ margin-bottom:14px; }
+  .tags-groupe:last-child{ margin-bottom:0; }
+  .tags-label{
+    font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    color:rgba(241,243,249,0.3); margin-bottom:7px;
+  }
+  .tags-liste{ display:flex; flex-wrap:wrap; gap:5px; }
+  .tag-pill{
+    display:inline-flex; align-items:center;
+    padding:5px 11px; border-radius:999px;
+    font-size:0.77rem; font-weight:600;
+    background:var(--bleu-nuit); border:1px solid var(--bordure);
+    color:var(--texte-secondaire); transition:border-color .15s,color .15s;
+  }
+  .tag-pill:hover{ border-color:var(--or-peakly); color:var(--or-peakly); }
+  .tag-pill.actif{
+    background:rgba(229,193,88,0.1); border-color:rgba(229,193,88,0.35);
+    color:var(--or-peakly);
+  }
+
+  .tracklist{ display:flex; flex-direction:column; gap:0; }
+  .piste{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 0; border-bottom:1px solid var(--bordure-carte);
+  }
+  .piste:last-child{ border-bottom:none; }
+  .piste-num{
+    width:18px; text-align:center; font-size:0.74rem; font-weight:700;
+    color:var(--texte-secondaire); flex-shrink:0;
+  }
+  .bouton-play{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    background:rgba(229,193,88,0.1); border:1px solid rgba(229,193,88,0.25);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:background .15s; padding:0;
+  }
+  .bouton-play:hover{ background:rgba(229,193,88,0.2); }
+  .bouton-play svg{ color:var(--or-peakly); }
+  .piste-infos{ flex:1; min-width:0; }
+  .piste-titre{
+    font-weight:700; font-size:0.87rem; color:var(--texte-principal);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .piste-duree{ font-size:0.7rem; color:var(--texte-secondaire); margin-top:2px; }
+  .badge-piste{
+    display:inline-block; padding:3px 9px; border-radius:999px;
+    font-size:0.66rem; font-weight:700; flex-shrink:0; white-space:nowrap;
+  }
+  .badge-radio{
+    background:rgba(229,193,88,0.12); color:var(--or-peakly);
+    border:1px solid rgba(229,193,88,0.3);
+  }
+  .badge-demo{
+    background:rgba(148,163,184,0.1); color:var(--texte-secondaire);
+    border:1px solid rgba(148,163,184,0.2);
+  }
+  .badge-exclu{
+    background:rgba(47,111,237,0.12); color:#5B8EF0;
+    border:1px solid rgba(47,111,237,0.25);
+  }
+
+  /* Stats rapides */
+  .stats-rapides{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:28px;
+  }
+  .stat-rapide{
+    background:var(--bleu-nuit-clair); border:1px solid var(--bordure-carte);
+    border-radius:7px; padding:14px 10px; text-align:center;
+  }
+  .stat-rapide-val{
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:800;
+    font-size:1.2rem; color:var(--or-peakly); line-height:1;
+  }
+  .stat-rapide-lib{ font-size:0.68rem; color:var(--texte-secondaire); margin-top:4px; }
+
+  /* =============================================================
+     9. FOOTER
+     ============================================================= */
+  footer{ background:var(--bleu-nuit-clair); border-top:1px solid var(--bordure); padding:40px 0 24px; }
+  .pied-interieur{
+    display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:44px; margin-bottom:28px;
+  }
+  @media(max-width:700px){ .pied-interieur{ grid-template-columns:1fr; gap:20px; } }
+  .pied-marque p{ font-size:0.82rem; color:var(--texte-secondaire); margin-top:8px; font-style:italic; }
+  .pied-copyright{ color:rgba(241,243,249,0.22); font-size:0.76rem; margin-top:12px; }
+  .pied-nav h4, .pied-legal h4{
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.72rem;
+    color:rgba(241,243,249,0.35); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;
+  }
+  .pied-nav a, .pied-legal a{
+    display:block; color:var(--texte-secondaire); font-size:0.82rem; margin-bottom:8px; transition:color .2s;
+  }
+  .pied-nav a:hover, .pied-legal a:hover{ color:var(--or-peakly); }
+  .pied-bas{
+    border-top:1px solid var(--bordure); padding-top:16px; text-align:center;
+    font-size:0.74rem; color:rgba(241,243,249,0.18);
+  }
 
 </style>
 </head>
 <body>
 
-<header class="entete">
-  <div class="entete-interieur">
-    <div class="logo"><img src="LOGO PEAKLY NAV.png" alt="Peakly"></div>
-    <nav class="liens-entete">
-      <a href="#">Accueil</a>
-      <a href="#">Artistes</a>
-      <a href="#">Professionnels</a>
-      <a href="#">Tarifs</a>
+<a href="#contenu-principal" class="passer-au-contenu">Passer au contenu principal</a>
+
+<!-- ============== EN-TETE ============== -->
+<header class="header-app" role="banner">
+  <div class="header-interieur">
+    <a href="peakly_feed.html" class="header-logo" aria-label="Peakly, retour au fil d'actualité">
+      <img src="LOGO PEAKLY NAV.png" alt="Peakly" width="90" height="30">
+    </a>
+    <div class="barre-recherche" role="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" placeholder="Rechercher un artiste, un label, un style..." aria-label="Rechercher sur Peakly">
+    </div>
+    <nav class="nav-icones" aria-label="Navigation principale">
+      <a href="peakly_feed.html" class="nav-icone" aria-label="Fil d'actualité">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Accueil</span>
+      </a>
+      <button class="nav-icone" aria-label="Mon réseau">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Mon Réseau</span>
+      </button>
+      <button class="nav-icone" aria-label="Auditions et opportunités">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Auditions</span>
+      </button>
+      <button class="nav-icone" aria-label="Messagerie">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Messagerie</span>
+      </button>
+      <button class="nav-icone" aria-label="Notifications" style="position:relative;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-badge" aria-hidden="true">3</span>
+        <span>Notifications</span>
+      </button>
+      <button class="nav-icone" aria-label="Mon profil" style="padding:6px 6px;">
+        <div class="avatar-header" aria-hidden="true">MJ</div>
+      </button>
     </nav>
-    <a href="#" class="bouton-principal">Connexion</a>
   </div>
 </header>
 
-<!-- ============== BANNIÈRE DE PROFIL ============== -->
-<!-- Exemple de profil artiste fictif, à remplacer par les vraies données dès la connexion aux comptes. -->
-<div class="banniere">
+<!-- ============== COVER ============== -->
+<div class="banniere-cover" aria-hidden="true"></div>
+
+<!-- ============== BANNIERE DU PROFIL ============== -->
+<div class="banniere-corps" id="contenu-principal">
   <div class="conteneur">
     <div class="fiche-profil">
-      <div class="avatar">LK</div>
-      <div class="infos-profil">
-        <span class="badge-ouvert"><span class="point"></span> Ouvert aux propositions</span>
-        <h1>Léa K.</h1>
-        <div class="nom-scene">Nom de scène : LUNARA</div>
-        <div class="meta-profil">
-          <span>Lyon, France</span>
-          <span>Artiste semi-professionnelle</span>
-          <span>Sur Peakly depuis février 2026</span>
-        </div>
-        <div class="tags-genre">
-          <span class="tag-genre">Pop urbaine</span>
-          <span class="tag-genre">RnB</span>
-          <span class="tag-genre">Afrobeat</span>
+
+      <div class="fiche-profil-gauche">
+        <div class="avatar-profil" aria-label="Avatar de Marcus J.">MJ</div>
+        <div class="infos-profil">
+          <h1 class="nom-artiste">
+            Marcus J. (SOLARIS)
+            <span class="badge-score" aria-label="Talent Score 92 sur 100">TS 92</span>
+          </h1>
+          <div class="sous-nom">Artiste indépendant · Afrobeat / RnB Soul</div>
+          <div class="meta-profil">
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Marseille, France
+            </span>
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              Depuis 2020
+            </span>
+            <span class="tag-statut">
+              <span style="width:6px;height:6px;border-radius:50%;background:#2ED573;flex-shrink:0;" aria-hidden="true"></span>
+              Open to Work
+            </span>
+          </div>
         </div>
       </div>
-      <div class="actions-profil">
-        <a href="#" class="bouton-principal">Contacter Léa K.</a>
-        <a href="#" class="bouton-secondaire">Ajouter en shortlist</a>
+
+      <div class="fiche-profil-droite">
+        <div class="actions-profil">
+          <a href="peakly_profil_professionnel.html" class="bouton-principal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Contacter
+          </a>
+          <button class="bouton-secondaire">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Shortlist
+          </button>
+          <button class="bouton-partager" id="btn-partager" aria-label="Copier le lien du profil">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+        <span class="info-partage" id="info-partage" role="status">Lien copié.</span>
+        <div class="reseaux-sociaux" aria-label="Réseaux sociaux">
+          <a href="#" class="lien-reseau" aria-label="TikTok de Marcus J.">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 1 0 6.33 6.34V8.69a8.18 8.18 0 0 0 4.79 1.52V6.75a4.85 4.85 0 0 1-1.02-.06z"/></svg>
+          </a>
+          <a href="#" class="lien-reseau" aria-label="Instagram de Marcus J.">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </a>
+          <a href="#" class="lien-reseau" aria-label="SoundCloud de Marcus J.">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11.56 8.87V17h8.76c.96 0 1.68-.8 1.68-1.76 0-.96-.72-1.76-1.68-1.76h-.16c.08-.32.16-.64.16-.96 0-2.32-1.88-4.2-4.2-4.2-.72 0-1.36.16-1.96.48-.24-1.76-1.76-3.12-3.6-3.12a3.63 3.63 0 0 0-3.6 3.12c-.2-.04-.4-.04-.6-.04-1.88 0-3.36 1.52-3.36 3.36 0 1.88 1.52 3.36 3.36 3.36H11V8.87c0-.24.16-.4.4-.4s.16.16.16.4z"/></svg>
+          </a>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- ============== STATISTIQUES ============== -->
-<div class="conteneur">
-  <div class="grille-stats">
-    <div class="carte-stat">
-      <div class="valeur">28 400<span class="variation">+18 %</span></div>
-      <div class="libelle">Abonnés TikTok ce mois</div>
+<!-- ============== CORPS DU PROFIL ============== -->
+<div class="corps-profil">
+  <div class="conteneur">
+
+    <!-- STATS RAPIDES -->
+    <div class="stats-rapides">
+      <div class="stat-rapide">
+        <div class="stat-rapide-val">48K</div>
+        <div class="stat-rapide-lib">Abonnés TikTok</div>
+      </div>
+      <div class="stat-rapide">
+        <div class="stat-rapide-val">+84 %</div>
+        <div class="stat-rapide-lib">Écoutes (7 jours)</div>
+      </div>
+      <div class="stat-rapide">
+        <div class="stat-rapide-val">11</div>
+        <div class="stat-rapide-lib">Morceaux publiés</div>
+      </div>
     </div>
-    <div class="carte-stat">
-      <div class="valeur">12 100</div>
-      <div class="libelle">Écoutes SoundCloud cumulées</div>
-    </div>
-    <div class="carte-stat">
-      <div class="valeur">15 300</div>
-      <div class="libelle">Abonnés Instagram</div>
-    </div>
-    <div class="carte-stat">
-      <div class="valeur">78<span class="variation">/ 100</span></div>
-      <div class="libelle">Talent Score</div>
+
+    <div class="bio-matrice-grille">
+
+      <!-- ===== COLONNE GAUCHE : BIOGRAPHIE ===== -->
+      <div class="colonne-biographie">
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Le Pitch</div>
+          <p class="pitch-corps">Né à Marseille de parents camerounais, Marcus J. construit depuis 2020 un univers sonore à la croisée de l'afrobeat contemporain et du RnB soul. <strong>Voix profonde, mélodies immédiates, textes bilingues français/anglais</strong> : son projet SOLARIS vise un marché européen exigeant, tout en gardant l'ancrage émotionnel de la musique du continent africain.</p>
+        </div>
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Accomplissement Majeur</div>
+          <div class="bloc-info">
+            <div class="bloc-info-label">Prix et distinctions</div>
+            <div class="bloc-info-contenu">Lauréat du <strong>Tremplin Babel Med Music 2024</strong> à Marseille, sélectionné parmi 340 dossiers. Prix décerné par un jury de 9 professionnels de l'industrie européenne.</div>
+          </div>
+          <div class="bloc-info">
+            <div class="bloc-info-label">Scène et presse</div>
+            <div class="bloc-info-contenu">Cité dans <strong>RFI Musique</strong> (déc. 2024) comme "une des voix afrobeat à suivre en 2025 côté francophone". Première au Dock des Suds devant 800 personnes, sold out.</div>
+          </div>
+        </div>
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Objectif Actuel</div>
+          <div class="bloc-info">
+            <div class="bloc-info-label">Recherche</div>
+            <div class="bloc-info-contenu">Contrat d'édition ou de licence pour les titres <em>Altitude</em> et <em>Marées</em>. Ouvert à une co-production avec un label indépendant disposant d'un réseau de distribution européen.</div>
+          </div>
+          <div class="bloc-info">
+            <div class="bloc-info-label">Délai envisagé</div>
+            <div class="bloc-info-contenu">Sortie d'EP prévue pour <strong>septembre 2026</strong>. Studio réservé, mix assuré par Sofiane Dj (crédits : Jul, Soolking).</div>
+          </div>
+        </div>
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Équipe Actuelle</div>
+          <div class="equipe-liste">
+            <div class="equipe-membre">
+              <div class="equipe-avatar" aria-hidden="true">SD</div>
+              <div>
+                <div class="equipe-nom">Sofiane Dj</div>
+                <div class="equipe-role">Producteur et Beatmaker principal</div>
+              </div>
+            </div>
+            <div class="equipe-membre">
+              <div class="equipe-avatar" aria-hidden="true">LB</div>
+              <div>
+                <div class="equipe-nom">Lucie Bressot</div>
+                <div class="equipe-role">Attachée de presse (pige)</div>
+              </div>
+            </div>
+            <div class="equipe-membre">
+              <div class="equipe-avatar" aria-hidden="true">YM</div>
+              <div>
+                <div class="equipe-nom">Youssef Mrabet</div>
+                <div class="equipe-role">Booking scène Sud et Maghreb</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Documents téléchargeables</div>
+          <div class="docs-liste">
+            <a href="#" class="doc-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <div class="doc-info">
+                <div class="doc-nom">Dossier de presse SOLARIS 2026</div>
+                <div class="doc-meta">PDF · 4,2 Mo · Mis à jour mai 2026</div>
+              </div>
+              <span class="doc-dl">Télécharger</span>
+            </a>
+            <a href="#" class="doc-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <div class="doc-info">
+                <div class="doc-nom">Rider technique scène</div>
+                <div class="doc-meta">PDF · 890 Ko · Version 3.1</div>
+              </div>
+              <span class="doc-dl">Télécharger</span>
+            </a>
+            <a href="#" class="doc-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="doc-info">
+                <div class="doc-nom">Mix WAV 320kbps : Altitude</div>
+                <div class="doc-meta">WAV · 48 Mo · Accès label uniquement</div>
+              </div>
+              <span class="doc-dl">Demander</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Recherche de collaborations</div>
+          <p style="font-size:0.82rem;color:var(--texte-secondaire);margin-bottom:10px;">Ouvert aux propositions suivantes :</p>
+          <div class="tags-collab">
+            <span class="tag-collab">Contrat d'édition</span>
+            <span class="tag-collab">Licence synchronisation</span>
+            <span class="tag-collab">Co-production EP</span>
+            <span class="tag-collab">Booking Europe</span>
+            <span class="tag-collab">Featuring artiste</span>
+            <span class="tag-collab">Résidence artistique</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== COLONNE DROITE : MATRICE + TRACKLIST ===== -->
+      <div class="colonne-droite-profil">
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Matrice des styles</div>
+
+          <div class="tags-groupe">
+            <div class="tags-label">Genres principaux</div>
+            <div class="tags-liste">
+              <span class="tag-pill actif">Afrobeat</span>
+              <span class="tag-pill actif">RnB Soul</span>
+              <span class="tag-pill">Afro-pop</span>
+              <span class="tag-pill">Groove électronique</span>
+            </div>
+          </div>
+
+          <div class="tags-groupe">
+            <div class="tags-label">Influences</div>
+            <div class="tags-liste">
+              <span class="tag-pill">Burna Boy</span>
+              <span class="tag-pill">Wizkid</span>
+              <span class="tag-pill">Jorja Smith</span>
+              <span class="tag-pill">Masego</span>
+              <span class="tag-pill">Adekunle Gold</span>
+              <span class="tag-pill">Anderson .Paak</span>
+            </div>
+          </div>
+
+          <div class="tags-groupe">
+            <div class="tags-label">Ambiances et Moods</div>
+            <div class="tags-liste">
+              <span class="tag-pill">Feel-good</span>
+              <span class="tag-pill">Dansant</span>
+              <span class="tag-pill">Mélancolique</span>
+              <span class="tag-pill">Vocal lead</span>
+              <span class="tag-pill">Nocturne</span>
+              <span class="tag-pill">Ensoleillé</span>
+            </div>
+          </div>
+
+          <div class="tags-groupe">
+            <div class="tags-label">Langues</div>
+            <div class="tags-liste">
+              <span class="tag-pill actif">Français</span>
+              <span class="tag-pill actif">Anglais</span>
+            </div>
+          </div>
+
+          <div class="tags-groupe">
+            <div class="tags-label">Marchés visés</div>
+            <div class="tags-liste">
+              <span class="tag-pill">France</span>
+              <span class="tag-pill">UK</span>
+              <span class="tag-pill">Afrique de l'Ouest</span>
+              <span class="tag-pill">Belgique</span>
+              <span class="tag-pill">Suisse</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="bloc-section">
+          <div class="bloc-section-titre">Extraits musicaux</div>
+          <div class="tracklist">
+
+            <div class="piste">
+              <div class="piste-num">1</div>
+              <button class="bouton-play" aria-label="Écouter Altitude">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+              <div class="piste-infos">
+                <div class="piste-titre">Altitude</div>
+                <div class="piste-duree">3 min 41 s · Afrobeat / Soul</div>
+              </div>
+              <span class="badge-piste badge-radio">Radio-friendly</span>
+            </div>
+
+            <div class="piste">
+              <div class="piste-num">2</div>
+              <button class="bouton-play" aria-label="Écouter Marées">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+              <div class="piste-infos">
+                <div class="piste-titre">Marées</div>
+                <div class="piste-duree">4 min 08 s · RnB</div>
+              </div>
+              <span class="badge-piste badge-exclu">Exclusivité Peakly</span>
+            </div>
+
+            <div class="piste">
+              <div class="piste-num">3</div>
+              <button class="bouton-play" aria-label="Écouter Lagos Night">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+              <div class="piste-infos">
+                <div class="piste-titre">Lagos Night</div>
+                <div class="piste-duree">3 min 27 s · Afrobeat</div>
+              </div>
+              <span class="badge-piste badge-demo">Démo non signée</span>
+            </div>
+
+            <div class="piste">
+              <div class="piste-num">4</div>
+              <button class="bouton-play" aria-label="Écouter Soleil de Minuit">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+              <div class="piste-infos">
+                <div class="piste-titre">Soleil de Minuit</div>
+                <div class="piste-duree">3 min 55 s · Afro-pop</div>
+              </div>
+              <span class="badge-piste badge-radio">Radio-friendly</span>
+            </div>
+
+            <div class="piste">
+              <div class="piste-num">5</div>
+              <button class="bouton-play" aria-label="Écouter Open Water">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+              <div class="piste-infos">
+                <div class="piste-titre">Open Water</div>
+                <div class="piste-duree">3 min 19 s · Groove électronique</div>
+              </div>
+              <span class="badge-piste badge-demo">Démo non signée</span>
+            </div>
+
+          </div>
+          <p style="font-size:0.7rem;color:rgba(148,163,184,0.55);margin-top:14px;">Les extraits radio-friendly sont accessibles librement. Les démos nécessitent un compte label vérifié.</p>
+        </div>
+
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ============== BIOGRAPHIE ET MATRICE DES STYLES ============== -->
-<section>
-  <div class="conteneur">
-    <div class="titre-bloc"><h2>À propos de Léa K.</h2></div>
-    <div class="bio">Auteure, compositrice et interprète installée à Lyon, Léa K. construit depuis trois ans un univers entre pop urbaine et RnB, porté par des textes en français. Elle sort un titre toutes les six à huit semaines et cherche actuellement un label ou un éditeur pour structurer la sortie de son premier EP.</div>
-
-    <div class="matrice">
-      <div class="titre-bloc" style="margin-top:32px; margin-bottom:16px;"><h2 style="font-size:1.15rem;">Matrice des styles</h2></div>
-      <div class="ligne-style"><div class="nom-style">Pop urbaine</div><div class="piste"><div class="remplissage" style="width:45%;"></div></div><div class="pourcentage">45 %</div></div>
-      <div class="ligne-style"><div class="nom-style">RnB</div><div class="piste"><div class="remplissage" style="width:30%;"></div></div><div class="pourcentage">30 %</div></div>
-      <div class="ligne-style"><div class="nom-style">Afrobeat</div><div class="piste"><div class="remplissage" style="width:15%;"></div></div><div class="pourcentage">15 %</div></div>
-      <div class="ligne-style"><div class="nom-style">Electro</div><div class="piste"><div class="remplissage" style="width:10%;"></div></div><div class="pourcentage">10 %</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============== VITRINE AUDIO ET VIDÉO ============== -->
-<section style="background:var(--gris-clair-fond);">
-  <div class="conteneur">
-    <div class="titre-bloc">
-      <h2>Vitrine audio</h2>
-      <span class="info-bloc">3 meilleurs morceaux mis en avant par l'artiste</span>
-    </div>
-    <div class="liste-morceaux">
-      <div class="morceau">
-        <div class="lecture">▶</div>
-        <div class="details"><div class="titre-morceau">Lueur</div><div class="sous-details">Single, mars 2026</div></div>
-        <div class="barre-son">
-          <span style="height:40%;"></span><span style="height:70%;"></span><span style="height:30%;"></span><span style="height:90%;"></span><span style="height:55%;"></span><span style="height:35%;"></span><span style="height:80%;"></span><span style="height:50%;"></span><span style="height:65%;"></span><span style="height:25%;"></span><span style="height:75%;"></span><span style="height:45%;"></span><span style="height:60%;"></span><span style="height:30%;"></span><span style="height:85%;"></span>
-        </div>
-        <div class="duree">3:12</div>
-      </div>
-      <div class="morceau">
-        <div class="lecture">▶</div>
-        <div class="details"><div class="titre-morceau">Sirène</div><div class="sous-details">Single, janvier 2026</div></div>
-        <div class="barre-son">
-          <span style="height:55%;"></span><span style="height:35%;"></span><span style="height:80%;"></span><span style="height:50%;"></span><span style="height:65%;"></span><span style="height:25%;"></span><span style="height:75%;"></span><span style="height:45%;"></span><span style="height:40%;"></span><span style="height:70%;"></span><span style="height:30%;"></span><span style="height:90%;"></span><span style="height:60%;"></span><span style="height:30%;"></span><span style="height:85%;"></span>
-        </div>
-        <div class="duree">2:48</div>
-      </div>
-      <div class="morceau">
-        <div class="lecture">▶</div>
-        <div class="details"><div class="titre-morceau">Hiver doux</div><div class="sous-details">Single, novembre 2025</div></div>
-        <div class="barre-son">
-          <span style="height:30%;"></span><span style="height:85%;"></span><span style="height:55%;"></span><span style="height:35%;"></span><span style="height:80%;"></span><span style="height:50%;"></span><span style="height:65%;"></span><span style="height:25%;"></span><span style="height:75%;"></span><span style="height:45%;"></span><span style="height:40%;"></span><span style="height:70%;"></span><span style="height:30%;"></span><span style="height:90%;"></span><span style="height:60%;"></span>
-        </div>
-        <div class="duree">3:35</div>
-      </div>
-    </div>
-
-    <div class="titre-bloc" style="margin-top:36px;"><h2>Session live</h2></div>
-    <div class="carte-video">
-      <div class="vignette"><div class="bouton-lecture">▶</div></div>
-      <div class="legende">
-        <div class="titre-video">Session studio, extrait de Lueur</div>
-        <div class="sous-titre-video">Tournée le 14 mars 2026, voix et guitare</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============== SUIVI DES CANDIDATURES ============== -->
-<section>
-  <div class="conteneur">
-    <div class="titre-bloc">
-      <h2>Suivi des candidatures</h2>
-      <span class="info-bloc">Statut visible à chaque étape, aucune candidature ne reste sans réponse</span>
-    </div>
-    <table class="tableau-candidatures">
-      <tr><th>Structure</th><th>Offre</th><th>Statut</th><th>Date</th></tr>
-      <tr><td>Nova Wave Records</td><td>Auteur compositeur pop urbaine</td><td><span class="badge-statut shortlist">Shortlist</span></td><td>22 juin 2026</td></tr>
-      <tr><td>Black Wave Music</td><td>Featuring RnB, single été 2026</td><td><span class="badge-statut ecoute">Écouté</span></td><td>15 juin 2026</td></tr>
-      <tr><td>Éditions Sonalto</td><td>Catalogue édition francophone</td><td><span class="badge-statut recu">Reçu</span></td><td>27 juin 2026</td></tr>
-      <tr><td>Studio Hyperion</td><td>Résidence artistique trimestrielle</td><td><span class="badge-statut refuse">Refusé</span></td><td>3 mai 2026</td></tr>
-    </table>
-  </div>
-</section>
-
+<!-- ============== FOOTER ============== -->
 <footer>
-  <div class="pied-interieur">
-    <p>Profil de démonstration, données fictives à but illustratif.</p>
-    <p>© 2026 Peakly</p>
+  <div class="conteneur">
+    <div class="pied-interieur">
+      <div class="pied-marque">
+        <a href="peakly_landing_page.html"><img src="LOGO PEAKLY NAV.png" alt="Peakly" width="90" height="32"></a>
+        <p>Play it smart.</p>
+        <p class="pied-copyright">© 2026 Peakly. Tous droits réservés.</p>
+      </div>
+      <nav class="pied-nav">
+        <h4>Navigation</h4>
+        <a href="peakly_landing_page.html">Accueil</a>
+        <a href="peakly_landing_page.html#tarifs">Tarifs</a>
+        <a href="peakly_landing_page.html#faq">FAQ</a>
+      </nav>
+      <div class="pied-legal">
+        <h4>Légal</h4>
+        <a href="#">Mentions légales</a>
+        <a href="#">CGU</a>
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">RGPD</a>
+      </div>
+    </div>
+    <div class="pied-bas">Peakly est une plateforme indépendante. Les données affichées proviennent des API publiques des plateformes de streaming.</div>
   </div>
 </footer>
 
+<script>
+  document.getElementById('btn-partager').addEventListener('click', function(){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(window.location.href).then(function(){
+        var info = document.getElementById('info-partage');
+        info.classList.add('visible');
+        setTimeout(function(){ info.classList.remove('visible'); }, 2800);
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
-   
