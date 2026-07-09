@@ -257,19 +257,6 @@
 </style>
 </head>
 <body>
-<script>
-(function(){
-  try {
-    var raw = localStorage.getItem("peakly_session");
-    var s = raw ? JSON.parse(raw) : null;
-    if(!s || !s.access_token || s.expires_at < Math.floor(Date.now()/1000)){
-      window.location.replace("/pages/login.html?redirect="+encodeURIComponent(window.location.pathname));
-    }
-  } catch(e){
-    window.location.replace("/pages/login.html");
-  }
-})();
-</script>
 
 <div id="nav-root"></div>
 
