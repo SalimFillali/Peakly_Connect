@@ -33,9 +33,24 @@
 .col-left{display:flex;flex-direction:column;gap:12px;position:sticky;top:78px;height:fit-content}
 .profile-card{padding:20px;text-align:center;position:relative;overflow:hidden}
 .profile-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(229,193,88,.06),transparent 60%);pointer-events:none}
-.profile-cover{height:52px;margin:-20px -20px 0;border-radius:var(--r) var(--r) 0 0;background:linear-gradient(135deg,rgba(229,193,88,.2),rgba(100,70,200,.15));position:relative}
-.profile-avatar-wrap{position:relative;display:inline-block;margin-top:-24px;margin-bottom:8px}
-.profile-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#E5C158,#C9A53F);border:3px solid var(--nuit2);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:.95rem;color:var(--texte-fonce)}
+.profile-cover{
+  height:60px;margin:-20px -20px 0;border-radius:var(--r) var(--r) 0 0;
+  background:linear-gradient(135deg,rgba(229,193,88,.25),rgba(100,70,200,.18),rgba(229,193,88,.1));
+  position:relative;overflow:hidden;
+}
+.profile-cover::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.04) 60%,transparent 80%);
+}
+.profile-avatar-wrap{position:relative;display:inline-block;margin-top:-26px;margin-bottom:8px}
+.profile-avatar{
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,#F0D060,#C9A53F);
+  border:3px solid var(--nuit2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:.95rem;color:var(--texte-fonce);
+  box-shadow:0 0 0 1px rgba(229,193,88,.3),0 4px 16px rgba(229,193,88,.2);
+}
 .profile-score-ring{position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--or);border:2px solid var(--nuit2);display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:900;color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif}
 .profile-name{font-size:.95rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:2px}
 .profile-handle{font-size:.75rem;color:var(--txt2);margin-bottom:12px}
@@ -258,18 +273,73 @@
 .cmd-footer{padding:10px 20px;border-top:1px solid var(--b1);display:flex;gap:16px}
 .cmd-hint{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--txt3)}
 .cmd-hint kbd{padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.07);border:1px solid var(--b1);font-family:'JetBrains Mono',monospace;font-size:.65rem}
-/* ── FAB ─────────────────────────────────────────────────────── */
+/* ── FAB premium ──────────────────────────────────────────────── */
 .fab{
   position:fixed;bottom:28px;right:28px;z-index:100;
   width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,var(--or),var(--or-h));
-  box-shadow:0 8px 24px rgba(229,193,88,.4);
+  background:linear-gradient(135deg,#F0D060,var(--or),#C9A53F);
+  box-shadow:0 8px 28px rgba(229,193,88,.45),0 0 0 1px rgba(229,193,88,.3),inset 0 1px 0 rgba(255,255,255,.3);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:transform .2s,box-shadow .2s;
+  cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
   color:var(--texte-fonce);
 }
-.fab:hover{transform:scale(1.1);box-shadow:0 12px 32px rgba(229,193,88,.5)}
+.fab:hover{transform:scale(1.12);box-shadow:0 16px 40px rgba(229,193,88,.55),0 0 0 1px rgba(229,193,88,.4)}
 .fab svg{width:22px;height:22px;stroke:var(--texte-fonce);stroke-width:2.5}
+/* ── App layout fond premium ─────────────────────────────────── */
+.app-layout{max-width:1400px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:260px 1fr 300px;gap:20px;position:relative;z-index:1}
+@media(max-width:1100px){.app-layout{grid-template-columns:240px 1fr}}
+@media(max-width:760px){.app-layout{grid-template-columns:1fr}.col-left,.col-right{display:none}}
+/* ── Post card v2 ────────────────────────────────────────────── */
+.post{
+  position:relative;overflow:visible;
+  transition:transform .28s ease;
+}
+.post:hover{transform:translateY(-1px)}
+/* ── Story ring premium ──────────────────────────────────────── */
+.story-ring{
+  width:52px;height:52px;border-radius:50%;padding:2px;
+  background:linear-gradient(135deg,var(--or),var(--violet));
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .2s;
+}
+.story-ring:hover{transform:scale(1.1)}
+/* ── Compose box premium ─────────────────────────────────────── */
+.compose-input{
+  flex:1;padding:10px 16px;border-radius:999px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  color:var(--txt2);font-size:.85rem;font-family:'Inter',sans-serif;cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.compose-input:hover{border-color:rgba(229,193,88,.2);background:rgba(255,255,255,.07);color:var(--txt)}
+/* ── Filter chip premium ─────────────────────────────────────── */
+.filter-chip.active{
+  background:rgba(229,193,88,.1);border-color:rgba(229,193,88,.3);color:var(--or);
+  font-weight:700;
+}
+/* ── Metric cell premium ─────────────────────────────────────── */
+.metric-cell{
+  padding:10px 10px 8px;border-radius:var(--r-sm);
+  background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);
+  transition:border-color .25s,background .25s,transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.metric-cell:hover{
+  border-color:rgba(229,193,88,.2);background:rgba(229,193,88,.04);
+  transform:translateY(-2px);
+}
+/* ── Trending item hover ─────────────────────────────────────── */
+.trending-item{
+  display:flex;align-items:center;gap:10px;padding:9px 16px;
+  cursor:pointer;transition:background .15s;position:relative;
+}
+.trending-item:hover{background:rgba(255,255,255,.04)}
+.trending-item:hover .trending-score{color:var(--or-vivid)}
+/* ── AI insight strip premium ────────────────────────────────── */
+.ai-strip{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--r-sm);
+  background:linear-gradient(135deg,rgba(74,222,128,.05),rgba(96,165,250,.03));
+  border:1px solid rgba(74,222,128,.14);margin-bottom:12px;
+  transition:border-color .2s,background .2s;
+}
+.ai-strip:hover{background:linear-gradient(135deg,rgba(74,222,128,.08),rgba(96,165,250,.05));border-color:rgba(74,222,128,.22)}
 /* ── TOAST NOTIFICATION ──────────────────────────────────────── */
 .toast{
   padding:12px 16px;border-radius:var(--r);background:rgba(17,22,34,.98);
@@ -1274,7 +1344,7 @@ function injectNewPost() {
         <div class="ai-strip">
           <div class="ai-strip-icon">🤖</div>
           <div class="ai-strip-text"><strong>Peakly AI :</strong> ${d.aitext}</div>
-          <div class="ai-strip-cta">Voir</div>
+          <div class="ai-str          <div class="ai-strip-cta">Voir</div>
         </div>
         <div class="post-body">${d.body}</div>
         <div class="post-footer">
@@ -1301,8 +1371,10 @@ function injectNewPost() {
 }
 setTimeout(() => injectNewPost(), 8000);
 setTimeout(() => injectNewPost(), 22000);
-
-/* ── LOAD MORE ──────────────────────────────────────────────── */
+</script>
+</body>
+</html>
+───────────────────────────────────── */
 function loadMore() {
   const btn = document.getElementById('loadMoreBtn');
   const txt = document.getElementById('loadMoreText');

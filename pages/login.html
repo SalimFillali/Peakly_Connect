@@ -123,23 +123,109 @@ body{padding-top:0;min-height:100vh;display:flex;flex-direction:column;backgroun
   0%,100%{transform:translateY(0) translateX(0);opacity:.3}
   50%{transform:translateY(-60px) translateX(20px);opacity:.8}
 }
-/* Carrousel témoignages côté gauche */
+/* ── Gauche v2 — gradient plus dramatique ── */
+.login-gauche::after{
+  content:'';position:absolute;
+  bottom:-80px;right:-80px;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(229,193,88,.06),transparent 70%);
+  filter:blur(40px);pointer-events:none;z-index:0;
+}
+/* ── Tagline améliorée ── */
+.login-tagline h1{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2.8rem;
+  color:var(--txt);line-height:1.08;letter-spacing:-.04em;margin-bottom:16px;
+}
+.login-tagline h1 span{
+  background:linear-gradient(135deg,#F0D060,var(--or));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+/* ── Stats premium ── */
+.login-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.login-stat{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:14px 12px;transition:border-color .2s,background .2s;
+}
+.login-stat:hover{background:rgba(229,193,88,.06);border-color:rgba(229,193,88,.2)}
+.login-stat-num{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.35rem;
+  background:linear-gradient(135deg,#F0D060,var(--or));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:3px;
+}
+.login-stat-lbl{font-size:.65rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+/* ── Testimonial premium ── */
 .login-temoignage{
   position:relative;z-index:1;
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(145deg,rgba(26,33,51,.6),rgba(10,13,20,.7));
+  border:1px solid rgba(229,193,88,.12);
   border-radius:16px;padding:24px;margin-bottom:0;
+  backdrop-filter:blur(12px);
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+  transition:border-color .3s;
 }
-.login-temoignage-texte{font-size:.88rem;color:var(--txt);line-height:1.7;margin-bottom:12px;font-style:italic}
+.login-temoignage:hover{border-color:rgba(229,193,88,.22)}
+/* Shimmer de haut en bas */
+.login-temoignage::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(229,193,88,.3),transparent);border-radius:16px 16px 0 0;
+}
+.login-temoignage-texte{
+  font-size:.88rem;color:var(--txt);line-height:1.75;margin-bottom:16px;
+  font-style:italic;opacity:.9;
+}
 .login-temoignage-auteur{display:flex;align-items:center;gap:10px}
 .login-temoignage-avatar{
-  width:32px;height:32px;border-radius:50%;
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--or),var(--or-h));
   display:flex;align-items:center;justify-content:center;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.75rem;color:var(--texte-fonce);
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:.75rem;color:var(--texte-fonce);
+  box-shadow:0 0 0 2px rgba(229,193,88,.25);
 }
 .login-temoignage-info{font-size:.78rem}
-.login-temoignage-nom{color:var(--txt);font-weight:700}
-.login-temoignage-role{color:var(--txt3)}
+.login-temoignage-nom{color:var(--txt);font-weight:700;margin-bottom:1px}
+.login-temoignage-role{color:var(--txt3);font-size:.72rem}
+/* ── Formulaire côté droit ── */
+.login-entete-titre{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2rem;
+  color:var(--txt);margin-bottom:8px;letter-spacing:-.03em;
+}
+/* ── SSO buttons améliorés ── */
+.btn-sso{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:12px 16px;border-radius:11px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  color:var(--txt);font-size:.82rem;font-weight:600;cursor:pointer;
+  transition:background .2s,border-color .2s,transform .22s cubic-bezier(.34,1.56,.64,1);
+  font-family:'Inter',sans-serif;
+}
+.btn-sso:hover{
+  background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);
+  transform:translateY(-2px);
+}
+/* ── Divider premium ── */
+.sso-divider::before,.sso-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+}
+/* ── Bouton login premium ── */
+.btn-login{
+  width:100%;padding:14px;border-radius:12px;
+  background:linear-gradient(135deg,#F0D060,var(--or),#C9A53F);
+  color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:900;font-size:.95rem;border:none;cursor:pointer;
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(229,193,88,.3),inset 0 1px 0 rgba(255,255,255,.25);
+  letter-spacing:-.01em;
+}
+.btn-login::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,transparent 55%);
+  pointer-events:none;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(229,193,88,.4),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn-login:hover::after{opacity:1}
+.btn-login:active{transform:translateY(0)}
 </style>
   <script src="../js/navigation.js"></script>
 </head>
@@ -329,16 +415,25 @@ let temoIdx = 0;
 function rotateTemo(){
   temoIdx = (temoIdx + 1) % temos.length;
   const t = temos[temoIdx];
-  const fade = (el) => { el.style.opacity='0'; setTimeout(()=>{el.textContent=t[el.id.replace('temo','').toLowerCase()] || t.texte; el.style.opacity='1';}, 300); };
-  document.getElementById('temoTexte').style.transition='opacity .3s';
-  document.getElementById('temoAvatar').style.transition='opacity .3s';
-  document.getElementById('temoNom').style.transition='opacity .3s';
-  document.getElementById('temoTexte').style.opacity='0';
-  document.getElementById('temoAvatar').style.opacity='0';
-  document.getElementById('temoNom').style.transition='opacity .3s';
-  document.getElementById('temoTexte').style.opacity='0';
-  document.getElementById('temoAvatar').style.opacity='0';
-  document.getElementById('temoNom').style.opacity='0';
+  document.getElementById('temoTexte').style.transition = 'opacity .3s';
+  document.getElementById('temoAvatar').style.transition = 'opacity .3s';
+  document.getElementById('temoNom').style.transition    = 'opacity .3s';
+  ['temoTexte','temoAvatar','temoNom'].forEach(id => {
+    document.getElementById(id).style.opacity = '0';
+  });
+  setTimeout(() => {
+    document.getElementById('temoTexte').textContent = t.texte;
+    document.getElementById('temoAvatar').textContent = t.avatar;
+    document.getElementById('temoNom').textContent = t.nom;
+    ['temoTexte','temoAvatar','temoNom'].forEach(id => {
+      document.getElementById(id).style.opacity = '1';
+    });
+  }, 300);
+}
+setInterval(rotateTemo, 5000);
+</script>
+</body>
+</html>
   setTimeout(()=>{
     document.getElementById('temoTexte').textContent = t.texte;
     document.getElementById('temoAvatar').textContent = t.avatar;

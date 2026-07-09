@@ -32,6 +32,34 @@ body{padding-top:0;min-height:100vh;display:flex;flex-direction:column;align-ite
 /* Particules */
 .part-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
 .part-bg span{position:absolute;width:2px;height:2px;border-radius:50%;background:rgba(229,193,88,.4);animation:float-part 10s infinite ease-in-out}
+@keyframes float-part{0%,100%{transform:translateY(0) scale(1);opacity:.4}50%{transform:translateY(-20px) scale(1.5);opacity:.8}}
+
+/* Premium 404 enhancements */
+.err-num{
+  background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.4) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  -webkit-text-stroke:0;
+  filter:drop-shadow(0 0 40px rgba(229,193,88,.15));
+}
+.err-num span{
+  background:linear-gradient(135deg,#F0D060,#E5C158);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(229,193,88,.5));
+}
+.err-glow{
+  background:radial-gradient(circle,rgba(229,193,88,.14),transparent 65%);
+  animation:glow-breathe 3s ease infinite;
+}
+@keyframes glow-breathe{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+.err-barre input{
+  backdrop-filter:blur(12px);
+  transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.err-barre input:focus{
+  border-color:rgba(229,193,88,.4);
+  background:rgba(255,255,255,.08);
+  box-shadow:0 0 0 3px rgba(229,193,88,.07);
+}
 </style>
   <script src="js/store.js"></script>
   <script src="js/navigation.js"></script>

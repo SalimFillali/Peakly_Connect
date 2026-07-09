@@ -200,6 +200,60 @@
 .toast-icon{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem}
 .toast-text{flex:1;font-size:.78rem;color:var(--txt);line-height:1.35}
 .toast-text small{color:var(--txt2);display:block;font-size:.7rem}
+
+/* ——————————————————————————
+   OVERHAUL PREMIUM CRM
+   —————————————————————————— */
+
+/* Hero renforcé */
+.crm-hero::before{background:radial-gradient(ellipse 80% 220% at 110% 50%,rgba(229,193,88,.09),transparent 55%)}
+.label-logo-wrap{box-shadow:0 0 0 1px rgba(229,193,88,.35),0 8px 28px rgba(229,193,88,.25),0 0 40px rgba(229,193,88,.08)}
+.label-name{font-size:1.7rem;letter-spacing:-.04em}
+
+/* KPI strip glassmorphism */
+.kpi-strip{background:rgba(5,5,7,.6);backdrop-filter:blur(18px);border-top:1px solid rgba(229,193,88,.1)}
+.kpi-cell{transition:background .2s,border-color .2s;cursor:default;border-right:1px solid rgba(255,255,255,.06)}
+.kpi-cell:hover{background:rgba(229,193,88,.04);border-right-color:rgba(229,193,88,.15)}
+.kpi-val{font-size:1.75rem;letter-spacing:-.04em;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.75) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-change.up{color:var(--vert)}
+.kpi-change.down{color:var(--or)}
+
+/* Tab bar renforcée */
+.crm-tab-bar{background:rgba(5,5,7,.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.crm-tab.active{color:var(--or);border-bottom-color:var(--or);text-shadow:0 0 20px rgba(229,193,88,.4)}
+
+/* Boutons CRM premium */
+.btn-crm-primary{background:linear-gradient(135deg,#E5C158,#C9A53F);box-shadow:0 4px 16px rgba(229,193,88,.3),inset 0 1px 0 rgba(255,255,255,.2);transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.btn-crm-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(229,193,88,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+
+/* Section IA premium */
+.ai-hero-section{box-shadow:0 0 0 1px rgba(74,222,128,.12),0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(74,222,128,.04)}
+.ai-artist-card{transition:border-color .2s,background .2s,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+.ai-artist-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 24px rgba(229,193,88,.1)}
+.aic-num{letter-spacing:-.04em}
+
+/* Kanban premium */
+.kanban-col{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);transition:border-color .2s}
+.kanban-col:hover{border-color:rgba(255,255,255,.12)}
+.kanban-card{transition:background .18s,border-color .18s,transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s}
+.kanban-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 10px 28px rgba(0,0,0,.4),0 0 16px rgba(229,193,88,.07)}
+.kc-bar-fill{box-shadow:0 0 8px currentColor}
+
+/* Funnel premium */
+.funnel-bar-fill{position:relative;overflow:hidden}
+.funnel-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:funnel-shimmer 2.5s infinite}
+@keyframes funnel-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+
+/* Sidebar widgets */
+.perf-row{transition:background .18s,border-color .18s,transform .18s}
+.perf-row:hover{background:rgba(229,193,88,.05);border-color:rgba(229,193,88,.2);transform:translateX(2px)}
+
+/* Command palette améliorée */
+.cmd-palette{box-shadow:0 48px 100px rgba(0,0,0,.9),0 0 80px rgba(229,193,88,.06),0 0 0 1px rgba(255,255,255,.07)}
+.cmd-item:hover,.cmd-item.active{background:rgba(229,193,88,.07);border-left:2px solid rgba(229,193,88,.4)}
+
+/* Heatmap hover amélioré */
+.hmap-cell:hover{box-shadow:0 0 8px rgba(229,193,88,.5)}
 </style>
 </head>
 <body>
@@ -813,4 +867,6 @@ setTimeout(() => showToast('','Analyse terminée','17 artistes compatibles trouv
 setTimeout(() => showToast('','Alerte pipeline','Awa Kouyaté : contrat prêt pour signature',''), 4000);
 setTimeout(() => showToast('','Nouvelle opportunité','Sony Music FR : audition ouverte, délai 12 jours',''), 7000);
 
-</script
+</script>
+</body>
+</html>

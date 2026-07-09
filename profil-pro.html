@@ -174,6 +174,30 @@
 #postulerDrawer.open{transform:translateX(0)}
 #postulerOverlay.open{opacity:1;pointer-events:all}
 .tab-panel{display:flex;flex-direction:column;gap:20px}
+
+/* ——————————————————————————
+   OVERHAUL PREMIUM PROFIL-PRO
+   —————————————————————————— */
+
+.crm-hero::before{background:radial-gradient(ellipse 80% 220% at 110% 50%,rgba(229,193,88,.09),transparent 55%)}
+.label-logo-wrap{box-shadow:0 0 0 1px rgba(229,193,88,.35),0 8px 28px rgba(229,193,88,.25),0 0 40px rgba(229,193,88,.08)}
+.label-name{font-size:1.7rem;letter-spacing:-.04em}
+
+.kpi-strip{background:rgba(5,5,7,.6);backdrop-filter:blur(18px);border-top:1px solid rgba(229,193,88,.1)}
+.kpi-cell{transition:background .2s;cursor:default;border-right:1px solid rgba(255,255,255,.06)}
+.kpi-cell:hover{background:rgba(229,193,88,.04)}
+.kpi-val{font-size:1.75rem;letter-spacing:-.04em;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.75) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-change.up{color:var(--vert)}
+
+.crm-tab-bar{background:rgba(5,5,7,.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.crm-tab.active{text-shadow:0 0 20px rgba(229,193,88,.4)}
+
+.btn-crm-primary{background:linear-gradient(135deg,#E5C158,#C9A53F);box-shadow:0 4px 16px rgba(229,193,88,.3),inset 0 1px 0 rgba(255,255,255,.2);transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.btn-crm-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(229,193,88,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+
+.ai-hero-section{box-shadow:0 0 0 1px rgba(74,222,128,.12),0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(74,222,128,.04)}
+.ai-artist-card{transition:border-color .2s,background .2s,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+.ai-artist-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 24px rgba(229,193,88,.1)}
 </style>
 </head>
 <body>

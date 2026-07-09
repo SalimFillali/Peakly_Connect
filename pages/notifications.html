@@ -51,6 +51,107 @@
 }
 .notif-action:hover{background:var(--or-dim);border-color:var(--or-glow);color:var(--or)}
 .notif-vide{text-align:center;padding:60px 0}
+
+/* ——————————————————————————
+   OVERHAUL PREMIUM NOTIFICATIONS
+   —————————————————————————— */
+
+.page-titre{letter-spacing:-.03em}
+
+/* Bouton tout lire premium */
+.btn-tout-lire{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-tout-lire:hover{
+  background:rgba(229,193,88,.08);
+  border-color:rgba(229,193,88,.3);
+  color:var(--or);
+  transform:translateY(-1px);
+}
+
+/* Séparateurs dates */
+.notif-date-sep{
+  font-size:.7rem;
+  letter-spacing:.12em;
+  padding:0 6px;
+  position:relative;
+}
+.notif-date-sep::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;left:0;
+  width:20px;height:2px;
+  background:var(--or);
+  border-radius:2px;
+}
+
+/* Items notification premium */
+.notif-item{
+  border-radius:var(--r-lg);
+  border:1px solid transparent;
+  background:rgba(255,255,255,.03);
+  backdrop-filter:blur(8px);
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  margin-bottom:8px;
+}
+.notif-item:hover{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.1);
+  transform:translateX(3px);
+}
+.notif-item.non-lu{
+  background:rgba(229,193,88,.05);
+  border-color:rgba(229,193,88,.15);
+}
+.notif-item.non-lu:hover{
+  background:rgba(229,193,88,.08);
+  border-color:rgba(229,193,88,.25);
+}
+.notif-item.non-lu::before{
+  background:linear-gradient(180deg,var(--or),rgba(229,193,88,.4));
+  width:3px;border-radius:0 3px 3px 0;
+}
+
+/* Icônes notifications */
+.notif-icone{
+  border-radius:14px;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.notif-item:hover .notif-icone{transform:scale(1.1)}
+.notif-icone.opportunite{
+  background:rgba(229,193,88,.12);
+  border:1px solid rgba(229,193,88,.25);
+  box-shadow:0 0 16px rgba(229,193,88,.08);
+}
+.notif-icone.score{
+  background:rgba(74,222,128,.1);
+  border:1px solid rgba(74,222,128,.22);
+  box-shadow:0 0 16px rgba(74,222,128,.06);
+}
+
+/* Bouton action */
+.notif-action{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.notif-action:hover{
+  background:linear-gradient(135deg,rgba(229,193,88,.15),rgba(229,193,88,.08));
+  border-color:rgba(229,193,88,.35);
+  color:var(--or);
+  transform:translateY(-1px) scale(1.03);
+}
+
+/* Point non lu doré */
+.notif-dot-nl{
+  box-shadow:0 0 6px rgba(229,193,88,.6);
+}
 </style>
 </head>
 <body>

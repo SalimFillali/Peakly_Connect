@@ -441,6 +441,69 @@ select.field-input { cursor: pointer; }
   animation: scale-in .3s cubic-bezier(.34,1.56,.64,1) both;
 }
 
+/* ——————————————————————————
+   OVERHAUL PREMIUM SETTINGS
+   —————————————————————————— */
+
+/* Sidebar navigation renforcée */
+.settings-sidebar{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(16px);
+  box-shadow:0 8px 32px rgba(0,0,0,.2);
+}
+.s-nav-item.actif{
+  color:var(--or);
+  background:rgba(229,193,88,.08);
+  border-left:2px solid var(--or);
+  box-shadow:inset 3px 0 12px rgba(229,193,88,.1);
+}
+.s-nav-item:hover{background:rgba(255,255,255,.05)}
+
+/* Cards renforcées */
+.s-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 24px rgba(0,0,0,.15);
+}
+.s-card:hover{
+  border-color:rgba(255,255,255,.14);
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
+}
+.s-card:hover::before{opacity:1}
+
+/* Icône card gold glow */
+.s-card-header-icon{
+  box-shadow:0 0 12px rgba(229,193,88,.08);
+}
+.s-card:hover .s-card-header-icon{
+  box-shadow:0 0 20px rgba(229,193,88,.25);
+}
+
+/* Bouton save ultra-premium */
+.btn-save{
+  box-shadow:0 4px 20px rgba(229,193,88,.25),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-save:hover{
+  box-shadow:0 10px 36px rgba(229,193,88,.45),inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* Plans mini */
+.plan-mini{
+  backdrop-filter:blur(8px);
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.plan-mini:hover{
+  transform:translateY(-3px) scale(1.01);
+  box-shadow:0 12px 32px rgba(0,0,0,.35);
+}
+
+/* Danger zone */
+.danger-zone{
+  backdrop-filter:blur(8px);
+}
+
 /* Responsive */
 @media (max-width: 700px) {
   .settings-layout { grid-template-columns: 1fr; gap: 16px; }
@@ -1017,4 +1080,6 @@ window.addEventListener('DOMContentLoaded', function(){
   }
 
 })();
-</scr
+</script>
+</body>
+</html>

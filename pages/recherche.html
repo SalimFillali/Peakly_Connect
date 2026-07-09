@@ -124,6 +124,130 @@
 /* Skeleton */
 .skel-card{background:var(--glass);border:1px solid var(--bordure);border-radius:var(--r);padding:22px}
 .skel-row{border-radius:6px;margin-bottom:10px}
+
+/* ——————————————————————————
+   OVERHAUL PREMIUM RECHERCHE
+   —————————————————————————— */
+
+/* Hero recherche */
+.rech-hero h1{font-size:2.8rem;letter-spacing:-.04em;line-height:1.1}
+.rech-hero h1 span{background:linear-gradient(135deg,#E5C158,#F0D060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Barre de recherche premium */
+.rech-barre{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  padding:20px 24px 20px 60px;
+  font-size:1.05rem;
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 24px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);
+  transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.rech-barre:focus{
+  border-color:rgba(229,193,88,.45);
+  background:rgba(255,255,255,.08);
+  box-shadow:0 4px 32px rgba(0,0,0,.3),0 0 0 3px rgba(229,193,88,.08),inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+/* Filtres premium */
+.filtres-bar{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--r);
+  backdrop-filter:blur(12px);
+  transition:border-color .2s;
+}
+.filtres-bar:hover{border-color:rgba(255,255,255,.12)}
+.filtre-select{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:10px;
+  transition:all .15s;
+}
+.filtre-select:focus,.filtre-select:hover{
+  border-color:rgba(229,193,88,.35);
+  background:rgba(229,193,88,.05);
+  color:var(--txt);
+}
+
+/* Cartes artistes premium */
+.rech-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--r-lg);
+  padding:22px;
+  backdrop-filter:blur(8px);
+  transition:border-color .2s,background .2s,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+  position:relative;overflow:hidden;
+}
+.rech-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:60px;
+  background:linear-gradient(to top,rgba(5,5,7,.3),transparent);
+  pointer-events:none;
+}
+.rech-card:hover{
+  border-color:rgba(229,193,88,.35);
+  background:rgba(229,193,88,.04);
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 24px rgba(229,193,88,.08);
+}
+
+/* Avatar ring gold */
+.rech-avatar{
+  box-shadow:0 0 0 2px rgba(255,255,255,.08);
+  transition:box-shadow .2s;
+}
+.rech-card:hover .rech-avatar{box-shadow:0 0 0 2px rgba(229,193,88,.4)}
+
+/* Badge score premium */
+.rech-badge-score{
+  background:linear-gradient(135deg,rgba(229,193,88,.15),rgba(229,193,88,.08));
+  border:1px solid rgba(229,193,88,.3);
+  border-radius:12px;
+  box-shadow:0 0 16px rgba(229,193,88,.08);
+}
+.rech-score-num{
+  font-size:1.2rem;
+  background:linear-gradient(135deg,#E5C158,#F0D060);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* Tags premium */
+.rech-tag{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;
+  transition:all .15s;
+}
+.rech-card:hover .rech-tag{border-color:rgba(229,193,88,.2);background:rgba(229,193,88,.06)}
+
+/* Bouton voir profil */
+.btn-voir-profil{
+  background:linear-gradient(135deg,#E5C158,#C9A53F);
+  color:var(--texte-fonce);
+  border-radius:10px;
+  box-shadow:0 4px 14px rgba(229,193,88,.25),inset 0 1px 0 rgba(255,255,255,.2);
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-voir-profil:hover{
+  transform:translateY(-2px) scale(1.04);
+  box-shadow:0 8px 24px rgba(229,193,88,.4),inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* Suggestions */
+.rech-sugg{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:999px;
+  transition:all .18s cubic-bezier(.34,1.56,.64,1);
+}
+.rech-sugg:hover{
+  border-color:rgba(229,193,88,.4);
+  background:rgba(229,193,88,.08);
+  color:var(--or);
+  transform:translateY(-1px) scale(1.04);
+}
 </style>
 </head>
 <body>
