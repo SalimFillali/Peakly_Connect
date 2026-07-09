@@ -1008,33 +1008,6 @@ document.querySelectorAll('.timeline-item').forEach(item => {
 /* PROFILE TABS */
 
 /* BIG UP TOGGLE */
-/* Fin des scripts */
-</script>
-</body>
-</html>
- {
-  if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
-  if (n >= 1000)    return Math.round(n / 1000) + 'K';
-  return n.toString();
-}
-function animCount(el, target, duration) {
-  const start = performance.now();
-  function step(now) {
-    const p = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = formatCount(Math.round(ease * target));
-    if (p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
 
 /* HSTAT BAR + COUNTER ANIMATE */
-setTimeout(function() {
-  document.querySelectorAll('.hstat-val[data-count]').forEach(function(el) {
-    var target = parseInt(el.getAttribute('data-count'), 10);
-    if (!isNaN(target)) animCount(el, target, 1400);
-  });
-}, 400);
-</script>
-</body>
-</html>
+function form
