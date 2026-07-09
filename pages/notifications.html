@@ -108,7 +108,7 @@ function rendreNotifs(){
           <div class="notif-texte">${n.texte}</div>
           <div class="notif-heure">${n.lu?'':' <span class="notif-dot-nl"></span>'}${fmtHeure(n.ts)}</div>
         </div>
-        ${n.type==='opportunite'?`<button class="notif-action" onclick="event.stopPropagation();window.location.href='../crm.html'">Voir</button>`:''}
+        ${n.type==='opportunite'?`<button class="notif-action" onclick="event.stopPropagation();window.location.href='/crm.html'">Voir</button>`:''}
       </div>`;
     });
     return h;

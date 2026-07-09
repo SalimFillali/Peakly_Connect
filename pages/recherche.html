@@ -217,7 +217,7 @@ function fmtN(n){
 function rendreCarte(item){
   const isArtiste = item._type !== 'professionnel';
   if(isArtiste){
-    return `<div class="rech-card reveal" onclick="window.location.href='${item.link || '../profil-artiste.html'}'">
+    return `<div class="rech-card reveal" onclick="window.location.href='${item.link || '/profil-artiste.html'}'">
       <div class="rech-card-header">
         <div style="display:flex;align-items:center;gap:12px">
           <div class="rech-avatar" style="background:${item.couleur}22;border:1px solid ${item.couleur}44;color:${item.couleur}">${item.avatar}</div>
@@ -238,11 +238,11 @@ function rendreCarte(item){
       <div class="rech-tags">${(item.genres||[]).map(g=>`<span class="rech-tag">${g}</span>`).join('')}</div>
       <div class="rech-card-footer">
         <div class="rech-streams"><strong>${fmtN(item.streams)}</strong> streams · <strong>${fmtN(item.auditeurs)}</strong> auditeurs</div>
-        <button class="btn-voir-profil" onclick="event.stopPropagation();window.location.href='${item.link||'../profil-artiste.html'}'">Voir profil</button>
+        <button class="btn-voir-profil" onclick="event.stopPropagation();window.location.href='${item.link||'/profil-artiste.html'}'">Voir profil</button>
       </div>
     </div>`;
   } else {
-    return `<div class="rech-card type-pro reveal" onclick="window.location.href='${item.link||'../profil-pro.html'}'">
+    return `<div class="rech-card type-pro reveal" onclick="window.location.href='${item.link||'/profil-pro.html'}'">
       <div class="rech-card-header">
         <div style="display:flex;align-items:center;gap:12px">
           <div class="rech-avatar" style="background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.3);color:var(--bleu);font-size:.9rem">${item.avatar}</div>
@@ -260,7 +260,7 @@ function rendreCarte(item){
       <div class="rech-tags"><span class="rech-tag">${item.specialite}</span></div>
       <div class="rech-card-footer">
         <div class="rech-streams"><strong>${item.artistes_signes}</strong> artistes signés</div>
-        <button class="btn-voir-profil" onclick="event.stopPropagation();window.location.href='${item.link||'../profil-pro.html'}'">Voir profil</button>
+        <button class="btn-voir-profil" onclick="event.stopPropagation();window.location.href='${item.link||'/profil-pro.html'}'">Voir profil</button>
       </div>
     </div>`;
   }

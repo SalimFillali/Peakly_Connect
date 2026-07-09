@@ -149,7 +149,7 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.6}
 
 <div class="insc-header">
   <img src="../logo-peakly-nav.png" alt="Peakly">
-  <div class="insc-header-lien">Déjà membre ? <a href="login.html">Se connecter</a></div>
+  <div class="insc-header-lien">Déjà membre ? <a href="/pages/login.html">Se connecter</a></div>
 </div>
 
 <div class="insc-wrap">
@@ -706,8 +706,8 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.6}
     </div>
 
     <div class="etape-section">Conditions d'utilisation</div>
-    <div class="consent-item"><input type="checkbox" id="cgu_pro"><label for="cgu_pro">J'accepte les <a href="legal/cgu.html" target="_blank">Conditions Générales d'Utilisation</a> de Peakly. <strong>Obligatoire.</strong></label></div>
-    <div class="consent-item"><input type="checkbox" id="conf_pro"><label for="conf_pro">J'ai lu la <a href="legal/confidentialite.html" target="_blank">Politique de confidentialité</a> et accepte le traitement de mes données conformément au RGPD. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="cgu_pro"><label for="cgu_pro">J'accepte les <a href="/pages/legal/cgu.html" target="_blank">Conditions Générales d'Utilisation</a> de Peakly. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="conf_pro"><label for="conf_pro">J'ai lu la <a href="/pages/legal/confidentialite.html" target="_blank">Politique de confidentialité</a> et accepte le traitement de mes données conformément au RGPD. <strong>Obligatoire.</strong></label></div>
     <div class="consent-item"><input type="checkbox" id="comm_pro"><label for="comm_pro"><span style="color:var(--txt3)">(Facultatif)</span> J'accepte de recevoir des communications Peakly : nouveaux artistes, fonctionnalités, opportunités.</label></div>
     <div class="rgpd-note">Vos données professionnelles sont traitées par Peakly SAS dans le cadre de la mise en relation avec des artistes. Droit d'accès, rectification et suppression : <a href="mailto:privacy@peakly.fr" style="color:var(--or)">privacy@peakly.fr</a></div>
 
@@ -894,8 +894,8 @@ textarea.form-input{resize:vertical;min-height:80px;line-height:1.6}
     <div class="etape-titre">Dernière étape</div>
     <div class="etape-sous">Relisez et acceptez les conditions avant de finaliser la création de votre profil Peakly.</div>
 
-    <div class="consent-item"><input type="checkbox" id="cgu_art"><label for="cgu_art">J'accepte les <a href="legal/cgu.html" target="_blank">Conditions Générales d'Utilisation</a> de Peakly. <strong>Obligatoire.</strong></label></div>
-    <div class="consent-item"><input type="checkbox" id="conf_art"><label for="conf_art">J'ai lu la <a href="legal/confidentialite.html" target="_blank">Politique de confidentialité</a> et accepte le traitement de mes données conformément au RGPD. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="cgu_art"><label for="cgu_art">J'accepte les <a href="/pages/legal/cgu.html" target="_blank">Conditions Générales d'Utilisation</a> de Peakly. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="conf_art"><label for="conf_art">J'ai lu la <a href="/pages/legal/confidentialite.html" target="_blank">Politique de confidentialité</a> et accepte le traitement de mes données conformément au RGPD. <strong>Obligatoire.</strong></label></div>
     <div class="consent-item"><input type="checkbox" id="rgpd_art"><label for="rgpd_art">Je confirme que les données renseignées me concernent et que j'ai le droit de les partager.</label></div>
     <div class="consent-item"><input type="checkbox" id="sync_art"><label for="sync_art"><span style="color:var(--txt3)">(Facultatif)</span> J'autorise Peakly à synchroniser automatiquement mes statistiques de streaming via les API des plateformes renseignées.</label></div>
     <div class="consent-item"><input type="checkbox" id="comm_art"><label for="comm_art"><span style="color:var(--txt3)">(Facultatif)</span> J'accepte de recevoir les actualités Peakly : nouvelles opportunités, alertes compatibilité, événements.</label></div>
@@ -1337,7 +1337,7 @@ async function creerComptePro() {
 }
 
 function allerPlateforme() {
-  window.location.href = OB.type === 'professionnel' ? '../crm.html' : '../feed.html';
+  window.location.href = OB.type === 'professionnel' ? '/crm.html' : '/feed.html';
 }
 
 rendreProgBar(STEPS_ARTISTE, 'etape1');

@@ -181,7 +181,7 @@ body{padding-top:0;min-height:100vh;display:flex;flex-direction:column;backgroun
     <div class="login-form-box">
       <div class="login-entete">
         <div class="login-entete-titre">Bienvenue.</div>
-        <div class="login-entete-sous">Pas encore de compte ? <a href="inscription.html">Rejoindre Peakly</a></div>
+        <div class="login-entete-sous">Pas encore de compte ? <a href="/pages/inscription.html">Rejoindre Peakly</a></div>
       </div>
 
       <!-- SSO -->
@@ -267,7 +267,7 @@ function toggleMdp(){
 function mdpOublie(){
   const email = document.getElementById('loginEmail').value.trim();
   if(email && email.includes('@')){
-    window.location.href = 'forgot-password.html?email=' + encodeURIComponent(email);
+    window.location.href = '/pages/forgot-password.html?email=' + encodeURIComponent(email);
   } else {
     afficherErreur('Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.', true);
   }

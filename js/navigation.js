@@ -5,9 +5,6 @@
 
 (function PeaklyNav(){
   const path = window.location.pathname;
-  const isInPages = path.includes('/pages/');
-  const ROOT   = isInPages ? '../' : '';
-  const PAGES  = isInPages ? '' : 'pages/';
 
   const nbNotifs  = (typeof PeaklyStore !== 'undefined') ? PeaklyStore.getNbNotifNonLues() : 0;
   const nbMsg     = (typeof PeaklyStore !== 'undefined') ? PeaklyStore.getNbMessagesNonLus() : 0;
@@ -32,8 +29,8 @@
 
   <div class="header-interieur">
     <!-- Logo animé -->
-    <a href="${ROOT}feed.html" class="header-logo" aria-label="Peakly">
-      <img src="${ROOT}logo-peakly-nav.png" alt="Peakly" width="90" height="28" class="logo-img">
+    <a href="/feed.html" class="header-logo" aria-label="Peakly">
+      <img src="/logo-peakly-nav.png" alt="Peakly" width="90" height="28" class="logo-img">
       <div class="logo-pulse-ring"></div>
     </a>
 
@@ -53,7 +50,7 @@
     <!-- Nav icônes -->
     <nav class="nav-icones" aria-label="Navigation principale">
 
-      <a href="${ROOT}feed.html" class="nav-icone${isActif('feed')?' actif':''}" aria-label="Fil d'actualité">
+      <a href="/feed.html" class="nav-icone${isActif('feed')?' actif':''}" aria-label="Fil d'actualité">
         <div class="nav-icone-inner">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         </div>
@@ -61,7 +58,7 @@
         <div class="nav-indicator"></div>
       </a>
 
-      <a href="${ROOT}${PAGES}recherche.html" class="nav-icone${isActif('search')?' actif':''}" aria-label="Découverte">
+      <a href="/pages/recherche.html" class="nav-icone${isActif('search')?' actif':''}" aria-label="Découverte">
         <div class="nav-icone-inner">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
@@ -69,7 +66,7 @@
         <div class="nav-indicator"></div>
       </a>
 
-      <a href="${ROOT}crm.html" class="nav-icone${isActif('crm')?' actif':''}" aria-label="Auditions">
+      <a href="/crm.html" class="nav-icone${isActif('crm')?' actif':''}" aria-label="Auditions">
         <div class="nav-icone-inner">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
         </div>
@@ -77,7 +74,7 @@
         <div class="nav-indicator"></div>
       </a>
 
-      <a href="${ROOT}${PAGES}messages.html" class="nav-icone${isActif('msg')?' actif':''}" aria-label="Messages">
+      <a href="/pages/messages.html" class="nav-icone${isActif('msg')?' actif':''}" aria-label="Messages">
         <div class="nav-icone-inner" style="position:relative">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           ${nbMsg > 0 ? `<span class="notif-badge nav-badge-anim">${nbMsg}</span>` : ''}
@@ -86,7 +83,7 @@
         <div class="nav-indicator"></div>
       </a>
 
-      <a href="${ROOT}${PAGES}notifications.html" class="nav-icone${isActif('notifs')?' actif':''}" aria-label="Notifications">
+      <a href="/pages/notifications.html" class="nav-icone${isActif('notifs')?' actif':''}" aria-label="Notifications">
         <div class="nav-icone-inner" style="position:relative">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           ${nbNotifs > 0 ? `<span class="notif-badge nav-badge-anim">${nbNotifs}</span>` : ''}
@@ -102,27 +99,31 @@
           <div class="avatar-ring"></div>
         </div>
         <!-- Dropdown menu -->
-        <div id="menuAvatar" class="menu-avatar" aria-hidden="true">
+        <div class="menu-avatar" id="menuAvatar" role="menu" aria-hidden="true">
           <div class="menu-avatar-header">
-            <div class="menu-avatar-user-avatar">${initiale}</div>
-            <div>
-              <div class="menu-avatar-name">${session ? session.nom : 'Mon compte'}</div>
-              <div class="menu-avatar-email">${session ? session.email : ''}</div>
-            </div>
+            <div class="menu-avatar-name">${session ? session.nom || 'Mon compte' : 'Mon compte'}</div>
+            <div class="menu-avatar-role">${session ? (session.role === 'professionnel' ? 'Professionnel' : 'Artiste') : ''}</div>
           </div>
-          <div class="menu-avatar-sep"></div>
-          <a href="${ROOT}profil-artiste.html" class="menu-avatar-item">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <a href="${session && session.role === 'professionnel' ? '/profil-pro.html' : '/profil-artiste.html'}" class="menu-avatar-item" role="menuitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Mon profil
           </a>
-          <a href="${ROOT}pages/settings.html" class="menu-avatar-item">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Parametres
+          <a href="${session && session.role === 'professionnel' ? '/crm.html' : '/espace-artiste.html'}" class="menu-avatar-item" role="menuitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Espace privé
+          </a>
+          <a href="/pages/settings.html" class="menu-avatar-item" role="menuitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Paramètres
+          </a>
+          <a href="/pages/pricing.html" class="menu-avatar-item" role="menuitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Abonnements
           </a>
           <div class="menu-avatar-sep"></div>
-          <a href="#" class="menu-avatar-item menu-avatar-logout" onclick="event.preventDefault(); if(typeof PeaklyAuth !== 'undefined') PeaklyAuth.logout();">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Deconnexion
+          <a href="#" class="menu-avatar-item menu-avatar-logout" role="menuitem" onclick="event.preventDefault(); if(typeof PeaklyAuth !== 'undefined' && PeaklyAuth.logout){ PeaklyAuth.logout(); } else { window.location.href='/pages/login.html'; }">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Se déconnecter
           </a>
         </div>
       </div>
@@ -155,12 +156,18 @@
   }
 
   /* ── Menu avatar ── */
-  global.ouvrirMenuAvatar = function(el){
+  global.ouvrirMenuAvatar = function(el) {
     var menu = document.getElementById('menuAvatar');
-    if(!menu) return;
+    if (!menu) return;
     var isOpen = menu.classList.contains('open');
-    menu.classList.toggle('open', !isOpen);
-    menu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    document.querySelectorAll('.menu-avatar.open').forEach(function(m) {
+      m.classList.remove('open');
+      m.setAttribute('aria-hidden', 'true');
+    });
+    if (!isOpen) {
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden', 'false');
+    }
   };
 
   /* Fermer le menu au clic exterieur */
@@ -172,12 +179,20 @@
     }
   });
 
+  /* Fermer le menu avec Echap */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var menu = document.getElementById('menuAvatar');
+      if (menu) { menu.classList.remove('open'); menu.setAttribute('aria-hidden', 'true'); }
+    }
+  });
+
   /* ── Recherche nav ── */
   var navSearch = document.getElementById('navSearchInput');
   if(navSearch){
     navSearch.addEventListener('keydown', function(e){
       if(e.key === 'Enter' && navSearch.value.trim()){
-        window.location.href = ROOT + PAGES + 'recherche.html?q=' + encodeURIComponent(navSearch.value.trim());
+        window.location.href = '/pages/recherche.html?q=' + encodeURIComponent(navSearch.value.trim());
       }
     });
   }

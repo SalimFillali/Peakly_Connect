@@ -49,14 +49,14 @@ body{padding-top:0;min-height:100vh;display:flex;flex-direction:column;align-ite
     <input type="search" placeholder="Rechercher un artiste, un label..." id="errSearch" onkeydown="rechercherErreur(event)">
   </div>
   <div class="err-btns">
-    <button class="btn-primary" onclick="window.location.href='feed.html'">Retour à l'accueil</button>
-    <button class="btn-secondary" onclick="window.location.href='pages/recherche.html'">Explorer Peakly</button>
+    <button class="btn-primary" onclick="window.location.href='/feed.html'">Retour à l'accueil</button>
+    <button class="btn-secondary" onclick="window.location.href='/pages/recherche.html'">Explorer Peakly</button>
   </div>
   <div class="err-liens">
-    <a href="feed.html" class="err-lien">Fil d'actualité</a>
-    <a href="profil-artiste.html" class="err-lien">Profils artistes</a>
-    <a href="crm.html" class="err-lien">Opportunités</a>
-    <a href="pages/messages.html" class="err-lien">Messages</a>
+    <a href="/feed.html" class="err-lien">Fil d'actualité</a>
+    <a href="/profil-artiste.html" class="err-lien">Profils artistes</a>
+    <a href="/crm.html" class="err-lien">Opportunités</a>
+    <a href="/pages/messages.html" class="err-lien">Messages</a>
     <a href="#" class="err-lien">Support</a>
   </div>
 </div>
@@ -76,7 +76,7 @@ body{padding-top:0;min-height:100vh;display:flex;flex-direction:column;align-ite
 function rechercherErreur(e){
   if(e.key==='Enter'){
     const q = document.getElementById('errSearch').value.trim();
-    if(q) window.location.href = 'pages/recherche.html?q='+encodeURIComponent(q);
+    if(q) window.location.href = '/pages/recherche.html?q='+encodeURIComponent(q);
   }
 }
 </script>

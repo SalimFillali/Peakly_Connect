@@ -2,6 +2,29 @@
    PEAKLY — JavaScript commun · js/app.js
    ================================================================ */
 
+/* ── Routes centralisées ── */
+var PeaklyRoutes = {
+  feed:          '/feed.html',
+  search:        '/pages/recherche.html',
+  crm:           '/crm.html',
+  messages:      '/pages/messages.html',
+  notifications: '/pages/notifications.html',
+  login:         '/pages/login.html',
+  inscription:   '/pages/inscription.html',
+  settings:      '/pages/settings.html',
+  pricing:       '/pages/pricing.html',
+  artistProfile: '/profil-artiste.html',
+  proProfile:    '/profil-pro.html',
+  artistSpace:   '/espace-artiste.html',
+  index:         '/index.html',
+  profilePath: function(role) {
+    return (role === 'professionnel') ? this.proProfile : this.artistProfile;
+  },
+  privateAreaPath: function(role) {
+    return (role === 'professionnel') ? this.crm : this.artistSpace;
+  }
+};
+
 /* ----------------------------------------------------------------
    1. NAVIGATION — lien actif selon la page courante
    ---------------------------------------------------------------- */
@@ -81,14 +104,12 @@ function animateRing(ringEl, targetPct, circumference, duration){
    6. TAB SWITCHING — panneau profil / CRM
    ---------------------------------------------------------------- */
 function setTab(el){
-  // Désactiver tous les tabs du même groupe
   const bar = el.closest('.profile-nav-tabs, .crm-tab-bar, [data-tab-group]');
   const tabs = bar
     ? bar.querySelectorAll('[data-panel]')
     : document.querySelectorAll('[data-panel]');
   tabs.forEach(t => t.classList.remove('active', 'actif'));
   el.classList.add('active', 'actif');
-  // Masquer tous les panneaux
   const panelId = el.dataset.panel;
   document.querySelectorAll('.tab-panel, [id^="panel-"]').forEach(p => {
     p.style.display = 'none';
@@ -98,7 +119,6 @@ function setTab(el){
     target.style.display = 'flex';
     target.style.flexDirection = 'column';
     target.style.gap = '20px';
-    // Déclencher les animations reveal dans le panneau
     target.querySelectorAll('.reveal:not(.visible)').forEach(r => r.classList.add('visible'));
   }
 }

@@ -605,8 +605,8 @@ body {
 <!-- Enterprise -->
 <div class="enterprise-band">
   <div class="enterprise-inner">
-    <p><strong>Vous cherchez une solution sur-mesure ?</strong> Pour plus de 10 utilisateurs, des intégrations personnalisées ou un contrat annuel — <a href="../pages/messages.html">contactez notre équipe commerciale</a></p>
-    <button class="btn-plan-ghost" style="white-space:nowrap; padding:10px 20px; border-radius:10px; border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.7); background:transparent; cursor:pointer; font-size:.85rem; font-weight:600; flex-shrink:0; transition:all .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.7)'" onclick="window.location.href='../pages/messages.html'">Contactez-nous</button>
+    <p><strong>Vous cherchez une solution sur-mesure ?</strong> Pour plus de 10 utilisateurs, des intégrations personnalisées ou un contrat annuel — <a href="/pages/messages.html">contactez notre équipe commerciale</a></p>
+    <button class="btn-plan-ghost" style="white-space:nowrap; padding:10px 20px; border-radius:10px; border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.7); background:transparent; cursor:pointer; font-size:.85rem; font-weight:600; flex-shrink:0; transition:all .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.7)'" onclick="window.location.href='/pages/messages.html'">Contactez-nous</button>
   </div>
 </div>
 
@@ -700,7 +700,7 @@ body {
     <h2 style="font-size:2.2rem;font-weight:900;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin:0 0 12px;line-height:1.15">Rejoignez la plateforme music-tech<br>la plus avancée en France.</h2>
     <p style="font-size:.9rem;color:var(--txt2);max-width:480px;margin:0 auto 32px;line-height:1.6">14 jours d'essai gratuit. Aucune carte requise. Accès immédiat à tous les outils.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-      <a href="inscription.html" class="btn-primary" style="padding:14px 32px;font-size:.95rem">Commencer gratuitement</a>
+      <a href="/pages/inscription.html" class="btn-primary" style="padding:14px 32px;font-size:.95rem">Commencer gratuitement</a>
       <a href="mailto:contact@peakly.fr" class="btn-secondary" style="padding:14px 28px;font-size:.95rem">Contacter les ventes</a>
     </div>
     <div style="margin-top:20px;font-size:.72rem;color:var(--txt3)">Sans engagement · Résiliable à tout moment · Support en français</div>
@@ -741,7 +741,7 @@ body {
   window.choisirPlan = function(plan){
     var session = (typeof PeaklyStore !== 'undefined') ? PeaklyStore.getSession() : null;
     if(!session){
-      window.location.href = 'inscription.html?plan=' + plan;
+      window.location.href = '/pages/inscription.html?plan=' + plan;
       return;
     }
     if(plan === 'gratuit'){
@@ -751,7 +751,7 @@ body {
     /* Redirection vers Stripe Checkout (configurer STRIPE_PUBLIC_KEY dans .env) */
     if(typeof showToast !== 'undefined') showToast('','Abonnement',"Redirection vers le paiement sécurisé...",'');
     setTimeout(function(){
-      window.location.href = '../api/stripe/checkout?plan=' + plan;
+      window.location.href = '/api/stripe/checkout?plan=' + plan;
     }, 800);
   };
 
