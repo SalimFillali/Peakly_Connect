@@ -1079,7 +1079,7 @@ function valider1() {
 
 function valider2a() {
   const nomArtiste = document.getElementById('nomArtiste').value.trim();
-  if (!nomArtiste) { montrerErr('err2a', 'Entrez votre nom d'artiste.'); return; }
+  if (!nomArtiste) { montrerErr('err2a', "Entrez votre nom d'artiste."); return; }
   if (lireTags('genresGrid').length === 0) { montrerErr('err2a', 'Sélectionnez au moins un genre musical.'); return; }
   OB.nom_artiste = nomArtiste;
   OB.bio_courte = document.getElementById('bioCourte').value.trim();
@@ -1342,4 +1342,5 @@ function allerPlateforme() {
 
 rendreProgBar(STEPS_ARTISTE, 'etape1');
 </script>
-<script src="../js/app
+</body>
+</html>
