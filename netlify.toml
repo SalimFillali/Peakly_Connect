@@ -1,0 +1,107 @@
+[build]
+  publish     = "."
+  command     = ""
+  functions   = "api"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# ── Headers de sécurité ────────────────────────────────────────────────────────
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options  = "nosniff"
+    X-Frame-Options         = "DENY"
+    X-XSS-Protection        = "1; mode=block"
+    Referrer-Policy         = "strict-origin-when-cross-origin"
+    Permissions-Policy      = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://js.stripe.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co; frame-src https://js.stripe.com;"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin  = "https://peakly.fr"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+# ── Redirections courtes ───────────────────────────────────────────────────────
+
+[[redirects]]
+  from   = "/login"
+  to     = "/pages/login.html"
+  status = 302
+
+[[redirects]]
+  from   = "/inscription"
+  to     = "/pages/inscription.html"
+  status = 302
+
+[[redirects]]
+  from   = "/pricing"
+  to     = "/pages/pricing.html"
+  status = 302
+
+[[redirects]]
+  from   = "/settings"
+  to     = "/pages/settings.html"
+  status = 302
+
+[[redirects]]
+  from   = "/mentions-legales"
+  to     = "/pages/legal/mentions-legales.html"
+  status = 302
+
+[[redirects]]
+  from   = "/cgu"
+  to     = "/pages/legal/cgu.html"
+  status = 302
+
+[[redirects]]
+  from   = "/confidentialite"
+  to     = "/pages/legal/confidentialite.html"
+  status = 302
+
+[[redirects]]
+  from   = "/cookies"
+  to     = "/pages/legal/cookies.html"
+  status = 302
+
+# ── Fonctions serverless ───────────────────────────────────────────────────────
+
+[[redirects]]
+  from   = "/api/stripe/checkout"
+  to     = "/.netlify/functions/stripe-checkout"
+  status = 200
+
+[[redirects]]
+  from   = "/api/stripe/webhook"
+  to     = "/.netlify/functions/stripe-webhook"
+  status = 200
+
+[[redirects]]
+  from   = "/api/stripe/portal"
+  to     = "/.netlify/functions/stripe-portal"
+  status = 200
+
+# ── Page 404 ──────────────────────────────────────────────────────────────────
+
+[[redirects]]
+  from   = "/*"
+  to     = "/404.html"
+  status = 404

@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Espace Artiste, Tableau de bord prive · Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<style>
+/* HEADER */
+.barre-recherche input{width:100%;padding:8px 14px 8px 36px;background:rgba(255,255,255,.05);border:1px solid var(--b1);border-radius:999px;font-size:.83rem;color:var(--txt);font-family:"Inter",sans-serif;transition:border-color .15s,background .15s}
+.barre-recherche input:focus{outline:none;border-color:var(--or-glow);background:rgba(255,255,255,.08)}
+.barre-recherche input::placeholder{color:rgba(148,163,184,.45)}
+.barre-recherche svg{position:absolute;left:11px;color:var(--txt2);pointer-events:none}
+/* HERO PRIVE */
+.private-hero{
+  background:linear-gradient(135deg,rgba(10,13,20,1) 0%,rgba(26,33,51,.95) 40%,rgba(10,13,20,1) 100%);
+  border-bottom:1px solid var(--b1);
+  position:relative;overflow:hidden;
+}
+.private-hero::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(229,193,88,.5),transparent)}
+.private-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 100% at 10% 50%,rgba(229,193,88,.06),transparent 60%)}
+.private-hero-inner{position:relative;z-index:1;max-width:1300px;margin:0 auto;padding:32px 40px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.private-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(229,193,88,.12);border:1px solid var(--or-glow);font-size:.68rem;font-weight:800;color:var(--or);font-family:"Plus Jakarta Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.private-lock{width:6px;height:6px;border-radius:50%;background:var(--or);animation:pulse-ai 2s infinite}
+.private-title{font-size:1.7rem;font-weight:900;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;margin:8px 0 4px;line-height:1.15}
+.private-sub{font-size:.85rem;color:var(--txt2);line-height:1.5}
+.private-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#3b82f6);border:3px solid rgba(229,193,88,.3);display:flex;align-items:center;justify-content:center;font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:1.3rem;color:#fff;flex-shrink:0;box-shadow:0 0 24px rgba(229,193,88,.12)}
+.btn-retour{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--b2);color:var(--txt);font-size:.8rem;font-weight:600;font-family:"Plus Jakarta Sans",sans-serif;transition:all .2s;cursor:pointer;text-decoration:none}
+.btn-retour:hover{background:rgba(255,255,255,.1);border-color:var(--b3)}
+/* LAYOUT */
+.page-max{max-width:1300px;margin:0 auto;padding:0 40px}
+@media(max-width:700px){.page-max{padding:0 16px}}
+.main-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;padding-bottom:60px}
+@media(max-width:1100px){.main-grid{grid-template-columns:1fr}}
+/* CARD */
+.card-title svg{width:16px;height:16px;flex-shrink:0}
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:rgba(255,255,255,.03);border:1px solid var(--b1);border-radius:var(--r-lg);overflow:hidden;margin:24px 0}
+.kpi-cell{padding:20px 24px;border-right:1px solid var(--b1);position:relative;overflow:hidden;transition:background .2s}
+.kpi-cell:hover{background:rgba(255,255,255,.04)}
+.kpi-cell:last-child{border-right:none}
+.kpi-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.kpi-val{font-size:1.65rem;font-weight:900;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;line-height:1;margin-bottom:4px}
+.kpi-change{font-size:.7rem;font-weight:600}
+.kpi-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--b1);overflow:hidden}
+.kpi-bar-fill{height:100%;border-radius:2px}
+@media(max-width:700px){.kpi-strip{grid-template-columns:repeat(2,1fr)}.kpi-cell:nth-child(2){border-right:none}.kpi-cell:nth-child(1),.kpi-cell:nth-child(2){border-bottom:1px solid var(--b1)}}
+/* AI INTEL */
+.ai-intel{border:1px solid rgba(74,222,128,.2);background:linear-gradient(135deg,rgba(5,5,7,.97),rgba(8,12,22,.99));position:relative;overflow:hidden}
+.ai-intel::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.5),transparent)}
+.ai-intel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--b1)}
+@media(max-width:800px){.ai-intel-grid{grid-template-columns:1fr}}
+.ai-cell{padding:24px;border-right:1px solid var(--b1)}
+.ai-cell:last-child{border-right:none}
+.ai-cell-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ai-dot{width:6px;height:6px;border-radius:50%;animation:pulse-ai 1.8s infinite}
+.sig-ring-wrap{display:flex;align-items:center;gap:20px}
+.sig-ring{position:relative;flex-shrink:0}
+.sig-ring svg{transform:rotate(-90deg)}
+.sig-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.55rem;font-weight:900;color:var(--or);font-family:"Plus Jakarta Sans",sans-serif}
+.label-compat-list{display:flex;flex-direction:column;gap:8px}
+.label-compat-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--r-sm);background:rgba(229,193,88,.05);border:1px solid rgba(229,193,88,.1);transition:all .2s;cursor:pointer}
+.label-compat-item:hover{background:rgba(229,193,88,.1);border-color:var(--or-glow);transform:translateX(4px)}
+.label-logo{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif}
+.label-name{font-size:.82rem;font-weight:600;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;flex:1}
+.label-pct{font-size:.75rem;font-weight:700;color:var(--vert)}
+.insight-list{display:flex;flex-direction:column;gap:8px}
+.insight-chip{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)}
+.insight-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.insight-text{font-size:.78rem;color:var(--txt2);line-height:1.45}
+.insight-text strong{color:var(--txt)}
+.ai-footer{padding:14px 24px;display:flex;gap:8px;flex-wrap:wrap}
+.ai-tag{padding:4px 12px;border-radius:999px;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s}
+/* SCORES */
+.scores-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.score-card{padding:24px 20px;text-align:center;position:relative;overflow:hidden}
+.score-card.viral::before{content:"";position:absolute;inset:0;border-radius:var(--r-lg);background:radial-gradient(ellipse at center,rgba(167,139,250,.08),transparent 70%);opacity:0;transition:opacity .3s}
+.score-card.momentum::before{content:"";position:absolute;inset:0;border-radius:var(--r-lg);background:radial-gradient(ellipse at center,rgba(96,165,250,.08),transparent 70%);opacity:0;transition:opacity .3s}
+.score-card:hover::before{opacity:1}
+.score-ring-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);margin-bottom:16px}
+.ring-container{position:relative;display:inline-block;margin-bottom:12px}
+.ring-container svg{transform:rotate(-90deg);filter:drop-shadow(0 0 12px currentColor)}
+.ring-value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-size:1.9rem;font-weight:900;font-family:"Plus Jakarta Sans",sans-serif;line-height:1}
+.ring-max{font-size:.65rem;color:var(--txt3);margin-top:2px}
+.score-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.68rem;font-weight:700;margin-top:8px;font-family:"Plus Jakarta Sans",sans-serif}
+.score-desc{font-size:.75rem;color:var(--txt2);line-height:1.4;margin-top:6px}
+/* CHART */
+.chart-wrap{padding:0 24px 24px;position:relative}
+.chart-svg{width:100%;height:200px;overflow:visible}
+.chart-grid-line{stroke:rgba(255,255,255,.06);stroke-width:1;stroke-dasharray:4,4}
+.chart-axis-label{font-size:.62rem;fill:rgba(148,163,184,.6);font-family:"Inter",sans-serif}
+.chart-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+/* RADAR */
+.radar-section{padding:0 24px 24px}
+.radar-layout{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:center}
+@media(max-width:700px){.radar-layout{grid-template-columns:1fr;justify-items:center}}
+.perf-legend{display:flex;flex-direction:column;gap:10px}
+.perf-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--r-sm);background:var(--nuit3);border:1px solid var(--b1);transition:border-color .2s}
+.perf-item:hover{border-color:var(--b2)}
+.perf-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.perf-label{font-size:.76rem;font-weight:700;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+.perf-pct{font-size:.72rem;font-weight:800;margin-left:auto}
+.perf-desc{font-size:.68rem;color:var(--txt2);line-height:1.35}
+/* REVENUE */
+.revenue-grid{padding:16px 24px 24px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rev-cell{padding:16px 18px;border-radius:var(--r);background:var(--nuit3);border:1px solid var(--b1);transition:border-color .2s}
+.rev-cell:hover{border-color:var(--b2)}
+.rev-label{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+.rev-val{font-size:1.35rem;font-weight:900;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;line-height:1}
+.rev-change{font-size:.7rem;font-weight:600;margin-top:4px}
+.rev-bar{margin-top:10px;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.rev-bar-fill{height:100%;border-radius:2px;transition:width 1.4s ease}
+/* SIDEBAR CARDS */
+.sidebar-col{display:flex;flex-direction:column;gap:20px}
+.stat-mini{display:flex;flex-direction:column;gap:8px;padding:0 24px 20px}
+.stat-mini-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--r-sm);background:var(--nuit3);border:1px solid var(--b1)}
+.stat-mini-label{font-size:.76rem;color:var(--txt2)}
+.stat-mini-val{font-size:.82rem;font-weight:700;color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif}
+.alert-list{padding:0 24px 20px;display:flex;flex-direction:column;gap:10px}
+.alert-item{padding:12px 14px;border-radius:var(--r-sm);border:1px solid}
+.alert-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.alert-title{font-size:.8rem;font-weight:700;font-family:"Plus Jakarta Sans",sans-serif;margin-bottom:3px}
+.alert-text{font-size:.72rem;line-height:1.4}
+.action-list{padding:0 24px 20px;display:flex;flex-direction:column;gap:8px}
+.action-btn{width:100%;padding:10px 16px;border-radius:var(--r-sm);font-size:.8rem;font-weight:600;font-family:"Plus Jakarta Sans",sans-serif;text-align:left;transition:all .2s;cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid var(--b1);color:var(--txt2);background:var(--nuit3)}
+.action-btn:hover{border-color:var(--b2);color:var(--txt);background:rgba(255,255,255,.05);transform:translateX(3px)}
+.action-btn svg{width:14px;height:14px;flex-shrink:0}
+/* ANIMATIONS */
+
+/* PEAKLY SCORE ORBITAL */
+.ps-section {
+  max-width:1300px;margin:0 auto;padding:0 40px 32px;
+}
+@media(max-width:700px){.ps-section{padding:0 16px 24px}}
+.ps-wrap {
+  position:relative;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(229,193,88,.12);
+  border-radius:20px;
+  padding:40px 32px;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:32px;
+  align-items:center;
+}
+.ps-wrap::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(229,193,88,.4),transparent);
+}
+.ps-wrap::after {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 100% at 50% 50%,rgba(229,193,88,.04),transparent 70%);
+}
+@media(max-width:900px){.ps-wrap{grid-template-columns:1fr;justify-items:center;gap:24px}}
+
+/* Colonne plateforme */
+.ps-col { display:flex;flex-direction:column;gap:12px;z-index:1 }
+.ps-col.right { align-items:flex-end }
+@media(max-width:900px){.ps-col,.ps-col.right{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px}}
+
+.ps-platform {
+  display:flex;align-items:center;gap:10px;
+  padding:9px 14px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.03);
+  cursor:default;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1), border-color .25s, box-shadow .25s;
+  position:relative;
+}
+.ps-platform:hover {
+  transform:scale(1.06) translateX(-4px);
+  border-color:rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.ps-col.right .ps-platform:hover { transform:scale(1.06) translateX(4px) }
+.ps-icon {
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-weight:900;font-size:.75rem;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.ps-platform-name { font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap }
+.ps-platform-val { font-size:.72rem;font-weight:800;white-space:nowrap }
+
+/* Flux de données animés */
+.ps-flux {
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;overflow:hidden;
+}
+.ps-flux-line {
+  position:absolute;
+  height:2px;
+  border-radius:2px;
+  opacity:0;
+  animation:fluxSlide 2.4s ease-in-out infinite;
+}
+
+@keyframes fluxSlide {
+  0%   { opacity:0; transform:scaleX(0); transform-origin:left }
+  20%  { opacity:.9; transform:scaleX(1); transform-origin:left }
+  80%  { opacity:.7; transform:scaleX(1); transform-origin:left }
+  100% { opacity:0; transform:scaleX(1); transform-origin:right }
+}
+@keyframes fluxSlideR {
+  0%   { opacity:0; transform:scaleX(0); transform-origin:right }
+  20%  { opacity:.9; transform:scaleX(1); transform-origin:right }
+  80%  { opacity:.7; transform:scaleX(1); transform-origin:right }
+  100% { opacity:0; transform:scaleX(1); transform-origin:left }
+}
+
+/* Centre Peakly Score */
+.ps-center {
+  position:relative;z-index:2;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.ps-center-ring {
+  position:relative;display:inline-block;
+}
+.ps-center-ring svg { display:block }
+.ps-center-inner {
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;
+}
+.ps-score-label {
+  font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--txt3);
+}
+.ps-score-val {
+  font-size:2.6rem;font-weight:900;
+  color:var(--or);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  line-height:1;
+  text-shadow:0 0 30px rgba(229,193,88,.4),0 0 60px rgba(229,193,88,.15);
+}
+.ps-score-sub {
+  font-size:.6rem;font-weight:700;color:var(--txt3);letter-spacing:.08em;
+}
+.ps-badge {
+  padding:4px 14px;border-radius:999px;
+  background:rgba(229,193,88,.1);border:1px solid rgba(229,193,88,.25);
+  font-size:.68rem;font-weight:800;color:var(--or);
+  font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.05em;
+  animation:glow-pulse 3s ease infinite;
+}
+.ps-sub-scores {
+  display:flex;gap:16px;justify-content:center;margin-top:4px;
+}
+.ps-sub-item {
+  text-align:center;
+}
+.ps-sub-val { font-size:.92rem;font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;line-height:1 }
+.ps-sub-label { font-size:.58rem;color:var(--txt3);font-weight:600;margin-top:2px;letter-spacing:.05em;text-transform:uppercase }
+
+/* Orbit ring décoratif */
+.ps-orbit {
+  position:absolute;border-radius:50%;border:1px dashed rgba(229,193,88,.07);
+  pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="nav-root"></div>
+
+<!-- HERO PRIVE -->
+<div class="private-hero">
+  <div class="private-hero-inner">
+    <div class="private-avatar">AK</div>
+    <div style="flex:1;min-width:200px">
+      <div class="private-badge"><span class="private-lock"></span>Espace prive</div>
+      <div class="private-title">Bonjour, Awa.</div>
+      <div class="private-sub">Votre tableau de bord analytique prive. Ces donnees sont exclusivement visibles par vous.</div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <a href="profil-artiste.html" class="btn-retour">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Retour au profil public
+        </a>
+        <button style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;background:var(--or);color:var(--texte-fonce);font-size:.8rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;border:none;cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--or-h)'" onmouseout="this.style.background='var(--or)'">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exporter le rapport
+        </button>
+      </div>
+    </div>
+    <div style="text-align:center;flex-shrink:0">
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt2);margin-bottom:8px">Talent Score</div>
+      <div style="position:relative;display:inline-block">
+        <svg width="90" height="90" viewBox="0 0 90 90" style="transform:rotate(-90deg);filter:drop-shadow(0 0 14px rgba(229,193,88,.4))">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="6"/>
+          <circle id="heroRing" cx="45" cy="45" r="36" fill="none" stroke="#E5C158" stroke-width="6" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div id="heroScore" style="font-size:1.4rem;font-weight:900;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif;line-height:1">0</div>
+          <div style="font-size:.5rem;color:var(--txt3)">/100</div>
+        </div>
+      </div>
+      <div style="font-size:.65rem;color:var(--vert);margin-top:4px;font-weight:600">Top 4% France</div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="page-max">
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="kpi-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Virality Score
+      </div>
+      <div class="kpi-val" style="color:var(--violet)">81</div>
+      <div class="kpi-change up">+7 pts ce mois</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:81%;background:linear-gradient(90deg,var(--violet),#7c3aed)"></div></div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+        Momentum Score
+      </div>
+      <div class="kpi-val" style="color:var(--bleu)">88</div>
+      <div class="kpi-change up">Hypercroissance</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:88%;background:linear-gradient(90deg,var(--bleu),#3b82f6)"></div></div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Revenus estimes / an
+      </div>
+      <div class="kpi-val" style="color:var(--or)">~100K€</div>
+      <div class="kpi-change up">x5 potentiel avec label</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:38%;background:linear-gradient(90deg,var(--or),var(--or-h))"></div></div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Fenetre de signature
+      </div>
+      <div class="kpi-val" style="color:var(--vert);font-size:1.1rem;padding-top:4px">Critique</div>
+      <div class="kpi-change up">Agir avant sept. 2026</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:92%;background:linear-gradient(90deg,var(--vert),#16a34a)"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PEAKLY SCORE ORBITAL -->
+<div class="ps-section reveal">
+  <div class="ps-wrap" id="psWrap">
+
+    <!-- Orbits décoratifs -->
+    <div class="ps-orbit" style="width:260px;height:260px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="ps-orbit" style="width:380px;height:380px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.5"></div>
+
+    <!-- Flux de données (lignes animées) injectés par JS -->
+    <div class="ps-flux" id="psFlux"></div>
+
+    <!-- Colonne gauche : Spotify · TikTok · SoundCloud · Deezer -->
+    <div class="ps-col">
+
+      <div class="ps-platform" data-color="#1DB954" data-target="left">
+        <div class="ps-icon" style="background:rgba(29,185,84,.18)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.65 14.41c-.19.31-.6.4-.91.21-2.49-1.52-5.63-1.87-9.32-1.02-.36.08-.71-.14-.79-.5-.08-.36.14-.71.5-.79 4.04-.92 7.5-.52 10.31 1.18.31.19.4.6.21.92zm1.24-2.76c-.24.38-.74.5-1.12.26-2.85-1.75-7.19-2.26-10.56-1.23-.43.13-.88-.12-1.01-.54-.13-.43.12-.88.54-1.01 3.85-1.17 8.63-.6 11.89 1.41.38.24.5.74.26 1.11zm.11-2.88c-3.42-2.03-9.06-2.22-12.32-1.23-.52.16-1.07-.14-1.23-.66-.16-.52.14-1.07.66-1.23 3.74-1.14 9.96-.92 13.89 1.42.47.28.63.88.35 1.35-.27.47-.88.62-1.35.35z"/></svg>
+        </div>
+        <div>
+          <div class="ps-platform-name">Spotify</div>
+          <div class="ps-platform-val" style="color:#1DB954">1.4M streams</div>
+        </div>
+      </div>
+
+      <div class="ps-platform" data-color="#ff0050" data-target="left">
+        <div class="ps-icon" style="background:rgba(255,0,80,.15)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff0050"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.28 8.28 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+        </div>
+        <div>
+          <div class="ps-platform-name">TikTok</div>
+          <div class="ps-platform-val" style="color:#ff0050">2M vues</div>
+        </div>
+      </div>
+
+      <div class="ps-platform" data-color="#ff5500" data-target="left">
+        <div class="ps-icon" style="background:rgba(255,85,0,.15)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff5500"><path d="M11.56 8.87V17h4.43v-8.13c-1.46.33-2.96.33-4.43 0zM1.25 15.67l.87.37 1.57-.61.56 1.54-1.36.53.37.87 1.37-.53.61 1.57 1.54-.56-.61-1.57 1.56-.61.62 1.57 1.54-.56-.62-1.57 1.56-.61.56 1.54 1.54-.56-.56-1.54 1.37-.53-.37-.87-1.37.53-.62-1.57-1.54.56.62 1.57-1.56.61-.62-1.57-1.54.56.62 1.57-1.56.61-.56-1.54-1.54.56.56 1.54-1.37.53.37.87 1.37-.53.61 1.57 1.54-.56-.61-1.57 1.56-.61.62 1.57-1.54.56zM21 5.8c.7 0 1.2-.5 1.2-1.2S21.7 3.4 21 3.4s-1.2.5-1.2 1.2.5 1.2 1.2 1.2zM3.8 5.8c.7 0 1.2-.5 1.2-1.2S4.5 3.4 3.8 3.4s-1.2.5-1.2 1.2.5 1.2 1.2 1.2zM12.4 3.4c-2.8 0-5.1 2.3-5.1 5.1 0 1.9 1.1 3.6 2.7 4.5v-.9c-1.2-.8-2-2.1-2-3.6 0-2.4 2-4.3 4.4-4.3s4.4 2 4.4 4.3c0 1.5-.8 2.9-2 3.7v.9c1.6-.9 2.7-2.6 2.7-4.6-.1-2.8-2.4-5.1-5.1-5.1z"/></svg>
+        </div>
+        <div>
+          <div class="ps-platform-name">SoundCloud</div>
+          <div class="ps-platform-val" style="color:#ff5500">890K plays</div>
+        </div>
+      </div>
+
+      <div class="ps-platform" data-color="#a239ca" data-target="left">
+        <div class="ps-icon" style="background:rgba(162,57,202,.18)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#a239ca"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-.5 14.5v-9l7 4.5-7 4.5z"/></svg>
+        </div>
+        <div>
+          <div class="ps-platform-name">Deezer</div>
+          <div class="ps-platform-val" style="color:#a239ca">320K fans</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Centre : Peakly Score -->
+    <div class="ps-center">
+      <div class="ps-center-ring">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="psGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F0D060"/>
+              <stop offset="50%" stop-color="#E5C158"/>
+              <stop offset="100%" stop-color="#C9A53F"/>
+            </linearGradient>
+            <filter id="psGlow">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+          <!-- Anneaux de fond -->
+          <circle cx="100" cy="100" r="88" fill="rgba(229,193,88,.03)" stroke="rgba(229,193,88,.1)" stroke-width="1"/>
+          <circle cx="100" cy="100" r="76" fill="rgba(229,193,88,.04)" stroke="rgba(229,193,88,.08)" stroke-width="1"/>
+          <!-- Arc principal (score 87/100 = 87% de 2πr) -->
+          <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/>
+          <circle id="psRing" cx="100" cy="100" r="86"
+            fill="none" stroke="url(#psGrad)" stroke-width="10"
+            stroke-linecap="round"
+            stroke-dasharray="540.35" stroke-dashoffset="540.35"
+            style="transform:rotate(-90deg);transform-origin:100px 100px;filter:drop-shadow(0 0 10px rgba(229,193,88,.5))"/>
+          <!-- Petits arcs secondaires décoratifs -->
+          <circle cx="100" cy="100" r="68" fill="none" stroke="rgba(229,193,88,.06)" stroke-width="2" stroke-dasharray="6 8"/>
+        </svg>
+        <div class="ps-center-inner">
+          <div class="ps-score-label">Peakly Score</div>
+          <div class="ps-score-val" id="psScoreVal">0</div>
+          <div class="ps-score-sub">/ 100</div>
+        </div>
+      </div>
+      <div class="ps-badge">Top 4% France</div>
+      <div class="ps-sub-scores">
+        <div class="ps-sub-item">
+          <div class="ps-sub-val" style="color:var(--violet)" id="psVir">0</div>
+          <div class="ps-sub-label">Viral</div>
+        </div>
+        <div class="ps-sub-item">
+          <div class="ps-sub-val" style="color:var(--bleu)" id="psMom">0</div>
+          <div class="ps-sub-label">Momentum</div>
+        </div>
+        <div class="ps-sub-item">
+          <div class="ps-sub-val" style="color:var(--vert)" id="psGrowth">0</div>
+          <div class="ps-sub-label">Growth</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne droite : YouTube · Apple Music · Instagram -->
+    <div class="ps-col right">
+
+      <div class="ps-platform" data-color="#FF0000" data-target="right" style="flex-direction:row-reverse">
+        <div class="ps-icon" style="background:rgba(255,0,0,.15)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <div style="text-align:right">
+          <div class="ps-platform-name">YouTube</div>
+          <div class="ps-platform-val" style="color:#FF0000">4.2M vues</div>
+        </div>
+      </div>
+
+      <div class="ps-platform" data-color="#fc3c44" data-target="right" style="flex-direction:row-reverse">
+        <div class="ps-icon" style="background:rgba(252,60,68,.15)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fc3c44"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.894-.877c-.5-.12-1.008-.17-1.524-.193-.845-.04-1.69-.04-2.535-.04h-6.24c-.845 0-1.69 0-2.535.04-.516.023-1.024.073-1.524.193-1.118.734-1.863 1.733-2.18 3.043a9.23 9.23 0 00-.24 2.19C0 7.02 0 7.914 0 8.81v6.381c0 .895 0 1.79.12 2.685a9.23 9.23 0 00.24 2.19c.317 1.31 1.062 2.31 2.18 3.043a5.022 5.022 0 001.894.877c.5.12 1.008.17 1.524.193.845.04 1.69.04 2.535.04h6.24c.845 0 1.69 0 2.535-.04.516-.023 1.024-.073 1.524-.193 1.118-.734 1.863-1.733 2.18-3.043a9.23 9.23 0 00.24-2.19C24 17.076 24 16.181 24 15.286V8.905c0-.895 0-1.79-.006-2.78zM12 17.5c-3.038 0-5.5-2.462-5.5-5.5S8.962 6.5 12 6.5s5.5 2.462 5.5 5.5-2.462 5.5-5.5 5.5zm5.719-9.75a1.281 1.281 0 110-2.562 1.281 1.281 0 010 2.562zM12 8.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/></svg>
+        </div>
+        <div style="text-align:right">
+          <div class="ps-platform-name">Apple Music</div>
+          <div class="ps-platform-val" style="color:#fc3c44">680K streams</div>
+        </div>
+      </div>
+
+      <div class="ps-platform" data-color="#e1306c" data-target="right" style="flex-direction:row-reverse">
+        <div class="ps-icon" style="background:rgba(225,48,108,.15)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div style="text-align:right">
+          <div class="ps-platform-name">Instagram</div>
+          <div class="ps-platform-val" style="color:#e1306c">128K abonnes</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="page-max">
+<div class="main-grid">
+<div style="display:flex;flex-direction:column;gap:24px">
+
+  <!-- AI INTELLIGENCE -->
+  <div class="card ai-intel reveal">
+    <div class="card-header" style="background:linear-gradient(135deg,rgba(74,222,128,.04),transparent)">
+      <div class="card-title" style="color:var(--vert)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke:var(--vert)"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        Peakly AI Intelligence, Rapport en direct
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="ai-dot" style="background:var(--vert);box-shadow:0 0 8px var(--vert)"></div>
+        <div class="card-meta" style="color:var(--vert)">Analyse active</div>
+      </div>
+    </div>
+    <div class="ai-intel-grid">
+      <!-- Signature probability -->
+      <div class="ai-cell">
+        <div class="ai-cell-label" style="color:var(--or)">
+          <div class="ai-dot" style="background:var(--or);box-shadow:0 0 8px var(--or)"></div>
+          Probabilite de signature
+        </div>
+        <div class="sig-ring-wrap">
+          <div class="sig-ring">
+            <svg width="96" height="96" viewBox="0 0 96 96" style="filter:drop-shadow(0 0 14px rgba(229,193,88,.35))">
+              <circle cx="48" cy="48" r="36" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7"/>
+              <circle id="sigRing" cx="48" cy="48" r="36" fill="none" stroke="url(#sigGrad)" stroke-width="7" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
+              <defs>
+                <linearGradient id="sigGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#E5C158"/>
+                  <stop offset="100%" stop-color="#4ade80"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="sig-ring-pct"><span id="sigPct">0</span>%</div>
+          </div>
+          <div>
+            <div style="font-size:1.05rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:4px">Tres elevee</div>
+            <div style="font-size:.76rem;color:var(--txt2);line-height:1.5">Profil identifie parmi les <strong style="color:var(--or)">top 8 artistes</strong> France Q3 2026</div>
+            <div style="margin-top:10px;padding:5px 10px;border-radius:var(--r-sm);background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);font-size:.7rem;color:var(--vert);font-weight:600">Fenêtre critique : agir maintenant</div>
+          </div>
+        </div>
+      </div>
+      <!-- Compatible labels -->
+      <div class="ai-cell">
+        <div class="ai-cell-label" style="color:var(--vert)">
+          <div class="ai-dot" style="background:var(--vert);box-shadow:0 0 8px var(--vert)"></div>
+          Labels compatibles
+        </div>
+        <div class="label-compat-list">
+          <div class="label-compat-item">
+            <div class="label-logo">S</div>
+            <div class="label-name">Sony Music France</div>
+            <div class="label-pct">91%</div>
+          </div>
+          <div class="label-compat-item">
+            <div class="label-logo">B</div>
+            <div class="label-name">Believe Distribution</div>
+            <div class="label-pct">87%</div>
+          </div>
+          <div class="label-compat-item">
+            <div class="label-logo">U</div>
+            <div class="label-name">Universal Music France</div>
+            <div class="label-pct">82%</div>
+          </div>
+          <div class="label-compat-item">
+            <div class="label-logo">W</div>
+            <div class="label-name">Warner Music France</div>
+            <div class="label-pct">79%</div>
+          </div>
+        </div>
+      </div>
+      <!-- Insights -->
+      <div class="ai-cell">
+        <div class="ai-cell-label" style="color:var(--violet)">
+          <div class="ai-dot" style="background:var(--violet);box-shadow:0 0 8px var(--violet)"></div>
+          Recommandations IA
+        </div>
+        <div class="insight-list">
+          <div class="insight-chip">
+            <div class="insight-dot" style="background:var(--or)"></div>
+            <div class="insight-text"><strong>Momentum exceptionnel.</strong> +340% de croissance en 90 jours. Fenetre de signature idéale, a saisir avant septembre 2026.</div>
+          </div>
+          <div class="insight-chip">
+            <div class="insight-dot" style="background:var(--bleu)"></div>
+            <div class="insight-text"><strong>Cibler Believe en priorite.</strong> Politique artiste-centric, avances moderees, 87% de compatibilite genre.</div>
+          </div>
+          <div class="insight-chip">
+            <div class="insight-dot" style="background:var(--vert)"></div>
+            <div class="insight-text"><strong>Publier 2 titres avant aout.</strong> L'algorithme TikTok FR favorise les sorties pre-rentree. Pic d'engagement projete a +340%.</div>
+          </div>
+          <div class="insight-chip">
+            <div class="insight-dot" style="background:var(--violet)"></div>
+            <div class="insight-text"><strong>Diaspora africaine : levier sous-exploite.</strong> 42% d'auditeurs hors France, potentiel international a valoriser en negociation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-footer">
+      <span class="ai-tag" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--vert)">Audition Sony, 12 jours</span>
+      <span class="ai-tag" style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);color:var(--bleu)">Francofolies 2026</span>
+      <span class="ai-tag" style="background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or)">Sync Canal+ disponible</span>
+      <span class="ai-tag" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--violet)">Music VC, 50K€</span>
+      <span class="ai-tag" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--vert)">Spotify editorial</span>
+    </div>
+  </div>
+
+  <!-- VIRALITY + MOMENTUM SCORES -->
+  <div class="scores-pair reveal">
+    <div class="card score-card viral card-tilt">
+      <div class="score-ring-label">Virality Score</div>
+      <div class="ring-container">
+        <svg width="130" height="130" viewBox="0 0 130 130" style="color:var(--violet)">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="8"/>
+          <circle id="virRing" cx="65" cy="65" r="54" fill="none" stroke="#a78bfa" stroke-width="8" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3" style="filter:drop-shadow(0 0 10px rgba(167,139,250,.7))"/>
+        </svg>
+        <div class="ring-value">
+          <div class="ring-num" id="virNum" style="color:var(--violet)">0</div>
+          <div class="ring-max">/ 100</div>
+        </div>
+      </div>
+      <div class="score-badge" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--violet)">Viral potential eleve</div>
+      <div class="score-desc">Ratio partages sur vues, mesure sur l'ensemble des plateformes numeriques.</div>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--txt2)">TikTok</span><span style="color:var(--violet);font-weight:700">94</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--txt2)">Instagram Reels</span><span style="color:var(--violet);font-weight:700">78</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--txt2)">YouTube Shorts</span><span style="color:var(--violet);font-weight:700">71</span></div>
+      </div>
+    </div>
+    <div class="card score-card momentum card-tilt">
+      <div class="score-ring-label">Momentum Score</div>
+      <div class="ring-container">
+        <svg width="130" height="130" viewBox="0 0 130 130" style="color:var(--bleu)">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="8"/>
+          <circle id="momRing" cx="65" cy="65" r="54" fill="none" stroke="#60a5fa" stroke-width="8" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3" style="filter:drop-shadow(0 0 10px rgba(96,165,250,.7))"/>
+        </svg>
+        <div class="ring-value">
+          <div class="ring-num" id="momNum" style="color:var(--bleu)">0</div>
+          <div class="ring-max">/ 100</div>
+        </div>
+      </div>
+      <div class="score-badge" style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);color:var(--bleu)">Hypercroissance</div>
+      <div class="score-desc">Velocite de croissance sur 30 jours, comparee aux artistes de meme categorie.</div>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--txt2)">Croissance streams</span><span style="color:var(--bleu);font-weight:700">+42%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--txt2)">Croissance abonnes</span><span style="color:var(--bleu);font-weight:700">+32%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--txt2)">Couverture presse</span><span style="color:var(--bleu);font-weight:700">+180%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STREAMING DASHBOARD -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Streaming Dashboard, 12 mois
+      </div>
+      <div style="display:flex;gap:12px;font-size:.72rem">
+        <span style="display:flex;align-items:center;gap:4px;color:var(--or)"><span style="width:12px;height:2px;background:var(--or);display:inline-block;border-radius:1px"></span>Spotify</span>
+        <span style="display:flex;align-items:center;gap:4px;color:var(--bleu)"><span style="width:12px;height:2px;background:var(--bleu);display:inline-block;border-radius:1px"></span>Apple Music</span>
+        <span style="display:flex;align-items:center;gap:4px;color:var(--violet)"><span style="width:12px;height:2px;background:var(--violet);display:inline-block;border-radius:1px"></span>Deezer</span>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg class="chart-svg" id="streamChart" viewBox="0 0 700 200">
+        <defs>
+          <linearGradient id="gSpot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E5C158" stop-opacity=".35"/><stop offset="100%" stop-color="#E5C158" stop-opacity="0"/></linearGradient>
+          <linearGradient id="gApple" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#60a5fa" stop-opacity=".25"/><stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/></linearGradient>
+          <linearGradient id="gDeezer" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a78bfa" stop-opacity=".2"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/></linearGradient>
+        </defs>
+        <line x1="50" y1="20" x2="690" y2="20" class="chart-grid-line"/>
+        <line x1="50" y1="60" x2="690" y2="60" class="chart-grid-line"/>
+        <line x1="50" y1="100" x2="690" y2="100" class="chart-grid-line"/>
+        <line x1="50" y1="140" x2="690" y2="140" class="chart-grid-line"/>
+        <line x1="50" y1="180" x2="690" y2="180" class="chart-grid-line"/>
+        <text x="45" y="23" class="chart-axis-label" text-anchor="end">500K</text>
+        <text x="45" y="63" class="chart-axis-label" text-anchor="end">375K</text>
+        <text x="45" y="103" class="chart-axis-label" text-anchor="end">250K</text>
+        <text x="45" y="143" class="chart-axis-label" text-anchor="end">125K</text>
+        <text x="45" y="183" class="chart-axis-label" text-anchor="end">0</text>
+        <text x="102" y="198" class="chart-axis-label" text-anchor="middle">Juil</text>
+        <text x="163" y="198" class="chart-axis-label" text-anchor="middle">Aou</text>
+        <text x="224" y="198" class="chart-axis-label" text-anchor="middle">Sep</text>
+        <text x="285" y="198" class="chart-axis-label" text-anchor="middle">Oct</text>
+        <text x="346" y="198" class="chart-axis-label" text-anchor="middle">Nov</text>
+        <text x="407" y="198" class="chart-axis-label" text-anchor="middle">Dec</text>
+        <text x="468" y="198" class="chart-axis-label" text-anchor="middle">Jan</text>
+        <text x="529" y="198" class="chart-axis-label" text-anchor="middle">Fev</text>
+        <text x="590" y="198" class="chart-axis-label" text-anchor="middle">Mar</text>
+        <text x="640" y="198" class="chart-axis-label" text-anchor="middle">Avr</text>
+        <text x="670" y="198" class="chart-axis-label" text-anchor="middle">Mai</text>
+        <path d="M102,160 L163,150 L224,140 L285,125 L346,110 L407,90 L468,70 L529,55 L590,38 L640,28 L670,22 L670,180 L102,180 Z" fill="url(#gSpot)"/>
+        <path d="M102,170 L163,165 L224,158 L285,148 L346,140 L407,130 L468,118 L529,105 L590,92 L640,82 L670,76 L670,180 L102,180 Z" fill="url(#gApple)"/>
+        <path d="M102,175 L163,172 L224,168 L285,162 L346,157 L407,151 L468,144 L529,136 L590,128 L640,122 L670,118 L670,180 L102,180 Z" fill="url(#gDeezer)"/>
+        <polyline id="spotLine" points="102,160 163,150 224,140 285,125 346,110 407,90 468,70 529,55 590,38 640,28 670,22" class="chart-line" stroke="#E5C158" style="stroke-dasharray:1000;stroke-dashoffset:1000"/>
+        <polyline id="appleLine" points="102,170 163,165 224,158 285,148 346,140 407,130 468,118 529,105 590,92 640,82 670,76" class="chart-line" stroke="#60a5fa" style="stroke-dasharray:1000;stroke-dashoffset:1000"/>
+        <polyline id="deezerLine" points="102,175 163,172 224,168 285,162 346,157 407,151 468,144 529,136 590,128 640,122 670,118" class="chart-line" stroke="#a78bfa" style="stroke-dasharray:1000;stroke-dashoffset:1000"/>
+      </svg>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--b1)">
+      <div style="padding:14px 20px;border-right:1px solid var(--b1)">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--or);margin-bottom:4px">Spotify</div>
+        <div style="font-size:1.2rem;font-weight:900;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">1.4M</div>
+        <div style="font-size:.7rem;color:var(--vert);font-weight:600">+42% sur 12 mois</div>
+      </div>
+      <div style="padding:14px 20px;border-right:1px solid var(--b1)">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu);margin-bottom:4px">Apple Music</div>
+        <div style="font-size:1.2rem;font-weight:900;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">680K</div>
+        <div style="font-size:.7rem;color:var(--vert);font-weight:600">+28% sur 12 mois</div>
+      </div>
+      <div style="padding:14px 20px">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px">Deezer</div>
+        <div style="font-size:1.2rem;font-weight:900;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">320K</div>
+        <div style="font-size:.7rem;color:var(--vert);font-weight:600">+19% sur 12 mois</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFIL DE PERFORMANCE -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Profil de performance
+      </div>
+      <div class="card-meta">6 indicateurs analyses</div>
+    </div>
+    <div class="radar-section">
+      <div class="radar-layout">
+        <svg id="radarSvg" width="220" height="220" viewBox="0 0 220 220">
+          <g transform="translate(110,110)">
+            <polygon points="0,-90 77.9,-45 77.9,45 0,90 -77.9,45 -77.9,-45" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="-90" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="0" y1="0" x2="77.9" y2="-45" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="0" y1="0" x2="77.9" y2="45" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="90" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="0" y1="0" x2="-77.9" y2="45" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <line x1="0" y1="0" x2="-77.9" y2="-45" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+            <polygon id="radarPoly" points="0,0 0,0 0,0 0,0 0,0 0,0" fill="rgba(229,193,88,.12)" stroke="#E5C158" stroke-width="2" stroke-linejoin="round"/>
+            <text x="0" y="-96" text-anchor="middle" fill="rgba(148,163,184,.7)" font-size="9.5" font-family="Inter,sans-serif">Streams</text>
+            <text x="86" y="-48" text-anchor="start" fill="rgba(148,163,184,.7)" font-size="9.5" font-family="Inter,sans-serif">Engagement</text>
+            <text x="86" y="52" text-anchor="start" fill="rgba(148,163,184,.7)" font-size="9.5" font-family="Inter,sans-serif">Reach</text>
+            <text x="0" y="104" text-anchor="middle" fill="rgba(148,163,184,.7)" font-size="9.5" font-family="Inter,sans-serif">Virality</text>
+            <text x="-86" y="52" text-anchor="end" fill="rgba(148,163,184,.7)" font-size="9.5" font-family="Inter,sans-serif">Growth</text>
+            <text x="-86" y="-48" text-anchor="end" fill="rgba(148,163,184,.7)" font-size="9.5" font-family="Inter,sans-serif">Presence</text>
+          </g>
+        </svg>
+        <div class="perf-legend">
+          <div class="perf-item">
+            <div class="perf-dot" style="background:var(--or)"></div>
+            <div style="flex:1">
+              <div class="perf-label">Streams <span class="perf-pct" style="color:var(--or)">92%</span></div>
+              <div class="perf-desc">Volume cumule sur toutes les plateformes. 2.4M streams totaux, croissance +42% ce mois.</div>
+            </div>
+          </div>
+          <div class="perf-item">
+            <div class="perf-dot" style="background:var(--bleu)"></div>
+            <div style="flex:1">
+              <div class="perf-label">Engagement <span class="perf-pct" style="color:var(--bleu)">84%</span></div>
+              <div class="perf-desc">Ratio interactions sur auditeurs actifs. Abonnements, partages, sauvegardes combines.</div>
+            </div>
+          </div>
+          <div class="perf-item">
+            <div class="perf-dot" style="background:var(--vert)"></div>
+            <div style="flex:1">
+              <div class="perf-label">Reach <span class="perf-pct" style="color:var(--vert)">78%</span></div>
+              <div class="perf-desc">Portee organique estimee sur 30 jours, toutes plateformes sociales et musicales confondues.</div>
+            </div>
+          </div>
+          <div class="perf-item">
+            <div class="perf-dot" style="background:var(--violet)"></div>
+            <div style="flex:1">
+              <div class="perf-label">Virality <span class="perf-pct" style="color:var(--violet)">88%</span></div>
+              <div class="perf-desc">Ratio partages sur vues. TikTok 2M vues, fort coefficient de propagation organique.</div>
+            </div>
+          </div>
+          <div class="perf-item">
+            <div class="perf-dot" style="background:var(--corail)"></div>
+            <div style="flex:1">
+              <div class="perf-label">Growth <span class="perf-pct" style="color:var(--corail)">96%</span></div>
+              <div class="perf-desc">Velocite de croissance versus la categorie. Classement en hypercroissance, top 4% France.</div>
+            </div>
+          </div>
+          <div class="perf-item">
+            <div class="perf-dot" style="background:var(--orange)"></div>
+            <div style="flex:1">
+              <div class="perf-label">Presence <span class="perf-pct" style="color:var(--orange)">72%</span></div>
+              <div class="perf-desc">Score de presence media, presse et reseaux sociaux. Marge de progression identifiee sur la presse specialisee.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVENUE ESTIMATION IA -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Revenue Estimation IA
+      </div>
+      <div class="card-meta">Projections sur 24 mois</div>
+    </div>
+    <div class="revenue-grid">
+      <div class="rev-cell">
+        <div class="rev-label">Streaming</div>
+        <div class="rev-val">28 400 EUR</div>
+        <div class="rev-change up">+42% vs annee precedente</div>
+        <div class="rev-bar"><div class="rev-bar-fill" style="width:57%;background:linear-gradient(90deg,var(--or),var(--or-h))"></div></div>
+      </div>
+      <div class="rev-cell">
+        <div class="rev-label">Live &amp; concerts</div>
+        <div class="rev-val">34 000 EUR</div>
+        <div class="rev-change up">+28% sur 12 mois</div>
+        <div class="rev-bar"><div class="rev-bar-fill" style="width:68%;background:linear-gradient(90deg,var(--bleu),#3b82f6)"></div></div>
+      </div>
+      <div class="rev-cell">
+        <div class="rev-label">Sync &amp; licences</div>
+        <div class="rev-val">12 000 EUR</div>
+        <div class="rev-change up">Potentiel x8 avec label</div>
+        <div class="rev-bar"><div class="rev-bar-fill" style="width:24%;background:linear-gradient(90deg,var(--violet),#7c3aed)"></div></div>
+      </div>
+      <div class="rev-cell">
+        <div class="rev-label">Droits voisins SACEM</div>
+        <div class="rev-val">8 200 EUR</div>
+        <div class="rev-change up">+19% post-signature</div>
+        <div class="rev-bar"><div class="rev-bar-fill" style="width:17%;background:linear-gradient(90deg,var(--vert),#16a34a)"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /left col -->
+
+<!-- SIDEBAR -->
+<div class="sidebar-col">
+
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Profil public
+      </div>
+    </div>
+    <div class="stat-mini">
+      <div class="stat-mini-row">
+        <span class="stat-mini-label">Vues profil (30j)</span>
+        <span class="stat-mini-val" style="color:var(--or)">4 280</span>
+      </div>
+      <div class="stat-mini-row">
+        <span class="stat-mini-label">Contacts recus</span>
+        <span class="stat-mini-val" style="color:var(--vert)">12</span>
+      </div>
+      <div class="stat-mini-row">
+        <span class="stat-mini-label">Favoris labels</span>
+        <span class="stat-mini-val" style="color:var(--bleu)">8</span>
+      </div>
+      <div class="stat-mini-row">
+        <span class="stat-mini-label">Partages Peakly</span>
+        <span class="stat-mini-val" style="color:var(--violet)">34</span>
+      </div>
+      <div class="stat-mini-row">
+        <span class="stat-mini-label">Sauvegardes Spotify</span>
+        <span class="stat-mini-val" style="color:var(--or)">9 200</span>
+      </div>
+      <div class="stat-mini-row">
+        <span class="stat-mini-label">Partages TikTok</span>
+        <span class="stat-mini-val" style="color:var(--corail)">48K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="border-color:rgba(255,107,94,.15)">
+    <div class="card-header">
+      <div class="card-title" style="color:var(--corail)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke:var(--corail)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Alertes IA
+      </div>
+    </div>
+    <div class="alert-list">
+      <div class="alert-item" style="background:rgba(255,107,94,.06);border-color:rgba(255,107,94,.2)">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div class="alert-dot" style="background:var(--corail)"></div>
+          <div>
+            <div class="alert-title" style="color:var(--corail)">Audition Sony, 12 jours</div>
+            <div class="alert-text" style="color:var(--txt2)">Date limite de candidature : 20 juillet 2026. Compatibilite 91%.</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-item" style="background:rgba(229,193,88,.06);border-color:rgba(229,193,88,.2)">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div class="alert-dot" style="background:var(--or)"></div>
+          <div>
+            <div class="alert-title" style="color:var(--or)">Pic algorithmique prevu</div>
+            <div class="alert-text" style="color:var(--txt2)">Sortie recommandee avant le 1er aout pour maximiser la fenetre TikTok pre-rentree.</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-item" style="background:rgba(96,165,250,.06);border-color:rgba(96,165,250,.2)">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div class="alert-dot" style="background:var(--bleu)"></div>
+          <div>
+            <div class="alert-title" style="color:var(--bleu)">Francofolies 2026</div>
+            <div class="alert-text" style="color:var(--txt2)">Candidature ouverte. Profil compatible a 68%. Delegation de dossier recommandee.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Actions recommandees
+      </div>
+    </div>
+    <div class="action-list">
+      <button class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07C9.42 17.23 7.54 15.35 6.14 13.18A19.79 19.79 0 0 1 3.07 4.55 2 2 0 0 1 5.07 2.36h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg>
+        Contacter Sony Music
+      </button>
+      <button class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Soumettre a Francofolies
+      </button>
+      <button class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Programmer une sortie
+      </button>
+      <button class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Activer le marche diaspora
+      </button>
+    </div>
+  </div>
+
+  <div class="card reveal" style="border-color:rgba(229,193,88,.15)">
+    <div style="padding:20px 24px;text-align:center">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--or-dim);border:1px solid var(--or-glow);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E5C158" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px">Donnees actualisees</div>
+      <div style="font-size:.72rem;color:var(--txt2);line-height:1.5">Mis a jour automatiquement toutes les 24h a partir de vos plateformes connectees.</div>
+      <div style="margin-top:12px;font-size:.68rem;color:var(--txt3)">Derniere synchronisation : aujourd'hui 06:14</div>
+    </div>
+  </div>
+
+</div><!-- /sidebar -->
+</div><!-- /main-grid -->
+</div><!-- /page-max -->
+
+<script src="js/store.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ================================================================
+   ESPACE ARTISTE, Animations et interactions
+   ================================================================ */
+
+/* Scroll reveal */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+/* Compteur animé */
+function animCount(el, target, duration){
+  if(!el) return;
+  var step = target / (duration / 16);
+  var val = 0;
+  function tick(){
+    val = Math.min(val + step, target);
+    el.textContent = Math.round(val);
+    if(val < target) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* Peakly Score orbital */
+(function(){
+  var wrap = document.getElementById('psWrap');
+  if(!wrap) return;
+  var fired = false;
+  var io = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting && !fired){
+      fired = true; io.disconnect(); initPS();
+    }
+  }, { threshold: 0.15 });
+  io.observe(wrap);
+
+  function initPS(){
+    /* Ring principal */
+    var ring = document.getElementById('psRing');
+    if(ring){
+      var total = 540.35;
+      setTimeout(function(){
+        ring.style.transition = 'stroke-dashoffset 1.7s cubic-bezier(.22,1,.36,1)';
+        ring.style.strokeDashoffset = total * (1 - 87/100);
+      }, 100);
+    }
+    /* Compteurs score */
+    animCount(document.getElementById('psScoreVal'), 87, 1400);
+    animCount(document.getElementById('psVir'),      81, 1600);
+    animCount(document.getElementById('psMom'),      88, 1800);
+    animCount(document.getElementById('psGrowth'),   96, 1600);
+
+    /* Hero ring */
+    var hR = document.getElementById('heroRing');
+    var hS = document.getElementById('heroScore');
+    if(hR){ hR.style.transition='stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1)'; setTimeout(function(){ hR.style.strokeDashoffset = 226.2*(1-87/100); },120); }
+    animCount(hS, 87, 1400);
+
+    /* Virality / Momentum */
+    var vR = document.getElementById('virRing'); var vN = document.getElementById('virNum');
+    var mR = document.getElementById('momRing'); var mN = document.getElementById('momNum');
+    if(vR){ vR.style.transition='stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)'; setTimeout(function(){ vR.style.strokeDashoffset=339.3*(1-81/100); },200); }
+    if(mR){ mR.style.transition='stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)'; setTimeout(function(){ mR.style.strokeDashoffset=339.3*(1-88/100); },200); }
+    animCount(vN, 81, 1500); animCount(mN, 88, 1500);
+
+    /* Sig ring */
+    var sR = document.getElementById('sigRing'); var sP = document.getElementById('sigPct');
+    if(sR){ sR.style.transition='stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1)'; setTimeout(function(){ sR.style.strokeDashoffset=226.2*(1-78/100); },300); }
+    animCount(sP, 78, 1600);
+
+    /* Chart lignes */
+    setTimeout(function(){
+      ['spotLine','appleLine','deezerLine'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(el){ el.style.transition='stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1)'; el.style.strokeDashoffset='0'; }
+      });
+    }, 400);
+
+    /* Radar */
+    setTimeout(function(){
+      var poly = document.getElementById('radarPoly');
+      if(poly){
+        var R = 90, vals = [92,84,78,88,96,72];
+        var pts = vals.map(function(v,i){
+          var r = R*v/100;
+          var a = (i*60-90)*Math.PI/180;
+          return (r*Math.cos(a)).toFixed(1)+','+(r*Math.sin(a)).toFixed(1);
+        });
+        poly.setAttribute('points', pts.join(' '));
+        poly.style.transition = 'points .8s cubic-bezier(.22,1,.36,1)';
+      }
+    }, 600);
+
+    /* Flux de données */
+    setTimeout(creerFlux, 300);
+  }
+
+  function creerFlux(){
+    var flux = document.getElementById('psFlux');
+    var center = document.getElementById('psWrap').querySelector('.ps-center');
+    if(!flux || !center) return;
+    var platforms = document.querySelectorAll('.ps-platform');
+    var wRect = flux.getBoundingClientRect();
+    var cRect = center.getBoundingClientRect();
+    var cCX = cRect.left - wRect.left + cRect.width/2;
+    var cCY = cRect.top  - wRect.top  + cRect.height/2;
+
+    platforms.forEach(function(p, i){
+      var color = p.getAttribute('data-color') || '#E5C158';
+      var isRight = p.getAttribute('data-target') === 'right';
+      var pRect = p.getBoundingClientRect();
+      var pCX = pRect.left - wRect.left + pRect.width/2;
+      var pCY = pRect.top  - wRect.top  + pRect.height/2;
+      var dx = cCX - pCX, dy = cCY - pCY;
+      var len = Math.sqrt(dx*dx + dy*dy) * 0.68;
+      var angle = Math.atan2(dy, dx) * 180/Math.PI;
+
+      var line = document.createElement('div');
+      line.style.cssText = 'position:absolute;height:2px;border-radius:2px;opacity:0;'
+        + 'width:'+len+'px;'
+        + 'top:'+(pCY-1)+'px;left:'+pCX+'px;'
+        + 'background:linear-gradient('+(isRight?'270deg':'90deg')+','+color+' 0%,'+color+'00 100%);'
+        + 'transform:rotate('+angle+'deg);transform-origin:left center;'
+        + 'animation:fluxSlide'+(isRight?'R':'')+' 2.8s ease-in-out '+(i*0.38)+'s infinite;';
+      flux.appendChild(line);
+    });
+  }
+})();
+
+/* Tilt 3D */
+document.querySelectorAll('.card-tilt').forEach(function(card){
+  card.addEventListener('mousemove', function(e){
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX-r.left)/r.width-.5;
+    var y = (e.clientY-r.top)/r.height-.5;
+    card.style.transform = 'perspective(600px) rotateY('+(x*5)+'deg) rotateX('+(-y*5)+'deg) translateY(-3px)';
+    card.style.transition = '';
+  });
+  card.addEventListener('mouseleave', function(){
+    card.style.transform = '';
+    card.style.transition = 'transform .4s ease';
+  });
+});
+
+/* KPI bars */
+setTimeout(function(){
+  document.querySelectorAll('.kpi-bar-fill,.rev-bar-fill').forEach(function(bar){
+    var w = bar.style.width;
+    bar.style.width = '0';
+    bar.style.transition = 'width 1.3s cubic-bezier(.22,1,.36,1) .3s';
+    requestAnimationFrame(function(){ bar.style.width = w; });
+  });
+}, 200);
+</script>
+</body>
+</html>

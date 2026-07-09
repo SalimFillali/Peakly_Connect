@@ -1,0 +1,24 @@
+{
+  "name": "peakly",
+  "version": "1.0.0",
+  "description": "Peakly — Marketplace music-tech B2B/B2C France",
+  "private": true,
+  "scripts": {
+    "dev":   "vercel dev",
+    "build": "echo 'Static site — no build step required'",
+    "lint":  "eslint api/**/*.js js/services/**/*.js js/utils/**/*.js",
+    "seed":  "node scripts/seed.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "stripe":                "^16.0.0"
+  },
+  "devDependencies": {
+    "eslint":        "^9.0.0",
+    "vercel":        "^37.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "UNLICENSED"
+}

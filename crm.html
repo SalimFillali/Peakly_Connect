@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM Peakly : Def Jam France</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<style>
+
+.barre-recherche input{width:100%;padding:8px 14px 8px 36px;background:rgba(255,255,255,.05);border:1px solid var(--b1);border-radius:999px;font-size:.83rem;color:var(--txt);font-family:'Inter',sans-serif;transition:all .15s}
+.barre-recherche input:focus{outline:none;border-color:var(--or-glow);background:rgba(255,255,255,.08)}
+.barre-recherche input::placeholder{color:rgba(148,163,184,.45)}
+.barre-recherche svg{position:absolute;left:11px;color:var(--txt2);pointer-events:none}
+.kbd-badge{position:absolute;right:12px;font-size:.6rem;color:var(--txt3);font-family:'JetBrains Mono',monospace;pointer-events:none}
+.nav-icone.actif::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:22px;height:2px;background:var(--or);border-radius:2px}
+
+.crm-hero{background:linear-gradient(135deg,rgba(10,13,20,1) 0%,rgba(26,33,51,1) 50%,rgba(10,13,20,1) 100%);border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
+.crm-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 200% at 100% 50%,rgba(229,193,88,.06),transparent 60%)}
+.crm-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 40% 100% at 0% 50%,rgba(74,222,128,.04),transparent 60%)}
+.hero-inner{max-width:1500px;margin:0 auto;padding:28px 24px 0;display:flex;align-items:start;gap:24px;flex-wrap:wrap}
+.label-logo-wrap{width:72px;height:72px;border-radius:var(--r-lg);background:linear-gradient(135deg,#E5C158,#C9A53F);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.5rem;color:var(--texte-fonce);flex-shrink:0;box-shadow:0 0 0 1px rgba(229,193,88,.3),0 8px 24px rgba(229,193,88,.2)}
+.label-identity{flex:1;min-width:200px}
+.label-name{font-size:1.6rem;font-weight:900;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.verified-pro{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);font-size:.65rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.verified-pro svg{width:10px;height:10px;stroke:var(--or)}
+.crm-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.65rem;font-weight:700;color:var(--vert);font-family:'Plus Jakarta Sans',sans-serif}
+.label-sub{font-size:.88rem;color:var(--txt2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.sub-dot{width:3px;height:3px;border-radius:50%;background:var(--txt3)}
+.label-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-crm{padding:9px 20px;border-radius:var(--r-sm);font-weight:700;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.btn-crm-primary{background:var(--or);color:var(--texte-fonce);box-shadow:0 4px 14px rgba(229,193,88,.25)}
+.btn-crm-primary:hover{background:var(--or-h);transform:translateY(-1px);box-shadow:0 6px 20px rgba(229,193,88,.35)}
+.btn-crm-secondary{background:rgba(255,255,255,.06);border:1px solid var(--b2);color:var(--txt)}
+.btn-crm-secondary:hover{background:rgba(255,255,255,.1);border-color:var(--b3)}
+.btn-crm-ghost{border:1px solid var(--b1);color:var(--txt2)}
+.btn-crm-ghost:hover{background:rgba(255,255,255,.05);color:var(--txt)}
+
+.kpi-strip{max-width:1500px;margin:0 auto;padding:20px 24px;display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--b1)}
+@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+.kpi-cell{padding:14px 20px;border-right:1px solid var(--b1);position:relative}
+.kpi-cell:last-child{border-right:none}
+.kpi-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.kpi-label svg{width:11px;height:11px}
+.kpi-val{font-size:1.65rem;font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;color:var(--txt);line-height:1;margin-bottom:3px}
+.kpi-change{font-size:.7rem;font-weight:600;display:flex;align-items:center;gap:4px}
+.kpi-spark{height:24px;width:80px;margin-top:6px}
+
+.crm-tab-bar{max-width:1500px;margin:0 auto;display:flex;align-items:center;gap:2px;padding:0 24px;border-bottom:1px solid var(--b1);background:rgba(5,5,7,.6);backdrop-filter:blur(12px)}
+.crm-tab{padding:14px 18px;font-size:.8rem;font-weight:600;color:var(--txt2);cursor:pointer;transition:color .15s;position:relative;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.crm-tab:hover{color:var(--txt)}
+.crm-tab.active{color:var(--or);border-bottom-color:var(--or)}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or);font-size:.62rem;font-weight:800;margin-left:6px;padding:0 4px;font-family:'Plus Jakarta Sans',sans-serif}
+.tab-actions{margin-left:auto;display:flex;gap:8px;padding:8px 0}
+
+.crm-layout{max-width:1500px;margin:0 auto;padding:20px 24px 60px;display:grid;grid-template-columns:1fr 310px;gap:20px}
+@media(max-width:1100px){.crm-layout{grid-template-columns:1fr}}
+
+.card-title svg{width:15px;height:15px;flex-shrink:0}
+.card-actions{display:flex;gap:6px;align-items:center}
+.icon-btn{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;color:var(--txt2);transition:all .15s}
+.icon-btn:hover{background:rgba(255,255,255,.07);color:var(--txt);border-color:var(--b2)}
+
+.ai-hero-section{border:1px solid rgba(74,222,128,.18);border-radius:var(--r-xl);background:linear-gradient(135deg,rgba(5,5,7,.97),rgba(10,14,26,.98));position:relative;overflow:hidden;margin-bottom:20px}
+.ai-hero-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.5),rgba(229,193,88,.3),transparent)}
+.ai-hero-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,rgba(5,5,7,.5),transparent);pointer-events:none}
+.ai-top{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid rgba(74,222,128,.1);flex-wrap:wrap;gap:12px}
+.ai-brand{display:flex;align-items:center;gap:10px}
+.ai-pulse{width:8px;height:8px;border-radius:50%;background:var(--vert);box-shadow:0 0 10px var(--vert);animation:pulse-green 1.8s infinite}
+@keyframes pulse-green{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.ai-title{font-size:.92rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.ai-sub{font-size:.72rem;color:var(--vert);font-family:'JetBrains Mono',monospace}
+.ai-status{display:flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.72rem;color:var(--vert);font-weight:600;font-family:'JetBrains Mono',monospace}
+
+.ai-counters{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid rgba(74,222,128,.08)}
+@media(max-width:700px){.ai-counters{grid-template-columns:repeat(2,1fr)}}
+.ai-counter-cell{padding:22px 24px;border-right:1px solid rgba(74,222,128,.08);position:relative;overflow:hidden}
+.ai-counter-cell:last-child{border-right:none}
+.ai-counter-cell::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;transition:opacity .3s}
+.ai-counter-cell:hover::before{opacity:1}
+.ai-counter-cell:nth-child(1)::before{background:radial-gradient(ellipse at top left,rgba(74,222,128,.06),transparent 60%)}
+.ai-counter-cell:nth-child(2)::before{background:radial-gradient(ellipse at top left,rgba(229,193,88,.06),transparent 60%)}
+.ai-counter-cell:nth-child(3)::before{background:radial-gradient(ellipse at top left,rgba(96,165,250,.06),transparent 60%)}
+.ai-counter-cell:nth-child(4)::before{background:radial-gradient(ellipse at top left,rgba(167,139,250,.06),transparent 60%)}
+.aic-num{font-size:2.6rem;font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;line-height:1;margin-bottom:4px}
+.aic-label{font-size:.75rem;color:var(--txt2);line-height:1.4}
+.aic-badge{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:3px 9px;border-radius:999px;font-size:.65rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
+
+.ai-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px 24px;overflow:hidden}
+@media(max-width:900px){.ai-cards-grid{grid-template-columns:repeat(2,1fr)}}
+.ai-artist-card{border-radius:var(--r-lg);border:1px solid var(--b1);background:rgba(255,255,255,.03);padding:16px;cursor:pointer;transition:border-color var(--T),background var(--T),transform var(--T),box-shadow var(--T);position:relative;overflow:hidden}
+.ai-artist-card:hover{border-color:var(--or-glow);background:rgba(229,193,88,.04);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4),0 0 20px rgba(229,193,88,.08)}
+.ai-card-head{display:flex;align-items:start;gap:12px;margin-bottom:12px}
+.ai-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0;border:2px solid var(--b2)}
+.ai-card-info{flex:1;min-width:0}
+.ai-card-name{font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:2px}
+.ai-card-sub{font-size:.7rem;color:var(--txt2)}
+.ai-match{padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0}
+.ai-match-hot{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--vert)}
+.ai-match-mid{background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or)}
+.ai-reasons{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.ai-reason{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--txt2)}
+.ai-reason-icon{color:var(--vert);flex-shrink:0;font-size:.72rem}
+.ai-card-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.ai-metric{background:rgba(255,255,255,.04);border-radius:var(--r-sm);padding:6px 8px;text-align:center}
+.ai-metric-val{font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.ai-metric-lbl{font-size:.58rem;color:var(--txt2)}
+.ai-card-sparkline{height:24px;width:100%;margin-bottom:10px}
+.ai-card-footer{display:flex;gap:6px}
+.ai-card-btn{flex:1;padding:7px;border-radius:var(--r-sm);font-size:.72rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;transition:all .15s}
+.ai-card-btn-primary{background:var(--or);color:var(--texte-fonce)}
+.ai-card-btn-primary:hover{background:var(--or-h)}
+.ai-card-btn-ghost{border:1px solid var(--b1);color:var(--txt2)}
+.ai-card-btn-ghost:hover{border-color:var(--b2);color:var(--txt)}
+.ai-card-glow{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(229,193,88,.06),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.ai-artist-card:hover .ai-card-glow{opacity:1}
+
+.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:16px 20px 20px;overflow-x:auto}
+@media(max-width:800px){.kanban-board{grid-template-columns:repeat(2,1fr)}}
+.kanban-col{background:rgba(255,255,255,.025);border-radius:var(--r);border:1px solid var(--b1);display:flex;flex-direction:column;min-height:280px}
+.kanban-col-header{padding:12px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.kanban-col-title{font-size:.78rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:7px}
+.kanban-indicator{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.kanban-count{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--txt2);font-family:'Plus Jakarta Sans',sans-serif}
+.kanban-cards{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px}
+.kanban-card{background:rgba(255,255,255,.04);border:1px solid var(--b1);border-radius:var(--r-sm);padding:11px 12px;cursor:pointer;transition:all .18s;position:relative}
+.kanban-card:hover{background:rgba(255,255,255,.07);border-color:var(--b2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.kc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.kc-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0}
+.kc-name{font-size:.8rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kc-ts{font-size:.7rem;font-weight:800;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.kc-genre{font-size:.67rem;color:var(--txt2);margin-bottom:6px}
+.kc-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.kc-bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
+.kc-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.kc-match{font-size:.67rem;font-weight:700;color:var(--vert)}
+.kc-time{font-size:.62rem;color:var(--txt3);font-family:'JetBrains Mono',monospace}
+.kanban-add{margin:8px 10px 10px;padding:8px;border-radius:var(--r-sm);border:1px dashed var(--b1);color:var(--txt3);font-size:.74rem;text-align:center;cursor:pointer;transition:all .15s}
+.kanban-add:hover{border-color:var(--b2);color:var(--txt2);background:rgba(255,255,255,.03)}
+
+.funnel-wrap{padding:12px 20px 20px;display:flex;flex-direction:column;gap:8px}
+.funnel-step{display:flex;align-items:center;gap:14px;position:relative}
+.funnel-bar-wrap{flex:1;position:relative}
+.funnel-bar-bg{height:36px;border-radius:var(--r-sm);background:rgba(255,255,255,.05);overflow:hidden;position:relative}
+.funnel-bar-fill{height:100%;border-radius:var(--r-sm);display:flex;align-items:center;padding-left:12px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.funnel-label{font-size:.78rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;min-width:130px;flex-shrink:0}
+.funnel-num{font-size:.88rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;min-width:42px;text-align:right}
+.funnel-rate{font-size:.68rem;color:var(--txt2);min-width:50px;text-align:right;font-family:'JetBrains Mono',monospace}
+
+.chart-wrap{padding:0 20px 20px;position:relative}
+.chart-svg{width:100%;overflow:visible}
+.chart-grid-line{stroke:rgba(255,255,255,.05);stroke-width:1;stroke-dasharray:4,4}
+.chart-axis-label{font-size:.6rem;fill:rgba(148,163,184,.55);font-family:'Inter',sans-serif}
+.chart-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.sidebar-stack{display:flex;flex-direction:column;gap:16px}
+.widget-header{padding:14px 16px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.widget-title{font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:7px}
+.widget-link{font-size:.7rem;color:var(--or);cursor:pointer}
+.perf-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.03);border:1px solid var(--b1);margin:0 16px 8px}
+.perf-icon{width:30px;height:30px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.perf-label{font-size:.76rem;color:var(--txt2);flex:1}
+.perf-val{font-size:.88rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.perf-change{font-size:.67rem;font-weight:700}
+.sig-timeline{padding:10px 16px 16px;display:flex;flex-direction:column;gap:0}
+.sig-event{display:flex;align-items:start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sig-event:last-child{border-bottom:none}
+.sig-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.sig-event-info{flex:1}
+.sig-event-title{font-size:.8rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.sig-event-sub{font-size:.68rem;color:var(--txt2);margin-top:1px}
+.sig-event-date{font-size:.62rem;color:var(--txt3);font-family:'JetBrains Mono',monospace;flex-shrink:0;margin-top:3px}
+.hmap-cell{width:11px;height:11px;border-radius:2px;transition:transform .15s,opacity .15s}
+.hmap-cell:hover{transform:scale(1.5);z-index:5;position:relative}
+.hm-0{background:rgba(255,255,255,.04)}.hm-1{background:rgba(229,193,88,.2)}.hm-2{background:rgba(229,193,88,.45)}.hm-3{background:rgba(229,193,88,.7)}.hm-4{background:rgba(229,193,88,.9)}
+
+.cmd-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:start;justify-content:center;padding-top:12vh;background:rgba(5,5,7,.85);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s}
+.cmd-overlay.open{opacity:1;pointer-events:all}
+.cmd-palette{width:100%;max-width:600px;border-radius:var(--r-xl);background:rgba(15,20,32,.99);border:1px solid var(--b2);box-shadow:0 40px 80px rgba(0,0,0,.8),0 0 60px rgba(229,193,88,.07);overflow:hidden}
+.cmd-input-row{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--b1)}
+.cmd-input-row svg{width:18px;height:18px;color:var(--txt2);flex-shrink:0}
+.cmd-input{flex:1;background:none;border:none;font-size:1rem;color:var(--txt);outline:none;font-family:'Inter',sans-serif;caret-color:var(--or)}
+.cmd-input::placeholder{color:var(--txt3)}
+.cmd-kbd{padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid var(--b1);font-size:.68rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.cmd-results{max-height:380px;overflow-y:auto;padding:8px 0}
+.cmd-section{padding:6px 22px 4px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);font-family:'Plus Jakarta Sans',sans-serif}
+.cmd-item{display:flex;align-items:center;gap:12px;padding:10px 22px;cursor:pointer;transition:background .1s}
+.cmd-item:hover{background:rgba(255,255,255,.05)}
+.cmd-item-icon{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.cmd-item-text{flex:1}
+.cmd-item-title{font-size:.88rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.cmd-item-sub{font-size:.7rem;color:var(--txt2)}
+.cmd-item-enter{font-size:.65rem;color:var(--txt3);font-family:'JetBrains Mono',monospace}
+.cmd-footer{padding:10px 22px;border-top:1px solid var(--b1);display:flex;gap:16px}
+.cmd-hint{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--txt3)}
+.cmd-hint kbd{padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid var(--b1);font-family:'JetBrains Mono',monospace;font-size:.62rem}
+.toast{padding:12px 16px;border-radius:var(--r);background:rgba(15,20,32,.98);border:1px solid var(--b2);box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px;pointer-events:all;transform:translateX(120%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);max-width:320px}
+.toast.show{transform:translateX(0)}
+.toast-icon{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem}
+.toast-text{flex:1;font-size:.78rem;color:var(--txt);line-height:1.35}
+.toast-text small{color:var(--txt2);display:block;font-size:.7rem}
+</style>
+</head>
+<body>
+
+<div id="nav-root"></div>
+
+<div class="crm-hero">
+  <div class="hero-inner">
+    <div class="label-logo-wrap">DJ</div>
+    <div class="label-identity">
+      <div class="label-name">
+        Def Jam France
+        <div class="verified-pro">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          Label Vérifié Peakly
+        </div>
+        <div class="crm-badge">Espace CRM</div>
+      </div>
+      <div class="label-sub">
+        Major · Urbain / Rap / RnB
+        <span class="sub-dot"></span>
+        Paris, France
+        <span class="sub-dot"></span>
+        Réservé aux comptes professionnels
+      </div>
+      <div class="label-actions">
+        <button class="btn-crm btn-crm-primary" onclick="openCmd()">Rechercher</button>
+        <button class="btn-crm btn-crm-secondary" onclick="showToast('','Export généré','Rapport PDF disponible','')">Exporter le rapport</button>
+        <button class="btn-crm btn-crm-ghost" onclick="window.location='feed.html'">Fil d'actualité</button>
+        <button class="btn-crm btn-crm-ghost" onclick="window.location='profil-pro.html'">Profil public</button>
+      </div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;padding-bottom:20px">
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.72rem;color:var(--vert);font-weight:600;font-family:'JetBrains Mono',monospace;margin-bottom:8px">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--vert);animation:pulse-green 1.5s infinite"></div>
+        Analyse en cours
+      </div>
+      <div style="font-size:.75rem;color:var(--txt2);text-align:right">Dernière mise à jour<br><strong style="color:var(--txt)">Il y a 4 minutes</strong></div>
+    </div>
+  </div>
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Artistes suivis</div>
+      <div class="kpi-val" id="kpi0">0</div>
+      <div class="kpi-change up">+12 ce mois</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,20 13,18 26,15 40,12 53,8 66,5 80,2" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Signatures cette année</div>
+      <div class="kpi-val" id="kpi1">0</div>
+      <div class="kpi-change up">+3 par rapport à 2024</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,22 13,20 26,17 40,14 53,11 66,7 80,4" fill="none" stroke="#E5C158" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>Taux de conversion</div>
+      <div class="kpi-val">14.2%</div>
+      <div class="kpi-change up">+3.1 points</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,21 13,19 26,16 40,13 53,10 66,6 80,3" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Temps moyen de réponse</div>
+      <div class="kpi-val">47j</div>
+      <div class="kpi-change down">-8 jours ce trimestre</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,4 13,7 26,10 40,13 53,16 66,19 80,22" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Rendement catalogue</div>
+      <div class="kpi-val">x4.8</div>
+      <div class="kpi-change up">+0.7 annuel</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,22 13,19 26,16 40,12 53,9 66,6 80,2" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+  </div>
+</div>
+
+<div class="crm-tab-bar">
+  <div class="crm-tab active" onclick="setTab(this)">Vue globale <span class="tab-badge">17</span></div>
+  <div class="crm-tab" onclick="setTab(this)">Pipeline <span class="tab-badge" style="color:var(--or)">8</span></div>
+  <div class="crm-tab" onclick="setTab(this)">Entonnoir</div>
+  <div class="crm-tab" onclick="setTab(this)">Signatures <span class="tab-badge" style="color:var(--vert)">3</span></div>
+  <div class="tab-actions">
+    <button style="background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or);font-size:.75rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;border-radius:var(--r-sm);padding:6px 14px;cursor:pointer" onclick="openCmd()">⌘K Rechercher</button>
+    <button style="background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.75rem;font-family:'Plus Jakarta Sans',sans-serif;border-radius:var(--r-sm);padding:6px 14px;cursor:pointer">Filtres</button>
+  </div>
+</div>
+
+<div class="crm-layout">
+  <div style="display:flex;flex-direction:column;gap:20px">
+
+    <div class="ai-hero-section reveal">
+      <div class="ai-top">
+        <div class="ai-brand">
+          <div class="ai-pulse"></div>
+          <div>
+            <div class="ai-title">Recommandations Peakly</div>
+            <div class="ai-sub">Sélection continue · 2 347 artistes analysés</div>
+          </div>
+        </div>
+        <div class="ai-status">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Dernière analyse : 4 min
+        </div>
+      </div>
+      <div class="ai-counters">
+        <div class="ai-counter-cell">
+          <div class="aic-num" id="aiC0" style="color:var(--vert)">0</div>
+          <div class="aic-label">artistes<br>compatibles</div>
+          <div class="aic-badge" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--vert)">Tous genres</div>
+        </div>
+        <div class="ai-counter-cell">
+          <div class="aic-num" id="aiC1" style="color:var(--or)">0</div>
+          <div class="aic-label">signatures<br>potentielles</div>
+          <div class="aic-badge" style="background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or)">Compatibilité 80%+</div>
+        </div>
+        <div class="ai-counter-cell">
+          <div class="aic-num" id="aiC2" style="color:var(--bleu)">0</div>
+          <div class="aic-label">opportunités<br>détectées</div>
+          <div class="aic-badge" style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);color:var(--bleu)">À saisir</div>
+        </div>
+        <div class="ai-counter-cell">
+          <div class="aic-num" id="aiC3" style="color:var(--violet)">0</div>
+          <div class="aic-label">en forte<br>croissance</div>
+          <div class="aic-badge" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--violet)">+200% par mois</div>
+        </div>
+      </div>
+      <div style="padding:16px 24px 12px;border-bottom:1px solid rgba(74,222,128,.08)">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2)">Peakly recommande pour Def Jam France</div>
+      </div>
+      <div class="ai-cards-grid">
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000">AK</div>
+            <div class="ai-card-info"><div class="ai-card-name">Awa Kouyaté</div><div class="ai-card-sub">Rap · Afrotrap · Paris</div></div>
+            <div class="ai-match ai-match-hot">91%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Audience identique à votre cible</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Croissance +42%, momentum rare</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Disponible, aucune offre active</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">92</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">2.4M</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">8.4%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,20 33,17 66,13 100,10 133,7 166,4 200,1" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Awa Kouyaté contactée','Demande envoyée via Peakly','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost" onclick="window.location='profil-artiste.html'">Voir profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">SM</div>
+            <div class="ai-card-info"><div class="ai-card-name">Sonya Mbaye</div><div class="ai-card-sub">RnB · Soul · Dakar-Paris</div></div>
+            <div class="ai-match ai-match-hot">87%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Même cible démographique 18-34</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Voix identifiée dans le top 5% RnB France</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">87</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">890K</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">9.1%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,22 33,19 66,16 100,13 133,9 166,6 200,3" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Sonya Mbaye contactée','Invitation audition envoyée','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Voir profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">WR</div>
+            <div class="ai-card-info"><div class="ai-card-name">Willy Ramos</div><div class="ai-card-sub">Afrobeats · Dance · Paris</div></div>
+            <div class="ai-match ai-match-mid">82%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Afrobeats, segment en croissance de 40%</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>4 millions de vues TikTok organiques</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">82</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">1.1M</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">7.8%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,21 33,18 66,15 100,12 133,8 166,5 200,2" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Willy Ramos contacté','Demande envoyée','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Voir profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card" style="border-color:rgba(167,139,250,.2)">
+          <div class="ai-card-glow" style="background:radial-gradient(ellipse at center,rgba(167,139,250,.06),transparent 60%)"></div>
+          <div style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--violet);font-size:.65rem;font-weight:700;margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif">Forte croissance +340%</div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">TR</div>
+            <div class="ai-card-info"><div class="ai-card-name">TiRoy</div><div class="ai-card-sub">Rap · Cloud · Lyon</div></div>
+            <div class="ai-match ai-match-mid" style="color:var(--violet);background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.2)">74%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon" style="color:var(--violet)">✓</span>+340% de streams en 30 jours</div>
+            <div class="ai-reason"><span class="ai-reason-icon" style="color:var(--violet)">✓</span>Fenêtre de signature ouverte</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">67</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">340%</div><div class="ai-metric-lbl" style="color:var(--violet)">Croissance</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">6.2%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,24 33,22 66,20 100,17 133,12 166,7 200,1" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','TiRoy : alerte croissance','Progression exceptionnelle','')">Suivre de près</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Profil complet</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);color:#fff">SL</div>
+            <div class="ai-card-info"><div class="ai-card-name">Sola Lefebvre</div><div class="ai-card-sub">RnB · Pop · Bordeaux</div></div>
+            <div class="ai-match ai-match-mid">79%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Voix exceptionnelle, top 3%</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Showcase récent, couverture presse nationale</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">79</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">420K</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">11.2%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,23 33,20 66,17 100,14 133,10 166,6 200,3" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Sola Lefebvre contactée','Message envoyé','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">BK</div>
+            <div class="ai-card-info"><div class="ai-card-name">Bamba Koné</div><div class="ai-card-sub">Afrobeats · Abidjan</div></div>
+            <div class="ai-match ai-match-mid">76%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Marché diaspora afro-française</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Audience 18-24 ans, 68% de la base</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">83</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">680K</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">9.4%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,22 33,19 66,16 100,13 133,9 166,6 200,2" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Bamba Koné contacté','Invitation envoyée','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Profil</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 24px 16px;display:flex;gap:8px;border-top:1px solid rgba(74,222,128,.08)">
+        <div style="padding:7px 16px;border-radius:var(--r-sm);background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.15);font-size:.75rem;color:var(--vert);font-weight:600;cursor:pointer">Voir les 11 autres artistes compatibles</div>
+        <div style="padding:7px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1);font-size:.75rem;color:var(--txt2);cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Filtrer par genre</div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18"/><rect x="10" y="8" width="5" height="13"/><rect x="17" y="5" width="5" height="16"/></svg>
+          Pipeline de recrutement
+        </div>
+        <div class="card-actions">
+          <div style="font-size:.75rem;color:var(--txt2)">20 artistes actifs</div>
+          <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+      </div>
+      <div class="kanban-board">
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div class="kanban-col-title"><div class="kanban-indicator" style="background:var(--txt3)"></div>Découverte</div>
+            <div class="kanban-count">8</div>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">TR</div><div class="kc-name">TiRoy</div><div class="kc-ts">67</div></div><div class="kc-genre">Rap · Cloud · Lyon</div><div class="kc-bar"><div class="kc-bar-fill" style="width:35%;background:var(--txt3)"></div></div><div class="kc-footer"><div class="kc-match">74%</div><div class="kc-time">J+2</div></div></div>
+            <div class="kanban-card"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">MK</div><div class="kc-name">Mo Kalvak</div><div class="kc-ts">74</div></div><div class="kc-genre">Drill · Paris 93</div><div class="kc-bar"><div class="kc-bar-fill" style="width:28%;background:var(--txt3)"></div></div><div class="kc-footer"><div class="kc-match">68%</div><div class="kc-time">J+5</div></div></div>
+            <div class="kanban-card"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff">LF</div><div class="kc-name">L. Fontaine</div><div class="kc-ts">71</div></div><div class="kc-genre">Pop · RnB · Nantes</div><div class="kc-bar"><div class="kc-bar-fill" style="width:20%;background:var(--txt3)"></div></div><div class="kc-footer"><div class="kc-match">71%</div><div class="kc-time">J+1</div></div></div>
+          </div>
+          <div class="kanban-add">+ Ajouter un artiste</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div class="kanban-col-title"><div class="kanban-indicator" style="background:var(--bleu)"></div>Premier contact</div>
+            <div class="kanban-count">5</div>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card" style="border-color:rgba(96,165,250,.2)"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">BK</div><div class="kc-name">Bamba Koné</div><div class="kc-ts">83</div></div><div class="kc-genre">Afrobeats · Abidjan</div><div class="kc-bar"><div class="kc-bar-fill" style="width:55%;background:var(--bleu)"></div></div><div class="kc-footer"><div class="kc-match">76%</div><div class="kc-time">J+12</div></div></div>
+            <div class="kanban-card" style="border-color:rgba(96,165,250,.2)"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);color:#fff">SL</div><div class="kc-name">Sola Lefebvre</div><div class="kc-ts">79</div></div><div class="kc-genre">RnB · Pop · Bordeaux</div><div class="kc-bar"><div class="kc-bar-fill" style="width:50%;background:var(--bleu)"></div></div><div class="kc-footer"><div class="kc-match">79%</div><div class="kc-time">J+9</div></div></div>
+          </div>
+          <div class="kanban-add">+ Ajouter</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div class="kanban-col-title"><div class="kanban-indicator" style="background:var(--or)"></div>En négociation</div>
+            <div class="kanban-count">4</div>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card" style="border-color:var(--or-glow)"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">WR</div><div class="kc-name">Willy Ramos</div><div class="kc-ts">82</div></div><div class="kc-genre">Afrobeats · Dance</div><div class="kc-bar"><div class="kc-bar-fill" style="width:75%;background:var(--or)"></div></div><div class="kc-footer"><div class="kc-match">82%</div><div class="kc-time">J+31</div></div></div>
+            <div class="kanban-card" style="border-color:var(--or-glow)"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">ZF</div><div class="kc-name">Zahra Fakhr</div><div class="kc-ts">85</div></div><div class="kc-genre">Pop · Electro · Lyon</div><div class="kc-bar"><div class="kc-bar-fill" style="width:80%;background:var(--or)"></div></div><div class="kc-footer"><div class="kc-match">85%</div><div class="kc-time">J+28</div></div></div>
+          </div>
+          <div class="kanban-add">+ Ajouter</div>
+        </div>
+        <div class="kanban-col" style="border-color:rgba(74,222,128,.18)">
+          <div class="kanban-col-header" style="background:rgba(74,222,128,.04)">
+            <div class="kanban-col-title"><div class="kanban-indicator" style="background:var(--vert);box-shadow:0 0 8px var(--vert)"></div>Signature imminente</div>
+            <div class="kanban-count" style="background:rgba(74,222,128,.12);color:var(--vert)">3</div>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card" style="border-color:rgba(74,222,128,.25);background:rgba(74,222,128,.04)"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000">AK</div><div class="kc-name">Awa Kouyaté</div><div class="kc-ts">92</div></div><div class="kc-genre">Rap · Afrotrap · Paris</div><div class="kc-bar"><div class="kc-bar-fill" style="width:95%;background:var(--vert)"></div></div><div class="kc-footer"><div class="kc-match" style="color:var(--vert)">91% ✓</div><div class="kc-time">J+47</div></div></div>
+            <div class="kanban-card" style="border-color:rgba(74,222,128,.2);background:rgba(74,222,128,.03)"><div class="kc-head"><div class="kc-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">SM</div><div class="kc-name">Sonya Mbaye</div><div class="kc-ts">87</div></div><div class="kc-genre">RnB · Soul · Dakar</div><div class="kc-bar"><div class="kc-bar-fill" style="width:90%;background:var(--vert)"></div></div><div class="kc-footer"><div class="kc-match" style="color:var(--vert)">87% ✓</div><div class="kc-time">J+39</div></div></div>
+          </div>
+          <div class="kanban-add" style="border-color:rgba(74,222,128,.2);color:var(--vert)">+ Finaliser signature</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Entonnoir de conversion : signataires 2026
+        </div>
+        <div style="font-size:.72rem;color:var(--txt2)">Taux global : 14.2%</div>
+      </div>
+      <div class="funnel-wrap">
+        <div class="funnel-step"><div class="funnel-label">Artistes découverts</div><div class="funnel-bar-wrap"><div class="funnel-bar-bg"><div class="funnel-bar-fill" id="f0" style="width:0%;background:linear-gradient(90deg,rgba(96,165,250,.3),rgba(96,165,250,.15))"><span style="font-size:.72rem;font-weight:700;color:var(--bleu)">2 347</span></div></div></div><div class="funnel-num" style="color:var(--bleu)">2 347</div><div class="funnel-rate">100%</div></div>
+        <div class="funnel-step"><div class="funnel-label">Analysés par Peakly</div><div class="funnel-bar-wrap"><div class="funnel-bar-bg"><div class="funnel-bar-fill" id="f1" style="width:0%;background:linear-gradient(90deg,rgba(229,193,88,.3),rgba(229,193,88,.15))"><span style="font-size:.72rem;font-weight:700;color:var(--or)">847</span></div></div></div><div class="funnel-num" style="color:var(--or)">847</div><div class="funnel-rate">36.1%</div></div>
+        <div class="funnel-step"><div class="funnel-label">Compatibles (70%+)</div><div class="funnel-bar-wrap"><div class="funnel-bar-bg"><div class="funnel-bar-fill" id="f2" style="width:0%;background:linear-gradient(90deg,rgba(167,139,250,.3),rgba(167,139,250,.15))"><span style="font-size:.72rem;font-weight:700;color:var(--violet)">142</span></div></div></div><div class="funnel-num" style="color:var(--violet)">142</div><div class="funnel-rate">16.8%</div></div>
+        <div class="funnel-step"><div class="funnel-label">Contactés</div><div class="funnel-bar-wrap"><div class="funnel-bar-bg"><div class="funnel-bar-fill" id="f3" style="width:0%;background:linear-gradient(90deg,rgba(251,146,60,.3),rgba(251,146,60,.15))"><span style="font-size:.72rem;font-weight:700;color:var(--orange)">38</span></div></div></div><div class="funnel-num" style="color:var(--orange)">38</div><div class="funnel-rate">26.8%</div></div>
+        <div class="funnel-step"><div class="funnel-label">En négociation</div><div class="funnel-bar-wrap"><div class="funnel-bar-bg"><div class="funnel-bar-fill" id="f4" style="width:0%;background:linear-gradient(90deg,rgba(74,222,128,.3),rgba(74,222,128,.15))"><span style="font-size:.72rem;font-weight:700;color:var(--vert)">8</span></div></div></div><div class="funnel-num" style="color:var(--vert)">8</div><div class="funnel-rate">21.1%</div></div>
+        <div class="funnel-step"><div class="funnel-label">Signés</div><div class="funnel-bar-wrap"><div class="funnel-bar-bg"><div class="funnel-bar-fill" id="f5" style="width:0%;background:linear-gradient(90deg,var(--or),rgba(229,193,88,.5));box-shadow:0 0 12px rgba(229,193,88,.2)"><span style="font-size:.72rem;font-weight:800;color:var(--texte-fonce)">3</span></div></div></div><div class="funnel-num" style="color:var(--or)">3</div><div class="funnel-rate" style="color:var(--or)">37.5%</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sidebar-stack">
+
+    <div class="card reveal">
+      <div class="widget-header">
+        <div class="widget-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>Performance</div>
+      </div>
+      <div style="padding:12px 0 4px">
+        <div class="perf-row"><div class="perf-icon" style="background:var(--or-dim)">💰</div><div class="perf-label">Rendement catalogue</div><div><div class="perf-val">x4.8</div><div class="perf-change up">+0.7</div></div></div>
+        <div class="perf-row"><div class="perf-icon" style="background:rgba(74,222,128,.1)">📈</div><div class="perf-label">Taux de signature</div><div><div class="perf-val">14.2%</div><div class="perf-change up">+3.1 pts</div></div></div>
+        <div class="perf-row"><div class="perf-icon" style="background:rgba(96,165,250,.1)">⏱</div><div class="perf-label">Temps moyen</div><div><div class="perf-val">47 jours</div><div class="perf-change up">-8j</div></div></div>
+        <div class="perf-row"><div class="perf-icon" style="background:rgba(167,139,250,.1)">🎵</div><div class="perf-label">Artistes actifs</div><div><div class="perf-val">12</div><div class="perf-change up">+3</div></div></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="widget-header">
+        <div class="widget-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Timeline signatures 2026</div>
+      </div>
+      <div class="sig-timeline">
+        <div class="sig-event"><div class="sig-dot" style="background:var(--vert)"></div><div class="sig-event-info"><div class="sig-event-title">Awa Kouyaté : contrat envoyé</div><div class="sig-event-sub">Rap · Afrotrap · 2 ans</div></div><div class="sig-event-date">15 juin</div></div>
+        <div class="sig-event"><div class="sig-dot" style="background:var(--vert)"></div><div class="sig-event-info"><div class="sig-event-title">Sonya Mbaye : audition validée</div><div class="sig-event-sub">RnB · Soul · Dakar</div></div><div class="sig-event-date">8 juin</div></div>
+        <div class="sig-event"><div class="sig-dot" style="background:var(--or)"></div><div class="sig-event-info"><div class="sig-event-title">Willy Ramos : en négociation</div><div class="sig-event-sub">Afrobeats · Dance</div></div><div class="sig-event-date">2 juin</div></div>
+        <div class="sig-event"><div class="sig-dot" style="background:var(--or)"></div><div class="sig-event-info"><div class="sig-event-title">Zahra Fakhr : offre soumise</div><div class="sig-event-sub">Pop · Electro</div></div><div class="sig-event-date">28 mai</div></div>
+        <div class="sig-event"><div class="sig-dot" style="background:var(--bleu)"></div><div class="sig-event-info"><div class="sig-event-title">Sola Lefebvre : premier contact</div><div class="sig-event-sub">RnB · Pop · Bordeaux</div></div><div class="sig-event-date">20 mai</div></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="widget-header">
+        <div class="widget-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Activité de sourcing</div>
+      </div>
+      <div style="padding:12px 16px 16px;overflow-x:auto">
+        <div id="miniHeatmap" style="display:grid;grid-template-rows:repeat(7,10px);grid-auto-flow:column;gap:2px;width:max-content"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cmd-overlay" id="cmdOverlay" onclick="closeCmd(event)">
+  <div class="cmd-palette" onclick="event.stopPropagation()">
+    <div class="cmd-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="cmd-input" id="cmdInput" placeholder="Rappeur parisien 200K streams / Artistes signables sous 30j..." autocomplete="off">
+      <span class="cmd-kbd">Echap</span>
+    </div>
+    <div class="cmd-results" id="cmdResults">
+      <div class="cmd-section">Recherches rapides</div>
+      <div class="cmd-item" onclick="cmdSearch('Rappeur parisien 200K+ streams')"><div class="cmd-item-icon" style="background:var(--or-dim)">🎤</div><div class="cmd-item-text"><div class="cmd-item-title">Rappeur parisien 200K+ streams</div><div class="cmd-item-sub">Rap / Trap · Score 75+</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="cmdSearch('Artistes signables sous 30 jours')"><div class="cmd-item-icon" style="background:rgba(74,222,128,.1)">⚡</div><div class="cmd-item-text"><div class="cmd-item-title">Artistes signables sous 30 jours</div><div class="cmd-item-sub">Compatibilité 80%+ · Pipeline urgent</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="cmdSearch('Chanteuse RnB diaspora africaine')"><div class="cmd-item-icon" style="background:rgba(167,139,250,.1)">🎶</div><div class="cmd-item-text"><div class="cmd-item-title">Chanteuse RnB diaspora africaine</div><div class="cmd-item-sub">RnB / Soul · International</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="cmdSearch('Top croissance 30 jours')"><div class="cmd-item-icon" style="background:rgba(96,165,250,.1)">📈</div><div class="cmd-item-text"><div class="cmd-item-title">Top croissance 30 jours</div><div class="cmd-item-sub">Artistes en forte progression</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-section">Actions</div>
+      <div class="cmd-item" onclick="showToast('','Rapport généré','Export PDF disponible','');closeCmd()"><div class="cmd-item-icon" style="background:rgba(255,255,255,.05)">📄</div><div class="cmd-item-text"><div class="cmd-item-title">Générer un rapport PDF</div><div class="cmd-item-sub">Pipeline + Analyse + Statistiques</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="showToast('','Lien copié','Partage du pipeline activé','');closeCmd()"><div class="cmd-item-icon" style="background:rgba(255,255,255,.05)">🔗</div><div class="cmd-item-text"><div class="cmd-item-title">Partager le pipeline</div><div class="cmd-item-sub">Copier le lien, accès équipe</div></div><div class="cmd-item-enter">↵</div></div>
+    </div>
+    <div class="cmd-footer">
+      <div class="cmd-hint"><kbd>↑↓</kbd> Naviguer</div>
+      <div class="cmd-hint"><kbd>↵</kbd> Sélectionner</div>
+      <div class="cmd-hint"><kbd>Echap</kbd> Fermer</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+
+<script src="js/store.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ── Compteurs KPI et métriques ── */
+(function() {
+  function animKPI(id, target) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var t0 = performance.now(), dur = 1300;
+    function step(now) {
+      var p = Math.min((now - t0) / dur, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ease * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  /* KPI strip toujours visible au-dessus du pli : appel direct */
+  setTimeout(function() {
+    animKPI('kpi0', 42);
+    animKPI('kpi1', 8);
+  }, 400);
+  /* Compteurs IA : sous le pli, IntersectionObserver + fallback */
+  var aiEl = document.querySelector('.ai-counters');
+  if (aiEl) {
+    var aiDone = false;
+    function runAI() {
+      if (aiDone) return;
+      aiDone = true;
+      animKPI('aiC0', 142);
+      animKPI('aiC1', 28);
+      animKPI('aiC2', 12);
+      animKPI('aiC3', 7);
+    }
+    var aiObs = new IntersectionObserver(function(en) {
+      if (en[0].isIntersecting) { runAI(); aiObs.disconnect(); }
+    }, { threshold: 0.1 });
+    aiObs.observe(aiEl);
+    setTimeout(function() {
+      var r = aiEl.getBoundingClientRect();
+      if (r.top < window.innerHeight) runAI();
+    }, 800);
+  }
+})();
+
+/* ── Entonnoir de conversion ── */
+/* Largeurs proportionnelles aux données réelles : 2347, 847, 142, 38, 8, 3 */
+var FUNNEL_W = ['100%','36%','6%','1.6%','0.5%','0.3%'];
+var funnelDone = false;
+function runFunnel() {
+  if (funnelDone) return;
+  funnelDone = true;
+  ['f0','f1','f2','f3','f4','f5'].forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.style.width = '0';
+      setTimeout(function() {
+        el.style.transition = 'width 1.2s cubic-bezier(.4,0,.2,1)';
+        el.style.width = FUNNEL_W[i];
+      }, 200 + i * 150);
+    }
+  });
+}
+var funnelEl = document.querySelector('.funnel-wrap');
+if (funnelEl) {
+  var funnelObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { runFunnel(); funnelObs.disconnect(); }
+    });
+  }, { threshold: 0.2 });
+  funnelObs.observe(funnelEl);
+  /* fallback si déjà dans le viewport */
+  setTimeout(function() {
+    var r = funnelEl.getBoundingClientRect();
+    if (r.top < window.innerHeight) runFunnel();
+  }, 900);
+}
+
+var kanbanObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.kc-bar-fill').forEach((bar, i) => {
+        const w = bar.style.width; bar.style.width = '0';
+        setTimeout(() => { bar.style.transition = 'width 1s ease'; bar.style.width = w; }, 100 + i*100);
+      });
+      kanbanObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+const kanbanEl = document.querySelector('.kanban-board');
+if (kanbanEl) kanbanObs.observe(kanbanEl);
+
+const miniHm = document.getElementById('miniHeatmap');
+if (miniHm) {
+  for (let w = 0; w < 26; w++) {
+    for (let d = 0; d < 7; d++) {
+      const c = document.createElement('div');
+      const prog = w / 26;
+      let lvl = prog < 0.4 ? (Math.random() < 0.35 ? 1 : 0) : Math.floor(Math.random() * (prog < 0.7 ? 3 : 4)) + (prog > 0.8 ? 1 : 0);
+      c.className = 'hmap-cell hm-' + Math.min(lvl, 4);
+      miniHm.appendChild(c);
+    }
+  }
+}
+
+function openCmd() {
+  document.getElementById('cmdOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('cmdInput').focus(), 80);
+}
+function closeCmd(e) {
+  if (!e || e.target === document.getElementById('cmdOverlay')) {
+    document.getElementById('cmdOverlay').classList.remove('open');
+    document.getElementById('cmdInput').value = '';
+    document.getElementById('cmdResults').innerHTML = defaultCmdHTML();
+  }
+}
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmd(); }
+  if (e.key === 'Escape') closeCmd();
+});
+
+function defaultCmdHTML() {
+  return '<div class="cmd-section">Recherches rapides</div>'
+    +'<div class="cmd-item" onclick="cmdSearch(\'Rappeur parisien 200K+ streams\')"><div class="cmd-item-icon" style="background:var(--or-dim)">🎤</div><div class="cmd-item-text"><div class="cmd-item-title">Rappeur parisien 200K+ streams</div><div class="cmd-item-sub">Rap / Trap · Score 75+</div></div><div class="cmd-item-enter">↵</div></div>'
+    +'<div class="cmd-item" onclick="cmdSearch(\'Artistes signables sous 30 jours\')"><div class="cmd-item-icon" style="background:rgba(74,222,128,.1)">⚡</div><div class="cmd-item-text"><div class="cmd-item-title">Artistes signables sous 30 jours</div><div class="cmd-item-sub">Compatibilité 80%+ · Pipeline urgent</div></div><div class="cmd-item-enter">↵</div></div>';
+}
+
+const cmdInput = document.getElementById('cmdInput');
+const cmdResults = document.getElementById('cmdResults');
+const artistDB = [
+  {init:'AK',name:'Awa Kouyaté',sub:'Rap · Afrotrap · Paris · TS 92',match:'91%',bg:'linear-gradient(135deg,#E5C158,#C9A53F)',col:'#000'},
+  {init:'SM',name:'Sonya Mbaye',sub:'RnB · Soul · Dakar · TS 87',match:'87%',bg:'linear-gradient(135deg,#a78bfa,#7c3aed)',col:'#fff'},
+  {init:'WR',name:'Willy Ramos',sub:'Afrobeats · Dance · Paris · TS 82',match:'82%',bg:'linear-gradient(135deg,#f97316,#ea580c)',col:'#fff'},
+  {init:'ZF',name:'Zahra Fakhr',sub:'Pop · Electro · Lyon · TS 85',match:'85%',bg:'linear-gradient(135deg,#60a5fa,#3b82f6)',col:'#fff'},
+  {init:'BK',name:'Bamba Koné',sub:'Afrobeats · Abidjan · TS 83',match:'76%',bg:'linear-gradient(135deg,#4ade80,#16a34a)',col:'#000'},
+  {init:'SL',name:'Sola Lefebvre',sub:'RnB · Pop · Bordeaux · TS 79',match:'79%',bg:'linear-gradient(135deg,#ec4899,#be185d)',col:'#fff'},
+  {init:'TR',name:'TiRoy',sub:'Rap · Cloud · Lyon · TS 67',match:'74%',bg:'linear-gradient(135deg,#a78bfa,#7c3aed)',col:'#fff'},
+];
+if (cmdInput) {
+  cmdInput.addEventListener('input', () => {
+    const q = cmdInput.value.trim().toLowerCase();
+    if (!q) { cmdResults.innerHTML = defaultCmdHTML(); return; }
+    const hits = artistDB.filter(a => a.name.toLowerCase().includes(q) || a.sub.toLowerCase().includes(q) ||
+      (q.includes('rap') && a.sub.toLowerCase().includes('rap')) || (q.includes('rnb') && a.sub.toLowerCase().includes('rnb')) ||
+      (q.includes('afro') && a.sub.toLowerCase().includes('afro')) || (q.includes('paris') && a.sub.toLowerCase().includes('paris'))
+    );
+    cmdResults.innerHTML = '';
+    const lbl = document.createElement('div'); lbl.className='cmd-section'; lbl.textContent='Résultats'; cmdResults.appendChild(lbl);
+    if (!hits.length) { cmdResults.innerHTML += '<div style="padding:20px;text-align:center;font-size:.82rem;color:var(--txt2)">Aucun résultat.</div>'; return; }
+    hits.forEach(a => {
+      const div = document.createElement('div'); div.className='cmd-item';
+      div.innerHTML = '<div class="cmd-item-icon" style="background:'+a.bg+';border-radius:50%;color:'+a.col+';font-size:.7rem;font-weight:700;font-family:\'Plus Jakarta Sans\',sans-serif">'+a.init+'</div><div class="cmd-item-text"><div class="cmd-item-title">'+a.name+'</div><div class="cmd-item-sub">'+a.sub+'</div></div><div style="font-size:.78rem;font-weight:800;color:var(--vert);font-family:\'Plus Jakarta Sans\',sans-serif">'+a.match+'</div>';
+      cmdResults.appendChild(div);
+    });
+  });
+}
+function cmdSearch(q) { if(cmdInput){ cmdInput.value = q; cmdInput.dispatchEvent(new Event('input')); } }
+
+document.querySelectorAll('.ai-artist-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = 'perspective(700px) rotateY('+(x*4)+'deg) rotateX('+(-y*4)+'deg) translateY(-3px)';
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; card.style.transition = 'transform .4s ease'; });
+});
+
+document.querySelectorAll('.kanban-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const name = card.querySelector('.kc-name').textContent;
+    showToast('', name, 'Profil ouvert dans le pipeline', '');
+  });
+});
+
+const isMac = navigator.platform.toLowerCase().includes('mac')
+const hint = document.getElementById('cmdHint');
+if (hint) hint.textContent = isMac ? '⌘K' : 'Ctrl+K';
+
+setTimeout(() => showToast('','Analyse terminée','17 artistes compatibles trouvés ce matin',''), 1500);
+setTimeout(() => showToast('','Alerte pipeline','Awa Kouyaté : contrat prêt pour signature',''), 4000);
+setTimeout(() => showToast('','Nouvelle opportunité','Sony Music FR : audition ouverte, délai 12 jours',''), 7000);
+
+</script>
+</body>
+</html>

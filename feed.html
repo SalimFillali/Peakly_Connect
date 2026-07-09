@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Peakly Feed, Intelligence Musicale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<style>
+/* ── VARIABLES ─────────────────────────────────────────────── */
+/* ── RESET ─────────────────────────────────────────────────── */
+/* ── HEADER ────────────────────────────────────────────────── */
+.header-logo img{height:28px;width:auto}
+.barre-recherche input{
+  width:100%;padding:8px 14px 8px 36px;
+  background:rgba(255,255,255,.05);border:1px solid var(--b1);
+  border-radius:999px;font-size:.83rem;color:var(--txt);
+  font-family:'Inter',sans-serif;transition:border-color .15s,background .15s;
+}
+.barre-recherche input:focus{outline:none;border-color:var(--or-glow);background:rgba(255,255,255,.08)}
+.barre-recherche input::placeholder{color:rgba(148,163,184,.45)}
+.barre-recherche svg{position:absolute;left:11px;color:var(--txt2);pointer-events:none}
+.kbd-hint{position:absolute;right:12px;font-size:.62rem;color:var(--txt3);font-family:'JetBrains Mono',monospace;pointer-events:none}
+.nav-icone.actif::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:22px;height:2px;background:var(--or);border-radius:2px}
+@media(max-width:640px){.nav-icone span{display:none}.nav-icone{padding:6px 8px}.barre-recherche{max-width:140px}}
+/* ── LAYOUT ────────────────────────────────────────────────── */
+.app-layout{max-width:1400px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:260px 1fr 300px;gap:20px}
+@media(max-width:1100px){.app-layout{grid-template-columns:240px 1fr}}
+@media(max-width:760px){.app-layout{grid-template-columns:1fr}.col-left,.col-right{display:none}}
+/* ── GLASS CARD ────────────────────────────────────────────── */
+/* ── LEFT COLUMN ───────────────────────────────────────────── */
+.col-left{display:flex;flex-direction:column;gap:12px;position:sticky;top:78px;height:fit-content}
+.profile-card{padding:20px;text-align:center;position:relative;overflow:hidden}
+.profile-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(229,193,88,.06),transparent 60%);pointer-events:none}
+.profile-cover{height:52px;margin:-20px -20px 0;border-radius:var(--r) var(--r) 0 0;background:linear-gradient(135deg,rgba(229,193,88,.2),rgba(100,70,200,.15));position:relative}
+.profile-avatar-wrap{position:relative;display:inline-block;margin-top:-24px;margin-bottom:8px}
+.profile-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#E5C158,#C9A53F);border:3px solid var(--nuit2);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:.95rem;color:var(--texte-fonce)}
+.profile-score-ring{position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--or);border:2px solid var(--nuit2);display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:900;color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif}
+.profile-name{font-size:.95rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:2px}
+.profile-handle{font-size:.75rem;color:var(--txt2);margin-bottom:12px}
+.profile-score-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
+.ts-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);font-size:.72rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.ts-pill svg{width:11px;height:11px;stroke:var(--or)}
+.ts-score{font-size:1.05rem;font-weight:900}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--b1);border-radius:var(--r-sm);overflow:hidden;margin-bottom:14px}
+.pstat{background:var(--nuit2);padding:8px 4px;text-align:center}
+.pstat-num{font-size:.85rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.pstat-lbl{font-size:.6rem;color:var(--txt2)}
+.btn-profile{width:100%;padding:9px;border-radius:var(--r-sm);background:var(--or);color:var(--texte-fonce);font-weight:700;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s,transform .2s}
+.btn-profile:hover{background:var(--or-h);transform:translateY(-1px)}
+/* Shortcut nav */
+.nav-shortcuts{padding:8px 4px;display:flex;flex-direction:column;gap:1px}
+.shortcut{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-sm);font-size:.82rem;font-weight:500;color:var(--txt2);transition:background .15s,color .15s;cursor:pointer}
+.shortcut:hover,.shortcut.active{background:rgba(255,255,255,.06);color:var(--txt)}
+.shortcut svg{width:16px;height:16px;flex-shrink:0}
+.shortcut .s-count{margin-left:auto;font-size:.7rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+/* AI Insight widget */
+.ai-insight{padding:14px 16px}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:var(--vert);box-shadow:0 0 8px var(--vert);animation:pulse-ai 2s infinite}
+.ai-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--vert);font-family:'Plus Jakarta Sans',sans-serif}
+.ai-items{display:flex;flex-direction:column;gap:8px}
+.ai-item{display:flex;align-items:start;gap:8px;padding:8px 10px;border-radius:var(--r-sm);background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.12)}
+.ai-item-icon{font-size:.9rem;flex-shrink:0;margin-top:1px}
+.ai-item-text{font-size:.75rem;color:var(--txt2);line-height:1.4}
+.ai-item-text strong{color:var(--txt);display:block;margin-bottom:2px}
+/* ── CENTER COLUMN ──────────────────────────────────────────── */
+.col-center{display:flex;flex-direction:column;gap:14px}
+/* Stories */
+.stories-bar{display:flex;gap:12px;overflow-x:auto;padding:16px 18px;scrollbar-width:none;background:var(--glass);border:1px solid var(--b1);border-radius:var(--r)}
+.stories-bar::-webkit-scrollbar{display:none}
+.story-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;flex-shrink:0}
+.story-ring{width:52px;height:52px;border-radius:50%;padding:2px;background:linear-gradient(135deg,var(--or),var(--violet));transition:transform .2s}
+.story-ring:hover{transform:scale(1.08)}
+.story-ring.seen{background:var(--b1)}
+.story-avatar{width:100%;height:100%;border-radius:50%;border:2px solid var(--nuit2);background:var(--nuit3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden}
+.story-avatar img{width:100%;height:100%;object-fit:cover}
+.story-name{font-size:.62rem;color:var(--txt2);max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.story-add{width:52px;height:52px;border-radius:50%;background:var(--or-dim);border:1px dashed var(--or);display:flex;align-items:center;justify-content:center;color:var(--or);font-size:1.4rem;cursor:pointer;transition:background .2s}
+.story-add:hover{background:rgba(229,193,88,.2)}
+/* Compose */
+.compose{padding:14px 16px;display:flex;gap:12px;align-items:center}
+.compose-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E5C158,#C9A53F);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif}
+.compose-input{flex:1;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.85rem;font-family:'Inter',sans-serif;cursor:pointer;transition:border-color .2s,background .2s}
+.compose-input:hover{border-color:var(--b2);background:rgba(255,255,255,.08);color:var(--txt)}
+.compose-actions{display:flex;gap:8px}
+.compose-btn{width:34px;height:34px;border-radius:var(--r-sm);background:rgba(255,255,255,.05);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;color:var(--txt2);transition:background .15s,color .15s}
+.compose-btn:hover{background:var(--or-dim);color:var(--or);border-color:var(--or-glow)}
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 6px}
+.filter-bar::-webkit-scrollbar{display:none}
+.filter-chip{padding:6px 14px;border-radius:999px;font-size:.75rem;font-weight:600;border:1px solid var(--b1);color:var(--txt2);background:none;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.filter-chip:hover{border-color:var(--b2);color:var(--txt)}
+.filter-chip.active{background:var(--or-dim);border-color:var(--or-glow);color:var(--or)}
+/* ── POST ───────────────────────────────────────────────────── */
+.post{position:relative;overflow:visible}
+.post-new-badge{
+  position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  background:var(--vert);color:#000;font-size:.65rem;font-weight:800;
+  padding:3px 12px;border-radius:999px;z-index:5;opacity:0;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  animation:slide-down .4s forwards;
+}
+@keyframes slide-down{to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.post-inner{padding:18px 20px 14px}
+.post-header{display:flex;align-items:start;gap:12px;margin-bottom:14px}
+.post-avatar-wrap{position:relative;flex-shrink:0}
+.post-avatar{width:42px;height:42px;border-radius:50%;border:2px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;background:var(--nuit4);cursor:pointer;transition:border-color .2s}
+.post-avatar:hover{border-color:var(--or)}
+.ts-micro{position:absolute;bottom:-4px;right:-4px;background:var(--nuit2);border:1px solid var(--or-glow);border-radius:999px;padding:1px 5px;font-size:.58rem;font-weight:800;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+.post-meta{flex:1;min-width:0}
+.post-author{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.post-name{font-size:.9rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:color .15s}
+.post-name:hover{color:var(--or)}
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--or);flex-shrink:0}
+.verified-badge svg{width:9px;height:9px;stroke:#000;stroke-width:3}
+.artist-type-badge{padding:2px 8px;border-radius:999px;font-size:.62rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
+.badge-artist{background:rgba(96,165,250,.12);color:var(--bleu);border:1px solid rgba(96,165,250,.2)}
+.badge-label{background:rgba(229,193,88,.12);color:var(--or);border:1px solid rgba(229,193,88,.2)}
+.badge-promo{background:rgba(255,107,94,.12);color:var(--corail);border:1px solid rgba(255,107,94,.2)}
+.badge-rookie{background:rgba(167,139,250,.12);color:var(--violet);border:1px solid rgba(167,139,250,.2)}
+.post-handle{font-size:.76rem;color:var(--txt2)}
+.post-time{font-size:.72rem;color:var(--txt3)}
+.post-menu{margin-left:auto;padding:4px 8px;border-radius:var(--r-sm);color:var(--txt2);transition:background .15s,color .15s;display:flex;align-items:center}
+.post-menu:hover{background:rgba(255,255,255,.06);color:var(--txt)}
+/* AI insight strip */
+.ai-strip{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-sm);background:linear-gradient(135deg,rgba(74,222,128,.06),rgba(96,165,250,.04));border:1px solid rgba(74,222,128,.15);margin-bottom:12px}
+.ai-strip-icon{font-size:.85rem;flex-shrink:0}
+.ai-strip-text{font-size:.75rem;color:var(--txt2);line-height:1.4;flex:1}
+.ai-strip-text strong{color:var(--vert)}
+.ai-strip-cta{font-size:.7rem;font-weight:600;color:var(--or);flex-shrink:0;cursor:pointer;padding:3px 8px;border-radius:6px;border:1px solid var(--or-glow);transition:background .15s}
+.ai-strip-cta:hover{background:var(--or-dim)}
+/* Post body */
+.post-body{font-size:.88rem;color:var(--txt2);line-height:1.65;margin-bottom:14px}
+.post-body strong{color:var(--txt)}
+.post-tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:600;color:var(--or);background:var(--or-dim);margin-right:4px;cursor:pointer}
+/* Media */
+.post-media{border-radius:var(--r-sm);overflow:hidden;margin-bottom:14px;background:var(--nuit3);height:200px;display:flex;align-items:center;justify-content:center;position:relative}
+.post-media-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:.3}
+.audio-player{position:absolute;bottom:12px;left:12px;right:12px;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--r-sm);background:rgba(5,5,7,.85);backdrop-filter:blur(8px)}
+.play-btn{width:28px;height:28px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:transform .15s}
+.play-btn:hover{transform:scale(1.1)}
+.play-btn svg{width:12px;height:12px;fill:var(--texte-fonce);margin-left:1px}
+.track-info{flex:1;min-width:0}
+.track-name{font-size:.75rem;font-weight:600;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track-artist{font-size:.67rem;color:var(--txt2)}
+.track-prog{width:100%;height:2px;background:rgba(255,255,255,.15);border-radius:1px;margin-top:4px;cursor:pointer;position:relative}
+.track-fill{height:100%;border-radius:1px;background:var(--or);width:35%;transition:width .3s}
+.track-time{font-size:.65rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+/* Metrics grid */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+@media(max-width:500px){.metrics-grid{grid-template-columns:repeat(2,1fr)}}
+.metric-cell{padding:10px 10px 8px;border-radius:var(--r-sm);background:var(--nuit3);border:1px solid var(--b1);transition:border-color .2s,background .2s}
+.metric-cell:hover{border-color:var(--b2);background:rgba(255,255,255,.04)}
+.metric-label{font-size:.6rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--txt2);margin-bottom:4px}
+.metric-val{font-size:.95rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;line-height:1}
+.metric-change{font-size:.65rem;margin-top:2px;font-weight:600}
+.metric-change.metric-change/* Sparkline */
+.sparkline{height:28px;width:100%;margin-top:4px}
+/* Compat badges */
+.compat-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.compat-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:.68rem;font-weight:600;cursor:pointer;transition:background .15s}
+.compat-green{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--vert)}
+.compat-blue{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);color:var(--bleu)}
+.compat-gold{background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or)}
+.compat-violet{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--violet)}
+.compat-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+/* Score bars */
+.score-bars{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.score-bar-row{display:flex;align-items:center;gap:10px}
+.score-bar-label{font-size:.68rem;color:var(--txt2);width:100px;flex-shrink:0}
+.score-bar-track{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
+.score-bar-val{font-size:.7rem;font-weight:700;color:var(--txt);width:32px;text-align:right;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif}
+/* Post footer */
+.post-footer{display:flex;align-items:center;gap:4px;padding-top:10px;border-top:1px solid var(--b1)}
+.reaction-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:var(--r-sm);font-size:.78rem;color:var(--txt2);transition:background .15s,color .15s;position:relative}
+.reaction-btn:hover{background:rgba(255,255,255,.06);color:var(--txt)}
+.reaction-btn.liked{color:var(--corail)}
+.reaction-btn.liked svg{fill:var(--corail);stroke:var(--corail)}
+.reaction-btn svg{width:15px;height:15px}
+.reaction-btn .rcount{font-weight:600}
+.post-share{margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:var(--r-sm);font-size:.78rem;color:var(--txt2);transition:background .15s,color .15s}
+.post-share:hover{background:rgba(255,255,255,.06);color:var(--txt)}
+/* Like pop animation */
+@keyframes like-pop{0%{transform:scale(1)}40%{transform:scale(1.4)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+.like-popping{animation:like-pop .35s ease}
+/* Skeleton */
+.skeleton{background:linear-gradient(90deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 100%);background-size:400% 100%;animation:shimmer 1.4s infinite;border-radius:4px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skeleton-post{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.skel-row{display:flex;gap:10px}
+/* ── RIGHT COLUMN ───────────────────────────────────────────── */
+.col-right{display:flex;flex-direction:column;gap:14px;position:sticky;top:78px;height:fit-content}
+/* Trending */
+.widget-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--b1)}
+.widget-title{font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.widget-title svg{width:14px;height:14px;stroke:var(--or)}
+.widget-link{font-size:.72rem;color:var(--or);cursor:pointer}
+.trending-list{padding:8px 0}
+.trending-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:background .15s;position:relative}
+.trending-item:hover{background:rgba(255,255,255,.04)}
+.trending-rank{width:20px;font-size:.7rem;font-weight:800;color:var(--txt3);text-align:center;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif}
+.trending-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;color:var(--texte-fonce);flex-shrink:0}
+.trending-info{flex:1;min-width:0}
+.trending-name{font-size:.82rem;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Plus Jakarta Sans',sans-serif}
+.trending-genre{font-size:.68rem;color:var(--txt2)}
+.trending-right{display:flex;flex-direction:column;align-items:end;gap:3px;flex-shrink:0}
+.trending-score{font-size:.8rem;font-weight:800;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.trending-change{font-size:.65rem;font-weight:700;color:var(--vert)}
+.trending-sparkline{width:50px;height:18px}
+/* Opportunities */
+.opp-list{padding:10px 16px;display:flex;flex-direction:column;gap:8px}
+.opp-item{display:flex;align-items:start;gap:10px;padding:10px 12px;border-radius:var(--r-sm);background:var(--nuit3);border:1px solid var(--b1);cursor:pointer;transition:border-color .2s,background .2s}
+.opp-item:hover{border-color:var(--or-glow);background:rgba(229,193,88,.04)}
+.opp-icon{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem}
+.opp-info{flex:1;min-width:0}
+.opp-title{font-size:.78rem;font-weight:600;color:var(--txt);margin-bottom:2px;font-family:'Plus Jakarta Sans',sans-serif}
+.opp-sub{font-size:.68rem;color:var(--txt2)}
+.opp-score{font-size:.72rem;font-weight:700;color:var(--vert);flex-shrink:0;margin-top:2px}
+/* Notifications live */
+.notif-feed{padding:8px 16px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:hidden}
+.notif-item{display:flex;align-items:start;gap:8px;padding:7px 0;border-bottom:1px solid var(--b1);animation:notif-in .3s ease}
+@keyframes notif-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.notif-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif}
+.notif-text{font-size:.73rem;color:var(--txt2);line-height:1.4;flex:1}
+.notif-text strong{color:var(--txt)}
+.notif-time{font-size:.62rem;color:var(--txt3);flex-shrink:0;margin-top:1px}
+/* ── COMMAND PALETTE ─────────────────────────────────────────── */
+.cmd-overlay{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:start;justify-content:center;
+  padding-top:15vh;background:rgba(5,5,7,.8);backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.cmd-overlay.open{opacity:1;pointer-events:all}
+.cmd-palette{
+  width:100%;max-width:580px;border-radius:var(--r-lg);
+  background:rgba(17,22,34,.98);border:1px solid var(--b2);
+  box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 60px rgba(229,193,88,.08);
+  overflow:hidden;
+}
+.cmd-input-row{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--b1)}
+.cmd-input-row svg{width:18px;height:18px;color:var(--txt2);flex-shrink:0}
+.cmd-input{flex:1;background:none;border:none;font-size:1rem;color:var(--txt);outline:none;font-family:'Inter',sans-serif;caret-color:var(--or)}
+.cmd-input::placeholder{color:var(--txt3)}
+.cmd-kbd{padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.07);border:1px solid var(--b1);font-size:.7rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.cmd-results{max-height:360px;overflow-y:auto;padding:8px 0}
+.cmd-section-label{padding:6px 20px;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);font-family:'Plus Jakarta Sans',sans-serif}
+.cmd-result{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;transition:background .1s}
+.cmd-result:hover,.cmd-result.selected{background:rgba(255,255,255,.06)}
+.cmd-result-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif;color:var(--texte-fonce)}
+.cmd-result-info{flex:1;min-width:0}
+.cmd-result-name{font-size:.88rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.cmd-result-sub{font-size:.72rem;color:var(--txt2)}
+.cmd-result-score{font-size:.78rem;font-weight:800;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0}
+.cmd-result-enter{font-size:.65rem;color:var(--txt3);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.cmd-footer{padding:10px 20px;border-top:1px solid var(--b1);display:flex;gap:16px}
+.cmd-hint{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--txt3)}
+.cmd-hint kbd{padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.07);border:1px solid var(--b1);font-family:'JetBrains Mono',monospace;font-size:.65rem}
+/* ── FAB ─────────────────────────────────────────────────────── */
+.fab{
+  position:fixed;bottom:28px;right:28px;z-index:100;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--or),var(--or-h));
+  box-shadow:0 8px 24px rgba(229,193,88,.4);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+  color:var(--texte-fonce);
+}
+.fab:hover{transform:scale(1.1);box-shadow:0 12px 32px rgba(229,193,88,.5)}
+.fab svg{width:22px;height:22px;stroke:var(--texte-fonce);stroke-width:2.5}
+/* ── TOAST NOTIFICATION ──────────────────────────────────────── */
+.toast{
+  padding:12px 16px;border-radius:var(--r);background:rgba(17,22,34,.98);
+  border:1px solid var(--b2);box-shadow:0 8px 32px rgba(0,0,0,.5);
+  display:flex;align-items:center;gap:10px;pointer-events:all;
+  transform:translateX(120%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  max-width:300px;
+}
+.toast.show{transform:translateX(0)}
+.toast-icon{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem}
+.toast-text{flex:1;font-size:.78rem;color:var(--txt);line-height:1.35}
+.toast-text small{color:var(--txt2);display:block;font-size:.7rem}
+.toast-close{color:var(--txt3);cursor:pointer;padding:2px}
+/* ── HOVER CARD ──────────────────────────────────────────────── */
+.hover-card{
+  position:fixed;z-index:300;width:260px;
+  background:rgba(17,22,34,.98);border:1px solid var(--b2);
+  border-radius:var(--r-lg);box-shadow:0 20px 60px rgba(0,0,0,.7),var(--shadow-gold);
+  padding:0;overflow:hidden;pointer-events:none;
+  opacity:0;transform:translateY(8px) scale(.96);
+  transition:opacity .18s,transform .18s;
+}
+.hover-card.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.hc-cover{height:44px;background:linear-gradient(135deg,rgba(229,193,88,.2),rgba(100,70,200,.15))}
+.hc-body{padding:0 14px 14px}
+.hc-avatar{width:44px;height:44px;border-radius:50%;border:3px solid rgba(17,22,34,.98);margin-top:-22px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px}
+.hc-name{font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.hc-handle{font-size:.72rem;color:var(--txt2);margin-bottom:8px}
+.hc-score-row{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.hc-ts{padding:3px 10px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);font-size:.72rem;font-weight:800;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.hc-genre{padding:3px 10px;border-radius:999px;background:var(--glass2);border:1px solid var(--b1);font-size:.68rem;color:var(--txt2)}
+.hc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.hc-stat{text-align:center}
+.hc-stat-num{font-size:.82rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.hc-stat-lbl{font-size:.6rem;color:var(--txt2)}
+.hc-actions{display:flex;gap:8px}
+.hc-btn{flex:1;padding:7px;border-radius:var(--r-sm);font-size:.72rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;cursor:pointer;transition:all .15s}
+.hc-btn-primary{background:var(--or);color:var(--texte-fonce)}
+.hc-btn-primary:hover{background:var(--or-h)}
+.hc-btn-secondary{background:rgba(255,255,255,.06);color:var(--txt);border:1px solid var(--b1)}
+.hc-btn-secondary:hover{background:rgba(255,255,255,.1)}
+/* ── MISC ────────────────────────────────────────────────────── */
+.load-more{width:100%;padding:14px;border-radius:var(--r);background:var(--glass);border:1px solid var(--b1);color:var(--txt2);font-size:.82rem;font-weight:600;transition:background .2s,border-color .2s,color .2s;text-align:center}
+.load-more:hover{background:var(--glass2);border-color:var(--b2);color:var(--txt)}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--corail);box-shadow:0 0 6px var(--corail);margin-right:4px;animation:pulse-ai 1.5s infinite}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div id="nav-root"></div>
+
+<!-- ═══════════════ LAYOUT ═══════════════ -->
+<div class="app-layout">
+
+  <!-- ── COLONNE GAUCHE ── -->
+  <aside class="col-left">
+
+    <!-- Profil card -->
+    <div class="card profile-card">
+      <div class="profile-cover"></div>
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">MJ</div>
+        <div class="profile-score-ring">84</div>
+      </div>
+      <div class="profile-name">Marc Johnson</div>
+      <div class="profile-handle">@marc.johnson · Rap / Trap</div>
+      <div class="profile-score-row">
+        <div class="ts-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          Talent Score <span class="ts-score">84</span>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><div class="pstat-num">12.4K</div><div class="pstat-lbl">Abonnés</div></div>
+        <div class="pstat"><div class="pstat-num">847</div><div class="pstat-lbl">Contacts</div></div>
+        <div class="pstat"><div class="pstat-num">3.2K</div><div class="pstat-lbl">Vues</div></div>
+      </div>
+      <button class="btn-profile" onclick="window.location='profil-artiste.html'">Voir mon profil</a>
+    </div>
+
+    <!-- Nav shortcuts -->
+    <div class="card nav-shortcuts">
+      <div class="shortcut active" onclick="filterFeed('all')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Tout le fil <span class="s-count">24</span>
+      </div>
+      <div class="shortcut" onclick="filterFeed('artiste')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Artistes <span class="s-count">18</span>
+      </div>
+      <div class="shortcut" onclick="filterFeed('label')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Labels <span class="s-count">4</span>
+      </div>
+      <div class="shortcut" onclick="filterFeed('audition')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Auditions <span class="s-count">2</span>
+      </div>
+      <div class="shortcut" onclick="openCmd()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Recherche IA <span class="s-count" style="color:var(--or)">⌘K</span>
+      </div>
+    </div>
+
+    <!-- AI Insight widget -->
+    <div class="card ai-insight">
+      <div class="ai-header">
+        <div class="ai-dot"></div>
+        <div class="ai-label">Peakly AI, En direct</div>
+      </div>
+      <div class="ai-items">
+        <div class="ai-item">
+          <div class="ai-item-icon">📈</div>
+          <div class="ai-item-text"><strong>+34% cette semaine</strong>Ton Reach a explosé depuis ton dernier drop. Momentum rare.</div>
+        </div>
+        <div class="ai-item">
+          <div class="ai-item-icon">🎯</div>
+          <div class="ai-item-text"><strong>8 labels compatibles</strong>Nouvelle Data: Sony Music FR et Def Jam Paris matchent ton profil.</div>
+        </div>
+        <div class="ai-item">
+          <div class="ai-item-icon">⚡</div>
+          <div class="ai-item-text"><strong>Opportunité détectée</strong>Festival Francofolies 2026 cherche du Rap/Trap parisien, délai 12j.</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── COLONNE CENTRE ── -->
+  <main class="col-center">
+
+    <!-- Stories -->
+    <div class="stories-bar card">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0">
+        <div class="story-add">+</div>
+        <span class="story-name">Ajouter</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000;font-weight:800">MJ</div>
+        </div>
+        <span class="story-name">Moi</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff">AK</div>
+        </div>
+        <span class="story-name">A.Kouyaté</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">LD</div>
+        </div>
+        <span class="story-name">L.Diallo</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">TR</div>
+        </div>
+        <span class="story-name">TiRoy</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring seen">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">SM</div>
+        </div>
+        <span class="story-name">Sonya M.</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring seen">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);color:#fff">ZF</div>
+        </div>
+        <span class="story-name">Z.Fakhr</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring seen">
+          <div class="story-avatar" style="background:var(--nuit4);color:var(--txt2)">WR</div>
+        </div>
+        <span class="story-name">W.Ramos</span>
+      </div>
+    </div>
+
+    <!-- Compose -->
+    <div class="card compose">
+      <div class="compose-avatar">MJ</div>
+      <div class="compose-input" onclick="this.textContent=''" role="button" tabindex="0">Partage ton actualité, un drop, une audition...</div>
+      <div class="compose-actions">
+        <button class="compose-btn" title="Audio">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </button>
+        <button class="compose-btn" title="Image">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </button>
+        <button class="compose-btn" title="Audition">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card" style="padding:12px 16px">
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-chip active" onclick="setFilter(this,'all')">Tout</button>
+        <button class="filter-chip" onclick="setFilter(this,'tendance')">En tendance</button>
+        <button class="filter-chip" onclick="setFilter(this,'artiste')">Artistes</button>
+        <button class="filter-chip" onclick="setFilter(this,'label')">Labels</button>
+        <button class="filter-chip" onclick="setFilter(this,'audition')">Auditions</button>
+        <button class="filter-chip" onclick="setFilter(this,'rap')">Rap</button>
+        <button class="filter-chip" onclick="setFilter(this,'afro')">Afro</button>
+        <button class="filter-chip" onclick="setFilter(this,'pop')">Pop</button>
+      </div>
+    </div>
+
+    <!-- ─── SKELETON (loading) ─── -->
+    <div class="card skeleton-post" id="skeletonPost">
+      <div class="skel-row">
+        <div class="skeleton" style="width:42px;height:42px;border-radius:50%;flex-shrink:0"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+          <div class="skeleton" style="height:13px;width:60%"></div>
+          <div class="skeleton" style="height:11px;width:40%"></div>
+        </div>
+      </div>
+      <div class="skeleton" style="height:12px;width:100%"></div>
+      <div class="skeleton" style="height:12px;width:80%"></div>
+      <div class="skeleton" style="height:12px;width:90%"></div>
+      <div class="skeleton" style="height:60px;width:100%;border-radius:10px"></div>
+    </div>
+
+    <!-- ─── POST 1, Artiste Rap ─── -->
+    <article class="card post reveal" data-type="artiste rap" id="post1">
+      <div class="post-new-badge" style="animation:none;opacity:0;display:none"></div>
+      <div class="post-inner">
+        <div class="post-header">
+          <div class="post-avatar-wrap">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)" data-author="Awa Kouyaté" data-type="Artiste · Rap/Afrotrap" data-ts="91" data-genre="Rap/Afrotrap" data-abonnes="28.3K" data-contacts="1.2K" data-vues="89K">AK</div>
+            <div class="ts-micro">TS·91</div>
+          </div>
+          <div class="post-meta">
+            <div class="post-author">
+              <span class="post-name">Awa Kouyaté</span>
+              <span class="verified-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span class="artist-type-badge badge-artist">Artiste</span>
+            </div>
+            <div class="post-handle">@awa.kouyate · Rap / Afrotrap · Paris</div>
+            <div class="post-time"><span class="live-dot"></span>Il y a 12 min</div>
+          </div>
+          <button class="post-menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </button>
+        </div>
+
+        <div class="ai-strip">
+          <div class="ai-strip-icon">🤖</div>
+          <div class="ai-strip-text"><strong>Peakly AI detects :</strong> +42% d'engagement cette semaine. Probabilité de signature : <strong style="color:var(--vert)">76%</strong>. Compatible avec <strong>12 labels</strong>.</div>
+          <div class="ai-strip-cta">Voir analyse</div>
+        </div>
+
+        <div class="post-body">
+          Mon nouveau single <strong>"Dakar Nuit"</strong> vient de passer les 500K streams en 72h. Le soutien que vous m'avez donné depuis le début, c'est du carburant pur. <br><br>
+          <span class="post-tag">#DakarNuit</span><span class="post-tag">#Afrotrap</span><span class="post-tag">#ParisSon</span>
+        </div>
+
+        <div class="post-media">
+          <div class="post-media-bg">🎵</div>
+          <div style="position:absolute;top:12px;left:12px;background:rgba(229,193,88,.15);border:1px solid var(--or-glow);border-radius:6px;padding:3px 10px;font-size:.68rem;font-weight:700;color:var(--or)">🔥 500K streams</div>
+          <div class="audio-player">
+            <div class="play-btn" onclick="togglePlay(this)">
+              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="track-info">
+              <div class="track-name">Dakar Nuit (Radio Edit)</div>
+              <div class="track-artist">Awa Kouyaté · ft. Lamine Ba</div>
+              <div class="track-prog"><div class="track-fill" style="width:28%"></div></div>
+            </div>
+            <div class="track-time">1:24</div>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-cell">
+            <div class="metric-label">Talent Score</div>
+            <div class="metric-val">91</div>
+            <div class="metric-change up">+3 ce mois</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,20 10,18 20,14 30,16 40,10 50,7 60,4" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Audience</div>
+            <div class="metric-val">28.3K</div>
+            <div class="metric-change up">+18% sem.</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,22 10,20 20,19 30,16 40,13 50,9 60,6" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Engagement</div>
+            <div class="metric-val">8.4%</div>
+            <div class="metric-change up">+2.1%</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,18 10,20 20,14 30,10 40,15 50,8 60,5" fill="none" stroke="#E5C158" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Sign. Proba</div>
+            <div class="metric-val">76%</div>
+            <div class="metric-change up">+11%</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,24 10,21 20,18 30,16 40,12 50,9 60,5" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+
+        <div class="compat-row">
+          <div class="compat-badge compat-green"><span class="compat-dot"></span>Labels ×12</div>
+          <div class="compat-badge compat-blue"><span class="compat-dot"></span>Festivals ×5</div>
+          <div class="compat-badge compat-violet"><span class="compat-dot"></span>Investisseurs ×3</div>
+          <div class="compat-badge compat-gold"><span class="compat-dot"></span>Sync TV ×2</div>
+        </div>
+
+        <div class="post-footer">
+          <button class="reaction-btn" onclick="toggleLike(this,847)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="rcount">847</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="rcount">124</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            <span class="rcount">89</span>
+          </button>
+          <button class="post-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── POST 2, Label ─── -->
+    <article class="card post reveal" data-type="label" id="post2">
+      <div class="post-inner">
+        <div class="post-header">
+          <div class="post-avatar-wrap">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000;font-weight:900" data-author="Def Jam France" data-type="Label Major" data-ts="99" data-genre="All Genres" data-abonnes="142K" data-contacts="8.4K" data-vues="2.1M">DJ</div>
+            <div class="ts-micro">Label</div>
+          </div>
+          <div class="post-meta">
+            <div class="post-author">
+              <span class="post-name">Def Jam France</span>
+              <span class="verified-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span class="artist-type-badge badge-label">Label Major</span>
+            </div>
+            <div class="post-handle">@defjam.fr · Paris · 142K abonnés</div>
+            <div class="post-time">Il y a 2h</div>
+          </div>
+          <button class="post-menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </button>
+        </div>
+
+        <div class="ai-strip">
+          <div class="ai-strip-icon">🎯</div>
+          <div class="ai-strip-text"><strong>Peakly AI :</strong> Opportunité directe. Profil recherché correspond à <strong style="color:var(--or)">83%</strong> de votre Talent Score actuel.</div>
+          <div class="ai-strip-cta">Candidater</div>
+        </div>
+
+        <div class="post-body">
+          Nous sommes en recherche active d'artistes <strong>Rap / Afrotrap / RnB</strong> pour notre nouvelle division urbaine 2026. Profils recherchés : 10K+ streams mensuels, présence scénique, projet cohérent.<br><br>
+          Dossiers ouverts jusqu'au <strong>31 juillet 2026</strong>. Envoyez votre EPK via Peakly directement.
+          <br><br><span class="post-tag">#Audition</span><span class="post-tag">#DefJam</span><span class="post-tag">#SignatureRap</span>
+        </div>
+
+        <div class="score-bars">
+          <div class="score-bar-row">
+            <div class="score-bar-label">Compatibilité artiste</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:83%;background:var(--vert)"></div></div>
+            <div class="score-bar-val">83%</div>
+          </div>
+          <div class="score-bar-row">
+            <div class="score-bar-label">Match Rap/Trap</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:91%;background:var(--or)"></div></div>
+            <div class="score-bar-val">91%</div>
+          </div>
+          <div class="score-bar-row">
+            <div class="score-bar-label">Budget label</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:70%;background:var(--bleu)"></div></div>
+            <div class="score-bar-val">Haut</div>
+          </div>
+        </div>
+
+        <div class="compat-row">
+          <div class="compat-badge compat-gold"><span class="compat-dot"></span>Audition Ouverte</div>
+          <div class="compat-badge compat-green"><span class="compat-dot"></span>Label Vérifié Peakly</div>
+          <div class="compat-badge compat-blue"><span class="compat-dot"></span>Contrat : 18 mois</div>
+        </div>
+
+        <div class="post-footer">
+          <button class="reaction-btn" onclick="toggleLike(this,312)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="rcount">312</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="rcount">67</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            <span class="rcount">203</span>
+          </button>
+          <button class="post-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── POST 3, Rookie ─── -->
+    <article class="card post reveal" data-type="artiste rap tendance" id="post3">
+      <div class="post-inner">
+        <div class="post-header">
+          <div class="post-avatar-wrap">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)" data-author="TiRoy" data-type="Artiste Rookie · Rap" data-ts="67" data-genre="Rap/Cloud" data-abonnes="4.1K" data-contacts="312" data-vues="18K">TR</div>
+            <div class="ts-micro">TS·67</div>
+          </div>
+          <div class="post-meta">
+            <div class="post-author">
+              <span class="post-name">TiRoy</span>
+              <span class="artist-type-badge badge-rookie">Rookie</span>
+            </div>
+            <div class="post-handle">@tiroy.music · Rap / Cloud · Lyon</div>
+            <div class="post-time">Il y a 5h</div>
+          </div>
+          <button class="post-menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </button>
+        </div>
+
+        <div class="ai-strip">
+          <div class="ai-strip-icon">🚀</div>
+          <div class="ai-strip-text"><strong>Peakly AI :</strong> Profil en <strong style="color:var(--violet)">hypercroissance</strong>. +340% de streams en 30 jours. Artiste à surveiller.</div>
+          <div class="ai-strip-cta">Suivre</div>
+        </div>
+
+        <div class="post-body">
+          Je pose mes premiers sons ici depuis 3 mois. Merci pour tout ce soutien. Mon EP <strong>"Nuage Dur"</strong> sort le 15 août et je sens que c'est mon moment.<br><br>
+          <span class="post-tag">#NuageDur</span><span class="post-tag">#Rookie</span><span class="post-tag">#CloudRap</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-cell">
+            <div class="metric-label">Talent Score</div>
+            <div class="metric-val">67</div>
+            <div class="metric-change up">+9 mois</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,26 10,24 20,22 30,19 40,15 50,11 60,6" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Growth</div>
+            <div class="metric-val">+340%</div>
+            <div class="metric-change up">30 jours</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,27 10,26 20,23 30,20 40,14 50,8 60,2" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Reach</div>
+            <div class="metric-val">18K</div>
+            <div class="metric-change up">+180%</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,25 10,22 20,20 30,16 40,12 50,9 60,5" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Sign. Proba</div>
+            <div class="metric-val">31%</div>
+            <div class="metric-change up">+18%</div>
+            <svg class="sparkline" viewBox="0 0 60 28"><polyline points="0,26 10,25 20,22 30,20 40,17 50,13 60,9" fill="none" stroke="#E5C158" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+
+        <div class="post-footer">
+          <button class="reaction-btn" onclick="toggleLike(this,203)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="rcount">203</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="rcount">44</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            <span class="rcount">38</span>
+          </button>
+          <button class="post-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── POST 4, Producteur ─── -->
+    <article class="card post reveal" data-type="artiste afro pop" id="post4">
+      <div class="post-inner">
+        <div class="post-header">
+          <div class="post-avatar-wrap">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000" data-author="L. Diallo (LD Prod)" data-type="Producteur / Beatmaker" data-ts="88" data-genre="Afro/Pop/Trap" data-abonnes="19.7K" data-contacts="2.1K" data-vues="340K">LD</div>
+            <div class="ts-micro">TS·88</div>
+          </div>
+          <div class="post-meta">
+            <div class="post-author">
+              <span class="post-name">L. Diallo, LD Prod</span>
+              <span class="verified-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span class="artist-type-badge badge-promo">Producteur</span>
+            </div>
+            <div class="post-handle">@ldprod.beats · Afro / Pop / Trap · Abidjan - Paris</div>
+            <div class="post-time">Il y a 8h</div>
+          </div>
+          <button class="post-menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </button>
+        </div>
+
+        <div class="ai-strip">
+          <div class="ai-strip-icon">🎛</div>
+          <div class="ai-strip-text"><strong>Peakly AI :</strong> Ce beat correspond à <strong style="color:var(--bleu)">14 artistes</strong> dans ton réseau. <strong style="color:var(--vert)">Sync TV potentielle ×3.</strong></div>
+          <div class="ai-strip-cta">Voir artistes</div>
+        </div>
+
+        <div class="post-body">
+          Nouveau pack de beats <strong>Afro/Trap 2026</strong> disponible en exclusivité Peakly. 12 instrus, BPM 96-138, mixés pro. Premiers arrivés, premiers servis, <strong>3 licences exclusives</strong> disponibles.<br><br>
+          <span class="post-tag">#Beats2026</span><span class="post-tag">#AfroTrap</span><span class="post-tag">#Prod</span>
+        </div>
+
+        <div class="post-media" style="height:160px;background:linear-gradient(135deg,rgba(74,222,128,.06),rgba(16,163,74,.02))">
+          <div style="display:flex;gap:8px;padding:12px;overflow-x:auto;width:100%;scrollbar-width:none">
+            <div style="flex-shrink:0;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--b1);min-width:120px">
+              <div style="font-size:.7rem;font-weight:700;color:var(--vert);margin-bottom:6px">Beat 01</div>
+              <svg viewBox="0 0 80 30" width="80" height="30"><polyline points="0,15 8,10 16,18 24,8 32,14 40,6 48,16 56,9 64,13 72,5 80,12" fill="none" stroke="#4ade80" stroke-width="1.5"/></svg>
+              <div style="font-size:.62rem;color:var(--txt2);margin-top:4px">Afro Bounce · 108 BPM</div>
+            </div>
+            <div style="flex-shrink:0;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--b1);min-width:120px">
+              <div style="font-size:.7rem;font-weight:700;color:var(--or);margin-bottom:6px">Beat 02</div>
+              <svg viewBox="0 0 80 30" width="80" height="30"><polyline points="0,20 8,12 16,22 24,10 32,18 40,8 48,20 56,11 64,17 72,7 80,15" fill="none" stroke="#E5C158" stroke-width="1.5"/></svg>
+              <div style="font-size:.62rem;color:var(--txt2);margin-top:4px">Trap Dark · 140 BPM</div>
+            </div>
+            <div style="flex-shrink:0;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--b1);min-width:120px">
+              <div style="font-size:.7rem;font-weight:700;color:var(--violet);margin-bottom:6px">Beat 03</div>
+              <svg viewBox="0 0 80 30" width="80" height="30"><polyline points="0,18 8,14 16,20 24,12 32,16 40,10 48,18 56,13 64,15 72,9 80,14" fill="none" stroke="#a78bfa" stroke-width="1.5"/></svg>
+              <div style="font-size:.62rem;color:var(--txt2);margin-top:4px">Pop Chill · 96 BPM</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compat-row">
+          <div class="compat-badge compat-green"><span class="compat-dot"></span>14 artistes compatibles</div>
+          <div class="compat-badge compat-gold"><span class="compat-dot"></span>Licence exclusive restante : 3</div>
+          <div class="compat-badge compat-blue"><span class="compat-dot"></span>Sync TV ×3</div>
+        </div>
+
+        <div class="post-footer">
+          <button class="reaction-btn" onclick="toggleLike(this,519)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="rcount">519</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="rcount">88</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            <span class="rcount">171</span>
+          </button>
+          <button class="post-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Load more -->
+    <button class="load-more" id="loadMoreBtn" onclick="loadMore()">
+      <span id="loadMoreText">Charger plus de posts</span>
+    </button>
+
+  </main>
+
+  <!-- ── COLONNE DROITE ── -->
+  <aside class="col-right">
+
+    <!-- Trending Artists -->
+    <div class="card">
+      <div class="widget-header">
+        <div class="widget-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+          Artistes en tendance
+        </div>
+        <div class="widget-link">Voir tout</div>
+      </div>
+      <div class="trending-list">
+        <div class="trending-item">
+          <div class="trending-rank">1</div>
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F)">AK</div>
+          <div class="trending-info">
+            <div class="trending-name">Awa Kouyaté</div>
+            <div class="trending-genre">Rap · Afrotrap</div>
+          </div>
+          <div class="trending-right">
+            <div class="trending-score">91</div>
+            <div class="trending-change">+3.2%</div>
+            <svg class="trending-sparkline" viewBox="0 0 50 18"><polyline points="0,16 10,12 20,9 30,7 40,4 50,1" fill="none" stroke="#4ade80" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+        <div class="trending-item">
+          <div class="trending-rank">2</div>
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">SM</div>
+          <div class="trending-info">
+            <div class="trending-name">Sonya Mbaye</div>
+            <div class="trending-genre">RnB · Soul</div>
+          </div>
+          <div class="trending-right">
+            <div class="trending-score">87</div>
+            <div class="trending-change">+1.8%</div>
+            <svg class="trending-sparkline" viewBox="0 0 50 18"><polyline points="0,14 10,13 20,10 30,8 40,6 50,3" fill="none" stroke="#4ade80" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+        <div class="trending-item">
+          <div class="trending-rank">3</div>
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">ZF</div>
+          <div class="trending-info">
+            <div class="trending-name">Zahra Fakhr</div>
+            <div class="trending-genre">Pop · Electro</div>
+          </div>
+          <div class="trending-right">
+            <div class="trending-score">85</div>
+            <div class="trending-change">+2.4%</div>
+            <svg class="trending-sparkline" viewBox="0 0 50 18"><polyline points="0,17 10,14 20,12 30,9 40,6 50,3" fill="none" stroke="#4ade80" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+        <div class="trending-item">
+          <div class="trending-rank">4</div>
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c)">WR</div>
+          <div class="trending-info">
+            <div class="trending-name">Willy Ramos</div>
+            <div class="trending-genre">Afrobeats · Dance</div>
+          </div>
+          <div class="trending-right">
+            <div class="trending-score">82</div>
+            <div class="trending-change">+4.1%</div>
+            <svg class="trending-sparkline" viewBox="0 0 50 18"><polyline points="0,18 10,15 20,13 30,10 40,6 50,2" fill="none" stroke="#4ade80" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+        <div class="trending-item">
+          <div class="trending-rank">5</div>
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">TR</div>
+          <div class="trending-info">
+            <div class="trending-name">TiRoy</div>
+            <div class="trending-genre">Rap · Cloud</div>
+          </div>
+          <div class="trending-right">
+            <div class="trending-score">67</div>
+            <div class="trending-change" style="color:var(--or)">+18%</div>
+            <svg class="trending-sparkline" viewBox="0 0 50 18"><polyline points="0,18 10,17 20,15 30,12 40,7 50,2" fill="none" stroke="#E5C158" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opportunities IA -->
+    <div class="card">
+      <div class="widget-header">
+        <div class="widget-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Opportunités IA
+        </div>
+        <div class="widget-link">Tout voir</div>
+      </div>
+      <div class="opp-list">
+        <div class="opp-item">
+          <div class="opp-icon" style="background:rgba(229,193,88,.1);color:var(--or)">🏷</div>
+          <div class="opp-info">
+            <div class="opp-title">Sony Music FR, Audition</div>
+            <div class="opp-sub">Compatible à 79% · Clôture dans 12j</div>
+          </div>
+          <div class="opp-score">79%</div>
+        </div>
+        <div class="opp-item">
+          <div class="opp-icon" style="background:rgba(96,165,250,.1);color:var(--bleu)">🎪</div>
+          <div class="opp-info">
+            <div class="opp-title">Francofolies 2026</div>
+            <div class="opp-sub">Festival · Rap/Trap · 18 juillet</div>
+          </div>
+          <div class="opp-score">68%</div>
+        </div>
+        <div class="opp-item">
+          <div class="opp-icon" style="background:rgba(74,222,128,.1);color:var(--vert)">💰</div>
+          <div class="opp-info">
+            <div class="opp-title">Investisseur Music VC</div>
+            <div class="opp-sub">Seed 50K€ · Artistes urbains</div>
+          </div>
+          <div class="opp-score">61%</div>
+        </div>
+        <div class="opp-item">
+          <div class="opp-icon" style="background:rgba(167,139,250,.1);color:var(--violet)">📺</div>
+          <div class="opp-info">
+            <div class="opp-title">Sync TV, Canal+ Séries</div>
+            <div class="opp-sub">Trap/Afro · Budget 3-8K€</div>
+          </div>
+          <div class="opp-score">55%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Notifications -->
+    <div class="card">
+      <div class="widget-header">
+        <div class="widget-title">
+          <span class="live-dot"></span>
+          Activité en direct
+        </div>
+      </div>
+      <div class="notif-feed" id="notifFeed">
+        <div class="notif-item">
+          <div class="notif-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000">AK</div>
+          <div class="notif-text"><strong>Awa Kouyaté</strong> a aimé votre profil</div>
+          <div class="notif-time">2m</div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">DJ</div>
+          <div class="notif-text"><strong>Def Jam France</strong> a consulté votre EPK</div>
+          <div class="notif-time">8m</div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">LD</div>
+          <div class="notif-text"><strong>L. Diallo</strong> vous propose une collaboration</div>
+          <div class="notif-time">24m</div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-avatar" style="background:var(--nuit4);color:var(--or)">AI</div>
+          <div class="notif-text"><strong>Peakly AI</strong> : +34% de reach détecté sur votre dernier post</div>
+          <div class="notif-time">1h</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestions IA -->
+    <div class="card">
+      <div class="widget-header">
+        <div class="widget-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Suggestions IA pour vous
+        </div>
+      </div>
+      <div class="opp-list">
+        <div class="opp-item">
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;border-radius:50%;color:#fff">SL</div>
+          <div class="opp-info">
+            <div class="opp-title">Sola Lefebvre</div>
+            <div class="opp-sub">RnB · Paris · TS 79 · Collab potentielle</div>
+          </div>
+          <button style="padding:4px 10px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or);font-size:.68rem;font-weight:700;cursor:pointer;flex-shrink:0">Suivre</button>
+        </div>
+        <div class="opp-item">
+          <div class="trending-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;border-radius:50%;color:#fff">BK</div>
+          <div class="opp-info">
+            <div class="opp-title">Bamba Koné</div>
+            <div class="opp-sub">Afrobeats · Abidjan · TS 83</div>
+          </div>
+          <button style="padding:4px 10px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or);font-size:.68rem;font-weight:700;cursor:pointer;flex-shrink:0">Suivre</button>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ═══════════════ FLOATING ACTION BUTTON ═══════════════ -->
+<button class="fab" title="Créer un post" onclick="showToast('fab','Créer un post','Ouvre le formulaire de publication','🎵')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+</button>
+
+<!-- ═══════════════ COMMAND PALETTE ═══════════════ -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="closeCmd(event)">
+  <div class="cmd-palette" onclick="event.stopPropagation()">
+    <div class="cmd-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="cmd-input" id="cmdInput" placeholder='Trouve un rappeur parisien / Trouve une chanteuse pop...' autocomplete="off">
+      <span class="cmd-kbd">Echap</span>
+    </div>
+    <div class="cmd-results" id="cmdResults">
+      <div class="cmd-section-label">Recherches rapides</div>
+      <div class="cmd-result" onclick="cmdSearch('Trouve un rappeur parisien')">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--or-dim);border:1px solid var(--or-glow);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">🎤</div>
+        <div class="cmd-result-info"><div class="cmd-result-name">Rappeur parisien</div><div class="cmd-result-sub">Recherche IA · Rap / Trap · Paris</div></div>
+        <div class="cmd-result-enter">↵</div>
+      </div>
+      <div class="cmd-result" onclick="cmdSearch('Trouve une chanteuse pop')">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">🎶</div>
+        <div class="cmd-result-info"><div class="cmd-result-name">Chanteuse pop</div><div class="cmd-result-sub">Recherche IA · Pop / Soul · France</div></div>
+        <div class="cmd-result-enter">↵</div>
+      </div>
+      <div class="cmd-result" onclick="cmdSearch('Trouve un producteur afrobeat')">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">🎛</div>
+        <div class="cmd-result-info"><div class="cmd-result-name">Producteur afrobeat</div><div class="cmd-result-sub">Recherche IA · Afro / Beats</div></div>
+        <div class="cmd-result-enter">↵</div>
+      </div>
+      <div class="cmd-section-label" style="margin-top:4px">Artistes récents</div>
+      <div class="cmd-result" id="cmdR1">
+        <div class="cmd-result-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F)">AK</div>
+        <div class="cmd-result-info"><div class="cmd-result-name">Awa Kouyaté</div><div class="cmd-result-sub">Rap · Afrotrap · Paris · 28.3K abonnés</div></div>
+        <div class="cmd-result-score">91</div>
+      </div>
+      <div class="cmd-result" id="cmdR2">
+        <div class="cmd-result-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">LD</div>
+        <div class="cmd-result-info"><div class="cmd-result-name">L. Diallo, LD Prod</div><div class="cmd-result-sub">Producteur · Afro/Pop · Abidjan - Paris</div></div>
+        <div class="cmd-result-score">88</div>
+      </div>
+      <div class="cmd-result" id="cmdR3">
+        <div class="cmd-result-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">SM</div>
+        <div class="cmd-result-info"><div class="cmd-result-name">Sonya Mbaye</div><div class="cmd-result-sub">RnB · Soul · Dakar - Paris</div></div>
+        <div class="cmd-result-score">87</div>
+      </div>
+    </div>
+    <div class="cmd-footer">
+      <div class="cmd-hint"><kbd>↑↓</kbd> Naviguer</div>
+      <div class="cmd-hint"><kbd>↵</kbd> Sélectionner</div>
+      <div class="cmd-hint"><kbd>Echap</kbd> Fermer</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOAST CONTAINER ═══════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════ HOVER CARD ═══════════════ -->
+<div class="hover-card" id="hoverCard">
+  <div class="hc-cover"></div>
+  <div class="hc-body">
+    <div class="hc-avatar" id="hcAvatar">AK</div>
+    <div class="hc-name" id="hcName">Awa Kouyaté</div>
+    <div class="hc-handle" id="hcHandle">@awa.kouyate · Rap/Afrotrap</div>
+    <div class="hc-score-row">
+      <div class="hc-ts" id="hcTs">TS 91</div>
+      <div class="hc-genre" id="hcGenre">Rap · Afrotrap</div>
+    </div>
+    <div class="hc-stats">
+      <div class="hc-stat"><div class="hc-stat-num" id="hcAbonnes">28.3K</div><div class="hc-stat-lbl">Abonnés</div></div>
+      <div class="hc-stat"><div class="hc-stat-num" id="hcContacts">1.2K</div><div class="hc-stat-lbl">Contacts</div></div>
+      <div class="hc-stat"><div class="hc-stat-num" id="hcVues">89K</div><div class="hc-stat-lbl">Vues</div></div>
+    </div>
+    <div class="hc-actions">
+      <div class="hc-btn hc-btn-primary">Suivre</div>
+      <div class="hc-btn hc-btn-secondary">Message</div>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/store.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ── SKELETON ───────────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const skel = document.getElementById('skeletonPost');
+    if (skel) { skel.style.opacity = '0'; skel.style.transition = 'opacity .4s'; setTimeout(() => skel.remove(), 400); }
+  }, 900);
+});
+
+/* ── SCROLL REVEAL ──────────────────────────────────────────── */
+ div.className='cmd-result';
+    div.innerHTML = `<div class="cmd-result-avatar" style="background:${a.bg};color:${a.col}">${a.init}</div><div class="cmd-result-info"><div class="cmd-result-name">${a.name}</div><div class="cmd-result-sub">${a.sub}</div></div><div class="cmd-result-score">${a.ts}</div>`;
+    cmdResults.appendChild(div);
+  });
+});
+
+function renderDefaultCmd() {
+  cmdResults.innerHTML = `
+    <div class="cmd-section-label">Recherches rapides</div>
+    <div class="cmd-result" onclick="cmdSearch('Trouve un rappeur parisien')">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--or-dim);border:1px solid var(--or-glow);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">🎤</div>
+      <div class="cmd-result-info"><div class="cmd-result-name">Rappeur parisien</div><div class="cmd-result-sub">Recherche IA · Rap / Trap · Paris</div></div>
+      <div class="cmd-result-enter">↵</div>
+    </div>
+    <div class="cmd-result" onclick="cmdSearch('Trouve une chanteuse pop')">
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">🎶</div>
+      <div class="cmd-result-info"><div class="cmd-result-name">Chanteuse pop</div><div class="cmd-result-sub">Recherche IA · Pop / Soul · France</div></div>
+      <div class="cmd-result-enter">↵</div>
+    </div>
+    <div class="cmd-result" onclick="cmdSearch('Trouve un producteur afrobeat')">
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">🎛</div>
+      <div class="cmd-result-info"><div class="cmd-result-name">Producteur afrobeat</div><div class="cmd-result-sub">Recherche IA · Afro / Beats</div></div>
+      <div class="cmd-result-enter">↵</div>
+    </div>`;
+}
+
+function cmdSearch(q) {
+  cmdInput.value = q;
+  cmdInput.dispatchEvent(new Event('input'));
+}
+
+/* ── HOVER CARD ─────────────────────────────────────────────── */
+const hoverCard = document.getElementById('hoverCard');
+let hcTimer;
+document.querySelectorAll('.post-avatar[data-author]').forEach(el => {
+  el.addEventListener('mouseenter', (ev) => {
+    clearTimeout(hcTimer);
+    const d = el.dataset;
+    document.getElementById('hcAvatar').textContent = el.textContent;
+    document.getElementById('hcAvatar').style.background = el.style.background;
+    document.getElementById('hcAvatar').style.color = el.style.color || 'var(--txt)';
+    document.getElementById('hcName').textContent = d.author;
+    document.getElementById('hcHandle').textContent = '@' + d.author.toLowerCase().replace(/\s/g,'.').replace(/[^a-z.]/g,'') + ' · ' + d.type;
+    document.getElementById('hcTs').textContent = 'TS ' + d.ts;
+    document.getElementById('hcGenre').textContent = d.genre;
+    document.getElementById('hcAbonnes').textContent = d.abonnes;
+    document.getElementById('hcContacts').textContent = d.contacts;
+    document.getElementById('hcVues').textContent = d.vues;
+    const rect = el.getBoundingClientRect();
+    let top = rect.bottom + window.scrollY + 8;
+    let left = rect.left + window.scrollX;
+    if (left + 260 > window.innerWidth) left = window.innerWidth - 270;
+    hoverCard.style.top = top + 'px';
+    hoverCard.style.left = left + 'px';
+    hoverCard.style.position = 'absolute';
+    hoverCard.classList.add('visible');
+  });
+  el.addEventListener('mouseleave', () => {
+    hcTimer = setTimeout(() => hoverCard.classList.remove('visible'), 200);
+  });
+});
+hoverCard.addEventListener('mouseenter', () => clearTimeout(hcTimer));
+hoverCard.addEventListener('mouseleave', () => { hcTimer = setTimeout(() => hoverCard.classList.remove('visible'), 200); });
+
+/* ── TOAST ──────────────────────────────────────────────────── */
+
+/* ── LIVE NOTIFICATIONS (simulation) ───────────────────────── */
+const liveNotifs = [
+  { init:'ZF', name:'Zahra Fakhr', action:'a partagé votre post', bg:'linear-gradient(135deg,#60a5fa,#3b82f6)', col:'#fff', time:'maintenant' },
+  { init:'WR', name:'Willy Ramos', action:'vous a envoyé un message', bg:'linear-gradient(135deg,#f97316,#ea580c)', col:'#fff', time:'maintenant' },
+  { init:'AI', name:'Peakly AI', action:'nouveau match label : Island Records', bg:'var(--nuit4)', col:'var(--or)', time:'maintenant' },
+  { init:'BK', name:'Bamba Koné', action:'a rejoint votre réseau', bg:'linear-gradient(135deg,#f97316,#ea580c)', col:'#fff', time:'maintenant' },
+  { init:'SM', name:'Sonya Mbaye', action:'a liké votre musique', bg:'linear-gradient(135deg,#4ade80,#16a34a)', col:'#000', time:'maintenant' },
+];
+let notifIdx = 0;
+function pushLiveNotif() {
+  const feed = document.getElementById('notifFeed');
+  const n = liveNotifs[notifIdx % liveNotifs.length];
+  notifIdx++;
+  const item = document.createElement('div');
+  item.className = 'notif-item';
+  item.innerHTML = `<div class="notif-avatar" style="background:${n.bg};color:${n.col}">${n.init}</div><div class="notif-text"><strong>${n.name}</strong> ${n.action}</div><div class="notif-time">${n.time}</div>`;
+  feed.insertBefore(item, feed.firstChild);
+  if (feed.children.length > 6) feed.removeChild(feed.lastChild);
+  const badge = document.getElementById('notifBadge');
+  const cur = parseInt(badge.textContent) || 0;
+  badge.textContent = cur + 1;
+  badge.style.transform = 'scale(1.4)';
+  setTimeout(() => badge.style.transform = '', 300);
+  showToast('notif', n.name, n.action, n.init.charAt(0));
+}
+setInterval(pushLiveNotif, 14000);
+
+/* ── LIVE POST SIMULATION ───────────────────────────────────── */
+const newPosts = [
+  { init:'SL', name:'Sola Lefebvre', handle:'@sola.lef · RnB · Bordeaux', ts:'79', type:'RnB', bg:'linear-gradient(135deg,#ec4899,#be185d)', col:'#fff',
+    aitext:'Peakly AI : Voix identifiée parmi top 5% des artistes RnB France. <strong style="color:var(--vert)">Compatibilité Polydor : 72%</strong>',
+    body:'Premier showcase ce soir à La Cigale Paris. Pour tous ceux qui m\'ont soutenue depuis le début, je vous dédie ce moment. <br><br><span class="post-tag">#Showcase</span><span class="post-tag">#RnB</span><span class="post-tag">#LaCigale</span>',
+    likes:'187', cmts:'31', shares:'22' },
+  { init:'MK', name:'Mo Kalvak', handle:'@mo.kalvak · Drill · Paris', ts:'74', type:'Rap', bg:'linear-gradient(135deg,#64748b,#334155)', col:'#fff',
+    aitext:'Peakly AI : <strong style="color:var(--violet)">Style Drill UK</strong> rare sur la scène française. Potentiel crossover élevé.',
+    body:'Nouveau clip "Gris Béton" disponible. Tourné entièrement dans le 93, shot by <strong>@lens.crew</strong>. Les rues parlent. <br><br><span class="post-tag">#Drill</span><span class="post-tag">#Paris</span><span class="post-tag">#GrisBeton</span>',
+    likes:'341', cmts:'58', shares:'91' },
+];
+let newPostIdx = 0;
+function injectNewPost() {
+  if (newPostIdx >= newPosts.length) return;
+  const d = newPosts[newPostIdx++];
+  const feed = document.querySelector('.col-center');
+  const filterBar = document.querySelector('.col-center .card:nth-child(4)');
+  const html = `
+    <article class="card post" data-type="${d.type.toLowerCase()}" style="opacity:0;transform:translateY(-12px);transition:opacity .5s,transform .5s">
+      <div class="post-new-badge" style="opacity:1;animation:none;background:var(--vert);color:#000;font-family:Plus Jakarta Sans,sans-serif;font-weight:800;font-size:.65rem;padding:3px 12px;border-radius:999px;position:absolute;top:-8px;left:50%;transform:translateX(-50%);z-index:5">Nouveau</div>
+      <div class="post-inner">
+        <div class="post-header">
+          <div class="post-avatar-wrap">
+            <div class="post-avatar" style="background:${d.bg};color:${d.col}">${d.init}</div>
+            <div class="ts-micro">TS·${d.ts}</div>
+          </div>
+          <div class="post-meta">
+            <div class="post-author"><span class="post-name">${d.name}</span><span class="artist-type-badge badge-artist">Artiste</span></div>
+            <div class="post-handle">${d.handle}</div>
+            <div class="post-time"><span class="live-dot"></span>A l'instant</div>
+          </div>
+          <button class="post-menu"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
+        </div>
+        <div class="ai-strip">
+          <div class="ai-strip-icon">🤖</div>
+          <div class="ai-strip-text"><strong>Peakly AI :</strong> ${d.aitext}</div>
+          <div class="ai-strip-cta">Voir</div>
+        </div>
+        <div class="post-body">${d.body}</div>
+        <div class="post-footer">
+          <button class="reaction-btn" onclick="toggleLike(this,${d.likes})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="rcount">${d.likes}</span>
+          </button>
+          <button class="reaction-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="rcount">${d.cmts}</span>
+          </button>
+          <button class="post-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+      </div>
+    </article>`;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const article = tmp.firstElementChild;
+  filterBar.after(article);
+  setTimeout(() => { article.style.opacity = '1'; article.style.transform = 'translateY(0)'; }, 30);
+}
+setTimeout(() => injectNewPost(), 8000);
+setTimeout(() => injectNewPost(), 22000);
+
+/* ── LOAD MORE ──────────────────────────────────────────────── */
+function loadMore() {
+  const btn = document.getElementById('loadMoreBtn');
+  const txt = document.getElementById('loadMoreText');
+  txt.textContent = 'Chargement...';
+  btn.style.opacity = '0.6';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    txt.textContent = 'Vous avez vu tous les posts récents';
+    btn.style.opacity = '1';
+  }, 1400);
+}
+
+/* ── SHORTCUT ACTIVE STATE ──────────────────────────────────── */
+document.querySelectorAll('.shortcut').forEach(s => {
+  s.addEventListener('click', () => {
+    document.querySelectorAll('.shortcut').forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+  });
+});
+
+/* ── CARD TILT ──────────────────────────────────────────────── */
+document.querySelectorAll('.post').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x * 2.5}deg) rotateX(${-y * 2.5}deg)`;
+    card.style.transition = 'transform .1s ease';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform .4s ease';
+  });
+});
+
+/* ── CMD Kbd HINT update ────────────────────────────────────── */
+const isMac = navigator.platform.toLowerCase().includes('mac');
+document.getElementById('cmdHint').textContent = isMac ? '⌘K' : 'Ctrl+K';
+
+/* ── INITIAL TOAST ──────────────────────────────────────────── */
+setTimeout(() => showToast('welcome','Bienvenue sur Peakly','Ton Talent Score a progressé cette semaine','⚡'), 1800);
+setTimeout(() => showToast('ai','Peakly AI','Def Jam France a consulté ton profil il y a 2h','🏷'), 4500);
+</script>
+</body>
+</html>

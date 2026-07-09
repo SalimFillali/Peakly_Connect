@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Connexion — Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+body{padding-top:0;min-height:100vh;display:flex;flex-direction:column;background:var(--nuit);overflow:hidden}
+.login-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+@media(max-width:768px){.login-wrap{grid-template-columns:1fr}.login-gauche{display:none}}
+/* Côté gauche — branding */
+.login-gauche{
+  position:relative;background:linear-gradient(135deg,var(--nuit) 0%,var(--nuit3) 100%);
+  display:flex;flex-direction:column;justify-content:space-between;padding:40px 48px;overflow:hidden;
+}
+.login-gauche::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 40%,rgba(229,193,88,.12) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 80%,rgba(167,139,250,.08) 0%,transparent 50%);
+}
+.login-logo{position:relative;z-index:1}
+.login-logo img{height:32px;width:auto}
+.login-tagline{position:relative;z-index:1}
+.login-tagline h1{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2.6rem;
+  color:var(--txt);line-height:1.1;letter-spacing:-.03em;margin-bottom:16px;
+}
+.login-tagline h1 span{color:var(--or)}
+.login-tagline p{font-size:.95rem;color:var(--txt2);line-height:1.7;max-width:340px}
+.login-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.login-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px}
+.login-stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.4rem;color:var(--or);margin-bottom:3px}
+.login-stat-lbl{font-size:.72rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+/* Côté droit — formulaire */
+.login-droite{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 48px;background:var(--nuit2);position:relative;
+}
+@media(max-width:480px){.login-droite{padding:32px 24px}}
+.login-form-box{width:100%;max-width:400px}
+.login-entete{margin-bottom:32px}
+.login-entete-titre{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.7rem;
+  color:var(--txt);margin-bottom:8px;letter-spacing:-.02em;
+}
+.login-entete-sous{font-size:.87rem;color:var(--txt2)}
+.login-entete-sous a{color:var(--or);text-decoration:none;font-weight:600}
+.login-entete-sous a:hover{text-decoration:underline}
+/* Boutons SSO */
+.sso-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.btn-sso{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:11px 16px;border-radius:10px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  color:var(--txt);font-size:.83rem;font-weight:600;cursor:pointer;
+  transition:background .15s,border-color .15s,transform .15s;
+  font-family:'Inter',sans-serif;
+}
+.btn-sso:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);transform:translateY(-1px)}
+.sso-divider{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.sso-divider::before,.sso-divider::after{content:'';flex:1;height:1px;background:var(--bordure)}
+.sso-divider span{font-size:.75rem;color:var(--txt3);white-space:nowrap}
+/* Champs */
+.form-champ{margin-bottom:16px;position:relative}
+.form-champ label{display:block;font-size:.73rem;font-weight:700;color:var(--txt2);margin-bottom:7px;letter-spacing:.05em;text-transform:uppercase}
+.form-input{
+  width:100%;padding:13px 16px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;color:var(--txt);font-family:'Inter',sans-serif;font-size:.9rem;
+  outline:none;transition:border-color .15s,background .15s;
+}
+.form-input:focus{border-color:rgba(229,193,88,.4);background:rgba(255,255,255,.06)}
+.form-input::placeholder{color:rgba(148,163,184,.4)}
+.form-mdp-toggle{
+  position:absolute;right:14px;bottom:14px;cursor:pointer;color:var(--txt3);
+  transition:color .15s;font-size:.82rem;user-select:none;
+}
+.form-mdp-toggle:hover{color:var(--txt2)}
+/* Options */
+.form-options{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.form-options label{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--txt2);cursor:pointer}
+.form-options input[type=checkbox]{accent-color:var(--or);width:14px;height:14px}
+.form-lien-mdp{font-size:.8rem;color:var(--or);text-decoration:none;font-weight:600}
+.form-lien-mdp:hover{text-decoration:underline}
+/* Bouton submit */
+.btn-login{
+  width:100%;padding:14px;border-radius:12px;
+  background:linear-gradient(135deg,var(--or),var(--or-h));
+  color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:800;font-size:.95rem;border:none;cursor:pointer;
+  transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;
+}
+.btn-login::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(229,193,88,.35)}
+.btn-login:hover::after{opacity:1}
+.btn-login:active{transform:translateY(0)}
+/* Message erreur */
+.msg-erreur{
+  padding:12px 14px;border-radius:10px;
+  background:rgba(255,107,94,.08);border:1px solid rgba(255,107,94,.2);
+  color:var(--corail);font-size:.82rem;margin-bottom:16px;display:none;
+}
+.msg-erreur.visible{display:block}
+/* Footer */
+.login-footer{margin-top:32px;text-align:center}
+.login-footer p{font-size:.75rem;color:var(--txt3);line-height:1.8}
+.login-footer a{color:var(--txt2);text-decoration:none}
+.login-footer a:hover{color:var(--or)}
+/* Particules fond */
+.part-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.part-bg span{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:rgba(229,193,88,.3);animation:float-part 8s infinite ease-in-out;
+}
+@keyframes float-part{
+  0%,100%{transform:translateY(0) translateX(0);opacity:.3}
+  50%{transform:translateY(-60px) translateX(20px);opacity:.8}
+}
+/* Carrousel témoignages côté gauche */
+.login-temoignage{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:24px;margin-bottom:0;
+}
+.login-temoignage-texte{font-size:.88rem;color:var(--txt);line-height:1.7;margin-bottom:12px;font-style:italic}
+.login-temoignage-auteur{display:flex;align-items:center;gap:10px}
+.login-temoignage-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--or),var(--or-h));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.75rem;color:var(--texte-fonce);
+}
+.login-temoignage-info{font-size:.78rem}
+.login-temoignage-nom{color:var(--txt);font-weight:700}
+.login-temoignage-role{color:var(--txt3)}
+</style>
+  <script src="../js/navigation.js"></script>
+</head>
+<body><!-- auth-page: nav globale désactivée intentionnellement -->
+<div class="login-wrap">
+
+  <!-- GAUCHE : branding -->
+  <div class="login-gauche">
+    <div class="part-bg" id="partBg"></div>
+    <div class="login-logo">
+      <img src="../LOGO PEAKLY NAV.png" alt="Peakly">
+    </div>
+
+    <div class="login-tagline">
+      <h1>La data au service<br>de <span>votre talent.</span></h1>
+      <p>Connectez votre univers artistique aux décideurs qui font l'industrie. Peakly analyse, qualifie et présente votre profil aux bonnes personnes.</p>
+    </div>
+
+    <div class="login-temoignage">
+      <div class="login-temoignage-texte" id="temoTexte">"Peakly m'a permis d'être contacté par Def Jam France en moins de 3 semaines. Mon profil était exactement ciblé sur leurs besoins."</div>
+      <div class="login-temoignage-auteur">
+        <div class="login-temoignage-avatar" id="temoAvatar">BK</div>
+        <div class="login-temoignage-info">
+          <div class="login-temoignage-nom" id="temoNom">Bamba Koné</div>
+          <div class="login-temoignage-role">Artiste — Afrobeats / Paris</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-stats">
+      <div class="login-stat"><div class="login-stat-num">8 400+</div><div class="login-stat-lbl">Artistes</div></div>
+      <div class="login-stat"><div class="login-stat-num">340+</div><div class="login-stat-lbl">Labels</div></div>
+      <div class="login-stat"><div class="login-stat-num">97%</div><div class="login-stat-lbl">Satisfaction</div></div>
+    </div>
+  </div>
+
+  <!-- DROITE : formulaire -->
+  <div class="login-droite">
+    <div class="login-form-box">
+      <div class="login-entete">
+        <div class="login-entete-titre">Bienvenue.</div>
+        <div class="login-entete-sous">Pas encore de compte ? <a href="inscription.html">Rejoindre Peakly</a></div>
+      </div>
+
+      <!-- SSO -->
+      <div class="sso-grid">
+        <button class="btn-sso" onclick="loginSSO('Google')">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Google
+        </button>
+        <button class="btn-sso" onclick="loginSSO('Apple')">
+          <svg width="18" height="18" viewBox="0 0 814 1000" fill="var(--txt)"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.8 134.4-318 266.5-318 99.8 0 162.8 65.5 243.4 65.5 76.5 0 151.1-65.5 253.3-65.5 49.7.1 112.5 17.8 224.9 97.1zm-194.3-184.7c43.1-50.8 74.1-121.3 74.1-191.7 0-9.9-.8-19.9-2.5-28.6-71.2 2.5-157.2 47.5-207.8 107.4-39.5 44.8-74.9 114.3-74.9 185.7 0 11.1 1.9 22.2 2.5 25.8 4.4.6 11.7 1.9 18.8 1.9 63.9 0 144.5-42.5 190-100.5z"/></svg>
+          Apple
+        </button>
+      </div>
+
+      <div class="sso-divider"><span>ou connectez-vous par e-mail</span></div>
+
+      <!-- Erreur -->
+      <div class="msg-erreur" id="msgErreur"></div>
+
+      <!-- Form -->
+      <div class="form-champ">
+        <label for="loginEmail">Adresse e-mail</label>
+        <input type="email" id="loginEmail" class="form-input" placeholder="votre@email.com" autocomplete="email">
+      </div>
+      <div class="form-champ">
+        <label for="loginMdp">Mot de passe</label>
+        <input type="password" id="loginMdp" class="form-input" placeholder="Votre mot de passe" autocomplete="current-password">
+        <span class="form-mdp-toggle" onclick="toggleMdp()" id="mdpToggle">Voir</span>
+      </div>
+
+      <div class="form-options">
+        <label><input type="checkbox" id="resterCo" checked> Rester connecté</label>
+        <a href="#" class="form-lien-mdp" onclick="mdpOublie()">Mot de passe oublié</a>
+      </div>
+
+      <button class="btn-login" id="btnLogin" onclick="soumettreLogin()">Se connecter</button>
+
+      <div class="login-footer">
+        <p>En vous connectant, vous acceptez les <a href="#">Conditions d'utilisation</a><br>et la <a href="#">Politique de confidentialité</a> de Peakly.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="../js/services/supabase.js"></script>
+<script src="../js/services/auth.js"></script>
+<script src="../js/utils/validation.js"></script>
+<script src="../js/store.js"></script>
+<script>
+/* Rediriger si déjà connecté */
+(async function(){
+  if(typeof PeaklyAuth !== 'undefined'){
+    const session = await PeaklySupabase.auth.getSession();
+    if(session?.data?.session) PeaklyAuth.redirectByRole();
+  }
+})();
+
+/* Particules décoratives */
+(function(){
+  const bg = document.getElementById('partBg');
+  if(!bg) return;
+  const positions = [[10,20],[25,60],[40,30],[60,75],[75,45],[88,15],[15,85],[55,50],[30,10],[70,90]];
+  positions.forEach(([l,t], i) => {
+    const s = document.createElement('span');
+    s.style.left = l + '%'; s.style.top = t + '%';
+    s.style.animationDelay = (i * 0.7) + 's';
+    s.style.animationDuration = (6 + i * 0.5) + 's';
+    bg.appendChild(s);
+  });
+})();
+
+/* Toggle visibilité mdp */
+function toggleMdp(){
+  const inp = document.getElementById('loginMdp');
+  const tog = document.getElementById('mdpToggle');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  tog.textContent = inp.type === 'password' ? 'Voir' : 'Cacher';
+}
+
+/* Mot de passe oublié */
+function mdpOublie(){
+  const email = document.getElementById('loginEmail').value.trim();
+  if(email && email.includes('@')){
+    window.location.href = 'forgot-password.html?email=' + encodeURIComponent(email);
+  } else {
+    afficherErreur('Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.', true);
+  }
+}
+
+function afficherErreur(msg, erreur){
+  const el = document.getElementById('msgErreur');
+  el.textContent = msg;
+  el.style.background = erreur ? 'rgba(255,107,94,.08)' : 'rgba(74,222,128,.08)';
+  el.style.borderColor = erreur ? 'rgba(255,107,94,.2)' : 'rgba(74,222,128,.2)';
+  el.style.color = erreur ? 'var(--corail)' : 'var(--vert)';
+  el.classList.add('visible');
+}
+
+async function soumettreLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const mdp   = document.getElementById('loginMdp').value;
+  const btn   = document.getElementById('btnLogin');
+  const errEl = document.getElementById('msgErreur');
+  errEl.classList.remove('visible');
+
+  if(!email || !email.includes('@')){ afficherErreur('Adresse e-mail invalide.', true); return; }
+  if(!mdp || mdp.length < 6){ afficherErreur('Le mot de passe est trop court.', true); return; }
+
+  btn.textContent = 'Connexion en cours...';
+  btn.style.opacity = '.7';
+  btn.disabled = true;
+
+  try {
+    await PeaklyAuth.login({ email, password: mdp });
+    PeaklyAuth.redirectByRole();
+  } catch(err) {
+    afficherErreur(err.message === 'Invalid login credentials'
+      ? 'Email ou mot de passe incorrect.'
+      : (err.message || 'Une erreur est survenue.'), true);
+    btn.textContent = 'Se connecter';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }
+}
+
+async function loginSSO(provider){
+  try {
+    await PeaklySupabase.auth.signInWithOAuth({ provider: provider.toLowerCase(),
+      options: { redirectTo: window.location.origin + '/feed.html' }
+    });
+  } catch(err) {
+    afficherErreur('Connexion ' + provider + ' indisponible pour le moment.', true);
+  }
+}
+
+/* Témoignages rotatifs */
+const temos = [
+  { texte: '"Peakly m'a permis d'être contacté par Def Jam France en moins de 3 semaines. Mon profil était exactement ciblé sur leurs besoins."', avatar:'BK', nom:'Bamba Koné', role:'Artiste — Afrobeats / Paris' },
+  { texte: '"En tant que directeur A&R, Peakly m'économise 4 heures par jour. Les profils sont qualifiés, les données sont fiables."', avatar:'AV', nom:'Antoine Vidal', role:'Directeur A&R — Universal Music FR' },
+  { texte: '"Mon Talent Score a progressé de 18 points en 2 mois. Les labels que je ciblais m'ont contactée."', avatar:'SL', nom:'Sola Lefebvre', role:'Artiste — Pop Alternative / Lyon' },
+];
+let temoIdx = 0;
+function rotateTemo(){
+  temoIdx = (temoIdx + 1) % temos.length;
+  const t = temos[temoIdx];
+  const fade = (el) => { el.style.opacity='0'; setTimeout(()=>{el.textContent=t[el.id.replace('temo','').toLowerCase()] || t.texte; el.style.opacity='1';}, 300); };
+  document.getElementById('temoTexte').style.transition='opacity .3s';
+  document.getElementById('temoAvatar').style.transition='opacity .3s';
+  document.getElementById('temoNom').style.transition='opacity .3s';
+  document.getElementById('temoTexte').style.opacity='0';
+  document.getElementById('temoAvatar').style.opacity='0';
+  document.getElementById('temoNom').style.transition='opacity .3s';
+  document.getElementById('temoTexte').style.opacity='0';
+  document.getElementById('temoAvatar').style.opacity='0';
+  document.getElementById('temoNom').style.opacity='0';
+  setTimeout(()=>{
+    document.getElementById('temoTexte').textContent = t.texte;
+    document.getElementById('temoAvatar').textContent = t.avatar;
+    document.getElementById('temoNom').textContent = t.nom;
+    ['temoTexte','temoAvatar','temoNom'].forEach(id=>{document.getElementById(id).style.opacity='1';});
+  }, 300);
+}
+setInterval(rotateTemo, 5000);
+
+/* Enter pour soumettre */
+document.addEventListener('keydown', e => { if(e.key==='Enter') soumettreLogin(); });
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

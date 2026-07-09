@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
 <style>
   :root{
     /* Palette investisseur 60-30-10 : fond sombre institutionnel / texte clair / or rare en accent */
@@ -207,6 +208,8 @@
   .deck-counter .cur{ color:var(--gold); }
   @media (max-width:700px){ .deck-counter{ display:none; } }
 </style>
+  <script src="js/store.js"></script>
+  <script src="js/navigation.js"></script>
 </head>
 <body>
 
@@ -224,6 +227,7 @@
       <a href="#business">Business</a>
       <a href="#recherche">Recherche</a>
       <a href="#remerciements">Remerciements</a>
+      <a href="feed.html" style="margin-left:12px; background:rgba(229,193,88,.15); color:#E5C158; border:1px solid rgba(229,193,88,.3); border-radius:8px; padding:6px 14px; font-weight:700;">Accéder à Peakly</a>
     </nav>
   </div>
 </header>
@@ -249,12 +253,12 @@
   </div>
   <div class="hero-fade" aria-hidden="true"></div>
   <img class="hero-logo" src="LOGO%20PEAKLY.png" alt="Peakly">
-  <p class="desc">Peakly Connect transforme la découverte de talents musicaux en pipeline data-driven pour labels, éditeurs et investisseurs. Objectif : réduire le temps de sourcing, qualifier les artistes plus vite, et créer une marketplace premium entre talents émergents et professionnels de l'industrie musicale.</p>
+  <p class="desc">Peakly aide les labels, éditeurs et investisseurs à repérer rapidement les nouveaux talents musicaux grâce aux données. L'objectif est de trouver plus vite les bons artistes et de les mettre en relation avec les professionnels de l'industrie via une plateforme simple et premium.</p>
   <div class="hero-stats">
-    <div class="stat"><div class="num" style="color:var(--gold);">50 Md$</div><div class="lab">Marché adressable</div></div>
-    <div class="stat"><div class="num">B2B</div><div class="lab">Monétisation prioritaire (labels &amp; éditeurs)</div></div>
-    <div class="stat"><div class="num">2 modèles</div><div class="lab">Revenus B2C &amp; B2B récurrents</div></div>
-    <div class="stat"><div class="num">7</div><div class="lab">Sources de données croisées en PoC</div></div>
+    <div class="stat"><div class="num" style="color:var(--gold);">29,6 Md$</div><div class="lab">Revenus de la musique enregistrée dans le monde (IFPI, 2024)</div></div>
+    <div class="stat"><div class="num">3 publics</div><div class="lab">Artistes, labels et investisseurs réunis sur une seule plateforme</div></div>
+    <div class="stat"><div class="num">5 offres</div><div class="lab">Du profil gratuit pour les artistes à l'abonnement pro pour les labels</div></div>
+    <div class="stat"><div class="num">10 900</div><div class="lab">Données analysées pour valider le marché avant le lancement</div></div>
   </div>
 </section>
 
@@ -272,7 +276,7 @@
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Impossible de tout écouter</strong><span>Aucune équipe ne peut traiter ce volume manuellement : la majorité des dossiers ne sont jamais ouverts.</span></div></div>
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Les meilleurs talents passent inaperçus</strong><span>Noyés dans la masse, sans aucun moyen de se distinguer auprès du bon interlocuteur.</span></div></div>
       <div class="tl-item"><div class="dot"></div><div class="body"><strong>Peakly Connect trie automatiquement les meilleurs profils</strong><span>CV musical standardisé + Talent Score IA : le label ne voit que ce qui correspond à son besoin.</span></div></div>
-      <div class="tl-item"><div class="dot"></div><div class="body"><strong>Gain de temps, découverte de nouveaux talents, ROI</strong><span>Moins de temps perdu à trier, plus de signatures pertinentes, plus vite.</span></div></div>
+      <div class="tl-item"><div class="dot"></div><div class="body"><strong>Gain de temps, découverte de nouveaux talents, retour sur investissement</strong><span>Moins de temps perdu à trier, plus de signatures pertinentes, plus vite.</span></div></div>
     </div>
   </div>
 </section>
@@ -432,7 +436,7 @@
     <p>L'industrie musicale est en forte croissance, mais Peakly Connect ne capte qu'une fraction de ce terrain de jeu : voir le calcul du marché réellement adressable sur la slide suivante.</p>
   </div>
   <div class="grid grid-3">
-    <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">50 Md$</div><div class="lab">Industrie musicale mondiale (contexte)</div></div>
+    <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">29,6 Md$</div><div class="lab">Revenus de la musique enregistrée dans le monde, IFPI 2024 (contexte)</div></div>
     <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">919 M</div><div class="lab">Abonnés streaming dans le monde</div></div>
     <div class="card kpi-card highlight"><div class="kpi" style="font-size:2.4rem;">35 Md$</div><div class="lab">Marché du live</div></div>
   </div>
@@ -618,10 +622,10 @@
   </div>
 
   <div class="pricing-grid">
-    <div class="price-card"><div class="name">FREEMIUM ARTISTE</div><div class="price">0€</div><div class="desc">CV musical, 3 candidatures/mois — offre par défaut pour la majorité des artistes</div></div>
-    <div class="price-card"><div class="name">BOOST ARTISTE</div><div class="price">9€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Candidatures illimitées, badge Open to Work — option, pas un moteur de revenu</div></div>
-    <div class="price-card highlight"><div class="name">PRO LABEL</div><div class="price">79€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Pipeline ATS illimité, Talent Score IA, filtres avancés — revenu principal</div></div>
-    <div class="price-card highlight"><div class="name">BUSINESS B2B</div><div class="price">499€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Multi-utilisateurs, Virtual Deal Room, API complète — revenu principal</div></div>
+    <div class="price-card"><div class="name">FREEMIUM ARTISTE</div><div class="price">0€</div><div class="desc">CV musical, 3 candidatures/mois, offre par défaut pour la majorité des artistes</div></div>
+    <div class="price-card"><div class="name">BOOST ARTISTE</div><div class="price">9€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Candidatures illimitées, badge Open to Work, option, pas un moteur de revenu</div></div>
+    <div class="price-card highlight"><div class="name">PRO LABEL</div><div class="price">79€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Pipeline ATS illimité, Talent Score IA, filtres avancés, revenu principal</div></div>
+    <div class="price-card highlight"><div class="name">BUSINESS B2B</div><div class="price">499€<span style="font-size:0.7rem;">/mois</span></div><div class="desc">Multi-utilisateurs, Virtual Deal Room, API complète, revenu principal</div></div>
     <div class="price-card"><div class="name">ENTERPRISE</div><div class="price">Sur devis</div><div class="desc">Pool de co-investissement, scoring sur-mesure, SLA dédié</div></div>
   </div>
 </section>
@@ -667,12 +671,12 @@
 
   <div class="grid grid-2" style="margin-bottom:24px;">
     <div class="rec-card">
-      <div class="num">PHASE 1 — PRÉ-AMORÇAGE</div>
+      <div class="num">PHASE 1, PRÉ-AMORÇAGE</div>
       <h3>Financer la validation</h3>
       <p class="why">Love money / business angels musique pour financer les entretiens clients, un MVP léger et les premiers labels partenaires (phases 1 et 2 de la stratégie de lancement).</p>
     </div>
     <div class="rec-card">
-      <div class="num">PHASE 2 — AMORÇAGE</div>
+      <div class="num">PHASE 2, AMORÇAGE</div>
       <h3>Scaler après preuves</h3>
       <p class="why">Levée plus large une fois la demande professionnelle prouvée (labels engagés, premiers revenus Pro), pour ouvrir le côté artiste et accélérer l'acquisition.</p>
     </div>
@@ -696,7 +700,7 @@
   </div>
 
   <div class="arch-row" style="margin-bottom:16px;">
-    <div class="arch-tile"><span class="ic" style="color:var(--gold);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="lbl">50 Md$ marché</span></div>
+    <div class="arch-tile"><span class="ic" style="color:var(--gold);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="lbl">29,6 Md$ marché</span></div>
     <div class="arch-arrow">→</div>
     <div class="arch-tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="lbl">B2B-first</span></div>
     <div class="arch-arrow">→</div>
@@ -921,5 +925,6 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
+<script src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paramètres - Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/store.js"></script>
+<script src="../js/navigation.js"></script>
+<style>
+/* ============================================================
+   SETTINGS — UIPro Premium
+   ============================================================ */
+body {
+  background: var(--nuit2, #0A0D14);
+  color: #F2F4F8;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  padding-top: 58px;
+  overflow-x: hidden;
+}
+
+/* Fond animé */
+.settings-bg {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  overflow: hidden;
+}
+.settings-bg-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); opacity: 0;
+  animation: orb-appear .8s ease forwards;
+}
+.settings-bg-orb.o1 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(229,193,88,.07), transparent 70%);
+  top: -100px; right: -100px;
+  animation-delay: .2s;
+}
+.settings-bg-orb.o2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(96,165,250,.04), transparent 70%);
+  bottom: 20%; left: -80px;
+  animation-delay: .5s;
+}
+@keyframes orb-appear {
+  to { opacity: 1 }
+}
+
+/* Layout */
+.settings-layout {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Page header */
+.settings-page-hero {
+  grid-column: 1 / -1;
+  padding-bottom: 8px;
+  animation: slide-in-up .5s cubic-bezier(.22,1,.36,1) both;
+}
+.settings-page-hero h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.03em;
+  margin-bottom: 6px;
+}
+.settings-page-hero p {
+  font-size: .88rem;
+  color: rgba(255,255,255,.4);
+}
+
+/* ── Sidebar ── */
+.settings-sidebar {
+  position: sticky;
+  top: 80px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: slide-in-up .5s cubic-bezier(.22,1,.36,1) .05s both;
+}
+.settings-sidebar-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,.2);
+  text-transform: uppercase;
+  padding: 16px 16px 8px;
+}
+.s-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: .83rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.5);
+  cursor: pointer;
+  transition: color .2s, background .2s, transform .2s;
+  border-left: 2px solid transparent;
+  user-select: none;
+  position: relative;
+}
+.s-nav-item svg { flex-shrink: 0; transition: transform .2s cubic-bezier(.34,1.56,.64,1) }
+.s-nav-item:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.04) }
+.s-nav-item:hover svg { transform: scale(1.15) }
+.s-nav-item.actif {
+  color: var(--or, #E5C158);
+  background: rgba(229,193,88,.07);
+  border-left-color: var(--or, #E5C158);
+}
+.s-nav-item.actif svg { color: var(--or) }
+.s-nav-divider { height: 1px; background: rgba(255,255,255,.06); margin: 6px 0; }
+.s-nav-item-danger { color: rgba(239,68,68,.6) }
+.s-nav-item-danger:hover { background: rgba(239,68,68,.07); color: #EF4444 }
+.s-nav-item-danger.actif { border-left-color: #EF4444; background: rgba(239,68,68,.07); color: #EF4444 }
+
+/* ── Contenu principal ── */
+.settings-main {
+  animation: slide-in-up .5s cubic-bezier(.22,1,.36,1) .1s both;
+}
+.settings-panel { display: none; flex-direction: column; gap: 20px; }
+.settings-panel.actif { display: flex; }
+
+/* ── Card settings premium ── */
+.s-card {
+  background: rgba(255,255,255,.028);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color .3s, box-shadow .3s;
+  position: relative;
+}
+.s-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.s-card:hover { border-color: rgba(255,255,255,.12) }
+.s-card:hover::before { opacity: 1 }
+.s-card-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.s-card-header-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(229,193,88,.1);
+  border: 1px solid rgba(229,193,88,.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+}
+.s-card:hover .s-card-header-icon {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(229,193,88,.2);
+}
+.s-card-header h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.s-card-header p { font-size: .78rem; color: rgba(255,255,255,.4); line-height: 1.5; }
+.s-card-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+.s-card-footer {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  padding: 14px 24px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.1);
+}
+
+/* ── Inputs premium ── */
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-size: .75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .04em;
+}
+.field-input {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 11px;
+  padding: 10px 14px;
+  font-size: .88rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  outline: none;
+}
+.field-input:focus {
+  border-color: rgba(229,193,88,.45);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 0 0 3px rgba(229,193,88,.08), 0 0 20px rgba(229,193,88,.06);
+}
+.field-input::placeholder { color: rgba(255,255,255,.2); }
+textarea.field-input { resize: vertical; min-height: 88px; line-height: 1.55; }
+select.field-input { cursor: pointer; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ── Avatar upload ── */
+.avatar-upload-zone {
+  display: flex; align-items: center; gap: 20px;
+}
+.avatar-preview-wrap { position: relative; }
+.avatar-preview {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: linear-gradient(135deg, #E5C158, #C9A53F);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.6rem; font-weight: 800;
+  color: #0A0D14;
+  border: 2px solid rgba(229,193,88,.4);
+  transition: box-shadow .3s, transform .2s;
+  overflow: hidden;
+}
+.avatar-preview:hover { box-shadow: 0 0 0 4px rgba(229,193,88,.2), 0 0 24px rgba(229,193,88,.2); }
+.avatar-overlay {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: rgba(0,0,0,.6);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .2s;
+  cursor: pointer;
+}
+.avatar-preview-wrap:hover .avatar-overlay { opacity: 1 }
+.avatar-upload-info { display: flex; flex-direction: column; gap: 8px; }
+.btn-upload {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 9px;
+  padding: 9px 18px;
+  font-size: .82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.8);
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-upload:hover { background: rgba(255,255,255,.1); color: #fff; transform: translateY(-1px); }
+.field-hint { font-size: .72rem; color: rgba(255,255,255,.25); }
+
+/* ── Toggle switch premium ── */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: background .15s;
+  border-radius: 8px;
+  margin: 0 -8px; padding: 10px 8px;
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-row:hover { background: rgba(255,255,255,.02); }
+.toggle-label strong { font-size: .88rem; font-weight: 600; color: #fff; display: block; margin-bottom: 2px; }
+.toggle-label span { font-size: .77rem; color: rgba(255,255,255,.35); line-height: 1.4; }
+.toggle-switch {
+  position: relative; width: 46px; height: 26px; flex-shrink: 0; cursor: pointer;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,.1);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  transition: background .25s, border-color .25s, box-shadow .25s;
+}
+.toggle-thumb {
+  position: absolute; left: 3px; top: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.toggle-switch:has(input:checked) .toggle-track {
+  background: linear-gradient(135deg, #E5C158, #C9A53F);
+  border-color: rgba(229,193,88,.5);
+  box-shadow: 0 0 12px rgba(229,193,88,.3);
+}
+.toggle-switch:has(input:checked) .toggle-thumb {
+  transform: translateX(20px);
+  background: #0A0D14;
+}
+
+/* ── Boutons d'action ── */
+.btn-save {
+  background: linear-gradient(135deg, #E5C158, #C9A53F);
+  color: #0A0D14;
+  border: none; border-radius: 10px;
+  padding: 10px 24px;
+  font-size: .88rem; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 2px 12px rgba(229,193,88,.2), inset 0 1px 0 rgba(255,255,255,.2);
+  position: relative; overflow: hidden;
+}
+.btn-save::before {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+  transition: left .4s ease;
+}
+.btn-save:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 28px rgba(229,193,88,.4);
+}
+.btn-save:hover::before { left: 100%; }
+.btn-save:active { transform: translateY(0) scale(.99); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.6);
+  border-radius: 10px; padding: 9px 20px;
+  font-size: .85rem; font-weight: 600;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.28); color: #fff; transform: translateY(-1px); }
+
+.btn-danger-outline {
+  background: rgba(239,68,68,.07);
+  border: 1px solid rgba(239,68,68,.25);
+  color: #EF4444; border-radius: 10px; padding: 9px 20px;
+  font-size: .85rem; font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-danger-outline:hover { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.5); }
+
+/* ── Plans section ── */
+.plans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.plan-mini {
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  overflow: hidden;
+}
+.plan-mini::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(229,193,88,.08), transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+.plan-mini:hover { border-color: rgba(255,255,255,.2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.plan-mini:hover::before { opacity: 1 }
+.plan-mini.actuel {
+  border-color: rgba(229,193,88,.4);
+  background: rgba(229,193,88,.04);
+}
+.plan-mini.actuel::before { opacity: 1 }
+.plan-badge-actuel {
+  position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, #E5C158, #C9A53F);
+  color: #0A0D14; font-size: .6rem; font-weight: 800;
+  padding: 2px 10px; border-radius: 999px;
+  white-space: nowrap; letter-spacing: .5px;
+  box-shadow: 0 4px 12px rgba(229,193,88,.3);
+}
+.plan-mini-nom { font-weight: 700; font-size: .9rem; margin-bottom: 4px; color: #fff; }
+.plan-mini-prix { font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 600; color: var(--or, #E5C158); }
+.plan-mini-prix span { font-size: .72rem; color: rgba(255,255,255,.35); font-family: 'Inter', sans-serif; }
+.plan-mini-desc { font-size: .75rem; color: rgba(255,255,255,.35); margin-top: 7px; line-height: 1.5; }
+
+/* ── Danger zone ── */
+.danger-zone {
+  background: rgba(239,68,68,.04);
+  border: 1px solid rgba(239,68,68,.18);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  transition: border-color .2s, background .2s;
+}
+.danger-zone:hover { border-color: rgba(239,68,68,.3); background: rgba(239,68,68,.06); }
+.danger-zone h4 { color: #EF4444; font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
+.danger-zone p { font-size: .78rem; color: rgba(255,255,255,.4); }
+
+/* ── Sessions ── */
+.session-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: background .15s;
+  border-radius: 8px; margin: 0 -8px; padding: 12px 8px;
+}
+.session-item:last-child { border-bottom: none; }
+.session-item:hover { background: rgba(255,255,255,.02); }
+.session-device { display: flex; align-items: center; gap: 12px; }
+.session-device-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s;
+}
+.session-item:hover .session-device-icon { transform: scale(1.05); }
+.session-name { font-size: .85rem; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.session-time { font-size: .73rem; color: rgba(255,255,255,.35); }
+.badge-current {
+  font-size: .68rem; background: rgba(34,197,94,.12); color: #4ade80;
+  border: 1px solid rgba(34,197,94,.2); padding: 3px 10px;
+  border-radius: 999px; font-weight: 700;
+}
+
+/* ── Mdp force ── */
+.mdp-strength { height: 3px; border-radius: 2px; background: rgba(255,255,255,.08); margin-top: 8px; overflow: hidden; }
+.mdp-strength-bar { height: 100%; border-radius: 2px; transition: width .35s ease, background .35s ease; }
+
+/* ── Modal suppression ── */
+#modal-suppression {
+  position: fixed; inset: 0; z-index: 700;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(14px);
+  display: none; align-items: center; justify-content: center;
+}
+.modal-supp-box {
+  background: rgba(14,18,28,.98);
+  border: 1px solid rgba(239,68,68,.25);
+  border-radius: 20px;
+  padding: 32px;
+  width: min(420px, 92vw);
+  box-shadow: 0 32px 100px rgba(0,0,0,.8);
+  animation: scale-in .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .settings-layout { grid-template-columns: 1fr; gap: 16px; }
+  .settings-sidebar { position: static; display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; border-radius: 14px; }
+  .settings-sidebar-label { display: none; }
+  .s-nav-item { border-left: none; border-radius: 9px; padding: 8px 12px; font-size: .78rem; flex: 0 0 auto; }
+  .s-nav-item.actif { background: rgba(229,193,88,.1); border-left: none; }
+  .field-row { grid-template-columns: 1fr; }
+  .plans-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Fond animé -->
+<div class="settings-bg">
+  <div class="settings-bg-orb o1"></div>
+  <div class="settings-bg-orb o2"></div>
+</div>
+
+<div id="nav-root"></div>
+<div class="mouse-glow" id="mouseGlow"></div>
+
+<div class="settings-layout">
+
+  <!-- Hero -->
+  <div class="settings-page-hero">
+    <h1>Paramètres</h1>
+    <p>Gérez votre profil, votre compte et vos préférences Peakly.</p>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="settings-sidebar">
+    <div class="settings-sidebar-label">Compte</div>
+    <div class="s-nav-item actif" onclick="afficherPanel('profil', this)">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Profil
+    </div>
+    <div class="s-nav-item" onclick="afficherPanel('compte', this)">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Sécurité
+    </div>
+    <div class="s-nav-item" onclick="afficherPanel('notifs', this)">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Notifications
+    </div>
+    <div class="s-nav-item" onclick="afficherPanel('confidentialite', this)">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Confidentialité
+    </div>
+    <div class="s-nav-divider"></div>
+    <div class="s-nav-item" onclick="afficherPanel('abonnement', this)">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      Abonnement
+    </div>
+    <div class="s-nav-item s-nav-item-danger" onclick="afficherPanel('danger', this)">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Zone critique
+    </div>
+  </aside>
+
+  <!-- Contenu -->
+  <main class="settings-main">
+
+    <!-- PANEL : Profil -->
+    <section class="settings-panel actif" id="panel-profil">
+
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Photo de profil</h3>
+            <p>Format recommandé : carré, min. 400 × 400 px</p>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="avatar-upload-zone">
+            <div class="avatar-preview-wrap" onclick="document.getElementById('avatar-file').click()">
+              <div class="avatar-preview" id="avatar-preview">A</div>
+              <div class="avatar-overlay">
+                <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+            </div>
+            <div class="avatar-upload-info">
+              <button class="btn-upload" onclick="document.getElementById('avatar-file').click()">Changer la photo</button>
+              <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+              <span class="field-hint">JPG, PNG, WebP — max 4 Mo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Informations publiques</h3>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">Prénom</label>
+              <input class="field-input" type="text" id="prenom" placeholder="Votre prénom">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Nom</label>
+              <input class="field-input" type="text" id="nom" placeholder="Votre nom">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Nom d'artiste / nom de scène</label>
+            <input class="field-input" type="text" id="nom-artiste" placeholder="ex. DJ Shadow, Clara M.">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Biographie</label>
+            <textarea class="field-input" id="bio" placeholder="Décrivez votre univers musical en quelques lignes..."></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">Ville</label>
+              <input class="field-input" type="text" id="ville" placeholder="Paris, Lyon, Marseille...">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Pays</label>
+              <input class="field-input" type="text" id="pays" value="France">
+            </div>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-ghost" onclick="reinitialiserProfil()">Annuler</button>
+          <button class="btn-save" onclick="sauvegarderProfil()">Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Liens sociaux</h3>
+            <p>Renforcez votre crédibilité auprès des professionnels.</p>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="field-group">
+            <label class="field-label">Spotify</label>
+            <input class="field-input" type="url" placeholder="https://open.spotify.com/artist/...">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Instagram</label>
+            <input class="field-input" type="url" placeholder="https://instagram.com/@...">
+          </div>
+          <div class="field-group">
+            <label class="field-label">SoundCloud</label>
+            <input class="field-input" type="url" placeholder="https://soundcloud.com/...">
+          </div>
+          <div class="field-group">
+            <label class="field-label">YouTube</label>
+            <input class="field-input" type="url" placeholder="https://youtube.com/@...">
+          </div>
+          <div class="field-group">
+            <label class="field-label">TikTok</label>
+            <input class="field-input" type="url" placeholder="https://tiktok.com/@...">
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-save" onclick="showToast('ok','Liens enregistrés','Vos liens sociaux sont mis à jour.')">Enregistrer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL : Sécurité -->
+    <section class="settings-panel" id="panel-compte">
+
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Adresse e-mail</h3>
+            <p>Utilisée pour la connexion et les notifications importantes.</p>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="field-group">
+            <label class="field-label">E-mail actuel</label>
+            <input class="field-input" type="email" id="email-actuel" placeholder="votre@email.com">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Nouvel e-mail</label>
+            <input class="field-input" type="email" id="email-nouveau" placeholder="nouveau@email.com">
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-save" onclick="changerEmail()">Mettre à jour</button>
+        </div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div style="flex:1"><h3>Mot de passe</h3></div>
+        </div>
+        <div class="s-card-body">
+          <div class="field-group">
+            <label class="field-label">Mot de passe actuel</label>
+            <input class="field-input" type="password" placeholder="••••••••">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Nouveau mot de passe</label>
+            <input class="field-input" type="password" id="mdp-nouveau" placeholder="Min. 8 caractères" oninput="evaluerMdp(this.value)">
+            <div class="mdp-strength"><div class="mdp-strength-bar" id="mdp-barre"></div></div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Confirmer</label>
+            <input class="field-input" type="password" placeholder="Répétez le nouveau mot de passe">
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-save" onclick="changerMotDePasse()">Modifier le mot de passe</button>
+        </div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Sessions actives</h3>
+            <p>Appareils actuellement connectés à votre compte.</p>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="session-item">
+            <div class="session-device">
+              <div class="session-device-icon">
+                <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+              <div>
+                <div class="session-name">MacBook Pro — Paris</div>
+                <div class="session-time">Actif maintenant</div>
+              </div>
+            </div>
+            <span class="badge-current">Session actuelle</span>
+          </div>
+          <div class="session-item" id="session-mobile">
+            <div class="session-device">
+              <div class="session-device-icon">
+                <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="rgba(255,255,255,.4)"/></svg>
+              </div>
+              <div>
+                <div class="session-name">iPhone 15 — Application</div>
+                <div class="session-time">Il y a 2 heures</div>
+              </div>
+            </div>
+            <button class="btn-danger-outline" style="padding:5px 12px; font-size:.75rem;" onclick="revoquerSession(this)">Révoquer</button>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-danger-outline" onclick="showToast('ok','Sessions révoquées','Vous restez connecté sur cet appareil.')">Déconnecter tout</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL : Notifications -->
+    <section class="settings-panel" id="panel-notifs">
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Notifications e-mail</h3>
+            <p>Choisissez ce que Peakly vous envoie par e-mail.</p>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Nouveaux messages</strong>
+              <span>Quand un label ou artiste vous écrit</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Nouveaux abonnés</strong>
+              <span>Quand quelqu'un vous suit sur Peakly</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Big Up sur vos tracks</strong>
+              <span>Réactions de la communauté à vos publications</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Évolution du Talent Score</strong>
+              <span>Alertes de progression ou de régression</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Newsletter Peakly</strong>
+              <span>Tendances, opportunités et news du secteur</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-save" onclick="showToast('ok','Préférences enregistrées','Vos réglages de notifications sont actifs.')">Enregistrer</button>
+        </div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="#E5C158"/></svg>
+          </div>
+          <div style="flex:1"><h3>Notifications push</h3></div>
+        </div>
+        <div class="s-card-body">
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Activer les notifications push</strong>
+              <span>Requiert l'autorisation dans votre navigateur</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <strong>Résumé hebdomadaire</strong>
+              <span>Un rapport de vos stats chaque lundi matin</span>
+            </div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL : Confidentialité -->
+    <section class="settings-panel" id="panel-confidentialite">
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div style="flex:1"><h3>Visibilité du profil</h3></div>
+        </div>
+        <div class="s-card-body">
+          <div class="toggle-row">
+            <div class="toggle-label"><strong>Profil public</strong><span>Visible par tous, y compris les visiteurs non connectés</span></div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label"><strong>Apparaître dans la recherche</strong><span>Votre profil peut être trouvé via la recherche Peakly</span></div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label"><strong>Afficher les statistiques Spotify</strong><span>Streams, auditeurs et Talent Score visibles publiquement</span></div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label"><strong>Afficher mes abonnés</strong><span>Le nombre de personnes qui vous suivent sur Peakly</span></div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-save" onclick="showToast('ok','Confidentialité mise à jour','Vos paramètres sont actifs.')">Enregistrer</button>
+        </div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div style="flex:1"><h3>Messagerie</h3></div>
+        </div>
+        <div class="s-card-body">
+          <div class="field-group">
+            <label class="field-label">Qui peut vous envoyer des messages ?</label>
+            <select class="field-input">
+              <option value="tous">Tout le monde</option>
+              <option value="abonnes" selected>Mes abonnés uniquement</option>
+              <option value="pros">Professionnels vérifiés uniquement</option>
+              <option value="personne">Personne</option>
+            </select>
+          </div>
+          <div class="toggle-row" style="border:none">
+            <div class="toggle-label"><strong>Accusés de lecture</strong><span>Indique si vous avez lu les messages</span></div>
+            <label class="toggle-switch"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-save" onclick="showToast('ok','Messagerie configurée','Vos préférences de messagerie sont sauvegardées.')">Enregistrer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL : Abonnement -->
+    <section class="settings-panel" id="panel-abonnement">
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3>Plan actuel</h3>
+            <p>Renouvellement automatique le 1er août 2026</p>
+          </div>
+        </div>
+        <div class="s-card-body">
+          <div class="plans-grid">
+            <div class="plan-mini">
+              <div class="plan-mini-nom">Gratuit</div>
+              <div class="plan-mini-prix">0 <span>€/mois</span></div>
+              <div class="plan-mini-desc">Profil de base, 3 tracks</div>
+            </div>
+            <div class="plan-mini actuel">
+              <div class="plan-badge-actuel">Plan actuel</div>
+              <div class="plan-mini-nom">Pro Artiste</div>
+              <div class="plan-mini-prix">19 <span>€/mois</span></div>
+              <div class="plan-mini-desc">Tracks illimitées, analytics, messagerie pro</div>
+            </div>
+            <div class="plan-mini" onclick="window.location.href='pricing.html'" style="cursor:pointer">
+              <div class="plan-mini-nom">Label Pro</div>
+              <div class="plan-mini-prix">79 <span>€/mois</span></div>
+              <div class="plan-mini-desc">CRM complet, API, 5 sièges</div>
+            </div>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-ghost" onclick="window.location.href='pricing.html'">Voir tous les plans</button>
+          <button class="btn-save" onclick="window.location.href='pricing.html'">Mettre à niveau</button>
+        </div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-header">
+          <div class="s-card-header-icon">
+            <svg width="16" height="16" fill="none" stroke="#E5C158" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div style="flex:1"><h3>Historique de facturation</h3></div>
+        </div>
+        <div class="s-card-body">
+          <div id="factures-liste"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL : Danger -->
+    <section class="settings-panel" id="panel-danger">
+      <div class="s-card" style="border-color:rgba(251,146,60,.2)">
+        <div class="s-card-header" style="border-bottom-color:rgba(251,146,60,.15)">
+          <div class="s-card-header-icon" style="background:rgba(251,146,60,.1); border-color:rgba(251,146,60,.25)">
+            <svg width="16" height="16" fill="none" stroke="#FB923C" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div style="flex:1">
+            <h3 style="color:#FB923C">Suspendre le compte</h3>
+            <p>Votre profil sera masqué temporairement. Vous pourrez vous reconnecter à tout moment.</p>
+          </div>
+        </div>
+        <div class="s-card-footer">
+          <button class="btn-ghost" onclick="showToast('','Compte suspendu','Votre profil est masqué. Reconnectez-vous pour réactiver.')">Suspendre mon compte</button>
+        </div>
+      </div>
+
+      <div class="danger-zone">
+        <div>
+          <h4>Supprimer définitivement le compte</h4>
+          <p>Toutes vos données, tracks, messages et statistiques seront effacés. Cette action est irréversible.</p>
+        </div>
+        <button class="btn-danger-outline" onclick="ouvrirModalSuppression()">Supprimer le compte</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal suppression -->
+<div id="modal-suppression" onclick="if(event.target===this)fermerModalSuppression()">
+  <div class="modal-supp-box">
+    <div style="text-align:center; margin-bottom:20px;">
+      <div style="width:52px; height:52px; border-radius:50%; background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); margin:0 auto 14px; display:flex; align-items:center; justify-content:center;">
+        <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </div>
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:8px;">Supprimer le compte ?</h3>
+      <p style="font-size:.84rem; color:rgba(255,255,255,.45); line-height:1.55;">Tapez <strong style="color:#fff;">supprimer</strong> pour confirmer. Cette action efface définitivement toutes vos données.</p>
+    </div>
+    <input class="field-input" type="text" id="confirm-suppression" placeholder="Tapez supprimer" style="margin-bottom:14px;" oninput="validerInputSuppression(this.value)">
+    <div style="display:flex; gap:10px;">
+      <button class="btn-ghost" style="flex:1;" onclick="fermerModalSuppression()">Annuler</button>
+      <button id="btn-confirmer-suppr" class="btn-danger-outline" style="flex:1; opacity:.4; pointer-events:none;" onclick="supprimerCompte()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+/* ── Init ── */
+window.addEventListener('DOMContentLoaded', function(){
+  // Mouse glow
+  var glow = document.getElementById('mouseGlow');
+  if(glow){
+    document.addEventListener('mousemove', function(e){
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+  }
+
+  // Charger données session
+  if(typeof PeaklyStore !== 'undefined'){
+    var s = PeaklyStore.getSession();
+    if(s){
+      var parts = (s.nom || '').split(' ');
+      var p = document.getElementById('prenom');
+      var n = document.getElementById('nom');
+      if(p) p.value = parts[0] || '';
+      if(n) n.value = parts.slice(1).join(' ') || '';
+      var initials = (s.nom || 'A').split(' ').map(function(x){ return x[0]; }).join('').slice(0,2).toUpperCase();
+      var av = document.getElementById('avatar-preview');
+      if(av) av.textContent = initials;
+      var em = document.getElementById('email-actuel');
+      if(em) em.value = s.email || '';
+    }
+  }
+
+  // Factures simulées
+  var mois = ['Juillet 2026','Juin 2026','Mai 2026','Avril 2026'];
+  var container = document.getElementById('factures-liste');
+  if(container){
+    container.innerHTML = mois.map(function(m, i){
+      var border = i < mois.length-1 ? 'border-bottom:1px solid rgba(255,255,255,.07);' : '';
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;'+border+'">'
+        +'<div><div style="font-size:.85rem;font-weight:600;color:#fff">Pro Artiste — '+m+'</div>'
+        +'<div style="font-size:.73rem;color:rgba(255,255,255,.35)">1er '+m+'</div></div>'
+        +'<div style="display:flex;align-items:center;gap:12px">'
+        +'<span style="font-family:JetBrains Mono,monospace;color:var(--or)">19,00 €</span>'
+        +'<button class="btn-ghost" style="padding:5px 12px;font-size:.75rem;" onclick="showToast(\'\',\'Téléchargement\',\'Facture disponible prochainement.\')">PDF</button>'
+        +'</div></div>';
+    }).join('');
+  }
+
+  // Ouvrir le tab depuis l'URL hash
+  var hash = window.location.hash.replace('#','');
+  if(hash){
+    var tabEl = document.querySelector('[data-panel="'+hash+'"]');
+    if(tabEl) afficherPanel(hash, tabEl);
+  }
+
+})();
+</script>
+</body>
+</html>

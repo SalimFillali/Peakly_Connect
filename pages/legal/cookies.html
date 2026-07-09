@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Politique de cookies — Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css">
+<style>
+.legal-hero{background:linear-gradient(135deg,rgba(10,13,20,1) 0%,rgba(18,24,36,.97) 100%);border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
+.legal-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(229,193,88,.35),transparent)}
+.legal-hero-inner{max-width:800px;margin:0 auto;padding:56px 40px 48px;position:relative;z-index:1}
+.legal-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(229,193,88,.1);border:1px solid rgba(229,193,88,.2);font-size:.65rem;font-weight:800;color:var(--or);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.legal-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2.1rem;color:var(--txt);margin:0 0 12px;line-height:1.15}
+.legal-meta{font-size:.78rem;color:var(--txt3)}
+.legal-body{max-width:800px;margin:0 auto;padding:48px 40px 80px}
+@media(max-width:700px){.legal-hero-inner,.legal-body{padding-left:20px;padding-right:20px}.legal-title{font-size:1.5rem}}
+.legal-body h2{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:var(--txt);margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--b1)}
+.legal-body h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.95rem;color:var(--txt);margin:24px 0 8px}
+.legal-body p{font-size:.85rem;color:var(--txt2);line-height:1.75;margin:0 0 12px}
+.legal-body ul{padding-left:20px;margin:0 0 14px}
+.legal-body li{font-size:.85rem;color:var(--txt2);line-height:1.7;margin-bottom:4px}
+.legal-body strong{color:var(--txt);font-weight:700}
+.legal-body a{color:var(--or);text-decoration:none}
+.legal-body a:hover{text-decoration:underline}
+.legal-highlight{background:rgba(229,193,88,.06);border:1px solid rgba(229,193,88,.15);border-radius:10px;padding:16px 20px;margin:20px 0}
+.legal-highlight p{margin:0}
+.legal-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.legal-nav a{padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:.72rem;font-weight:600;color:var(--txt2);text-decoration:none;transition:all .2s}
+.legal-nav a:hover{background:rgba(255,255,255,.1);color:var(--txt)}
+.legal-nav a.active{background:rgba(229,193,88,.12);border-color:rgba(229,193,88,.25);color:var(--or)}
+/* Cookie banner toggle */
+.cookie-pref{background:rgba(255,255,255,.02);border:1px solid var(--b1);border-radius:12px;padding:20px 24px;margin:12px 0}
+.cookie-pref-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cookie-pref-info{flex:1}
+.cookie-pref-name{font-size:.85rem;font-weight:700;color:var(--txt);margin-bottom:3px}
+.cookie-pref-desc{font-size:.75rem;color:var(--txt2);line-height:1.5}
+.toggle-wrap{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle-wrap input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:999px;transition:all .3s}
+.toggle-slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:50%;transform:translateY(-50%);background:#fff;border-radius:50%;transition:transform .3s}
+.toggle-wrap input:checked + .toggle-slider{background:linear-gradient(135deg,#E5C158,#C9A53F);border-color:rgba(229,193,88,.3)}
+.toggle-wrap input:checked + .toggle-slider::before{transform:translate(18px,-50%)}
+.toggle-wrap input:disabled + .toggle-slider{opacity:.5;cursor:not-allowed}
+.btn-save-prefs{margin-top:20px;padding:10px 24px;border-radius:10px;background:linear-gradient(135deg,#E5C158,#C9A53F);color:#0a0d14;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.82rem;border:none;cursor:pointer;transition:all .2s}
+.btn-save-prefs:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(229,193,88,.3)}
+</style>
+</head>
+<body>
+<div id="nav-root"></div>
+<div class="legal-hero">
+  <div class="legal-hero-inner">
+    <div class="legal-eyebrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Informations légales</div>
+    <h1 class="legal-title">Politique de cookies</h1>
+    <div class="legal-meta">Dernière mise à jour : 1er juillet 2026 · Version 1.0</div>
+    <nav class="legal-nav">
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cgu.html">CGU</a>
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="cookies.html" class="active">Cookies</a>
+    </nav>
+  </div>
+</div>
+
+<div class="legal-body">
+
+  <h2>1. Qu'est-ce qu'un cookie ?</h2>
+  <p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, smartphone, tablette) lors de votre visite sur un site web. Les cookies permettent au site de mémoriser vos préférences, votre session de connexion et d'analyser votre utilisation du service.</p>
+
+  <h2>2. Cookies utilisés par Peakly</h2>
+
+  <h3>Cookies strictement nécessaires — toujours actifs</h3>
+  <div class="cookie-pref">
+    <div class="cookie-pref-row">
+      <div class="cookie-pref-info">
+        <div class="cookie-pref-name">Session et authentification</div>
+        <div class="cookie-pref-desc">Maintien de votre connexion, sécurité CSRF, JWT Supabase. Ces cookies sont indispensables au fonctionnement du service et ne peuvent pas être désactivés.</div>
+      </div>
+      <label class="toggle-wrap"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
+    </div>
+  </div>
+
+  <h3>Cookies fonctionnels</h3>
+  <div class="cookie-pref">
+    <div class="cookie-pref-row">
+      <div class="cookie-pref-info">
+        <div class="cookie-pref-name">Préférences et personnalisation</div>
+        <div class="cookie-pref-desc">Mémorisation de vos préférences (langue, thème, filtres de recherche). Durée : 1 an.</div>
+      </div>
+      <label class="toggle-wrap"><input type="checkbox" id="pref-fonc" checked><span class="toggle-slider"></span></label>
+    </div>
+  </div>
+
+  <h3>Cookies analytiques</h3>
+  <div class="cookie-pref">
+    <div class="cookie-pref-row">
+      <div class="cookie-pref-info">
+        <div class="cookie-pref-name">Analyse d'utilisation (Plausible Analytics)</div>
+        <div class="cookie-pref-desc">Mesure d'audience anonymisée et agrégée. Nous utilisons Plausible Analytics, une solution respectueuse de la vie privée ne nécessitant pas de consentement sous RGPD (pas de suivi inter-sites, données anonymes). Durée : session.</div>
+      </div>
+      <label class="toggle-wrap"><input type="checkbox" id="pref-analytics" checked><span class="toggle-slider"></span></label>
+    </div>
+  </div>
+
+  <h3>Cookies marketing</h3>
+  <div class="cookie-pref">
+    <div class="cookie-pref-row">
+      <div class="cookie-pref-info">
+        <div class="cookie-pref-name">Publicité ciblée</div>
+        <div class="cookie-pref-desc">Peakly n'utilise pas de cookies publicitaires tiers ni de suivi inter-sites à des fins publicitaires. Ce service est sans publicité.</div>
+      </div>
+      <label class="toggle-wrap"><input type="checkbox" id="pref-marketing" disabled><span class="toggle-slider"></span></label>
+    </div>
+  </div>
+
+  <button class="btn-save-prefs" onclick="saveCookiePrefs()">Enregistrer mes préférences</button>
+
+  <h2>3. Tableau des cookies</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:.8rem;margin:12px 0 20px">
+    <tr style="border-bottom:1px solid var(--b1)">
+      <th style="text-align:left;padding:10px 8px;color:var(--txt);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Nom</th>
+      <th style="text-align:left;padding:10px 8px;color:var(--txt);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Fournisseur</th>
+      <th style="text-align:left;padding:10px 8px;color:var(--txt);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Finalité</th>
+      <th style="text-align:left;padding:10px 8px;color:var(--txt);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Durée</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--b1)">
+      <td style="padding:10px 8px;color:var(--txt2)">peakly_session</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Supabase</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Authentification JWT</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Session</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--b1)">
+      <td style="padding:10px 8px;color:var(--txt2)">peakly_prefs</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Peakly</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Préférences utilisateur</td>
+      <td style="padding:10px 8px;color:var(--txt2)">1 an</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--b1)">
+      <td style="padding:10px 8px;color:var(--txt2)">peakly_cookie_consent</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Peakly</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Mémorisation du consentement</td>
+      <td style="padding:10px 8px;color:var(--txt2)">1 an</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 8px;color:var(--txt2)">_plausible</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Plausible Analytics</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Analyse anonyme</td>
+      <td style="padding:10px 8px;color:var(--txt2)">Session</td>
+    </tr>
+  </table>
+
+  <h2>4. Gérer vos cookies</h2>
+  <p>En dehors des préférences ci-dessus, vous pouvez configurer votre navigateur pour refuser ou supprimer les cookies :</p>
+  <ul>
+    <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+    <li><a href="https://support.mozilla.org/fr/kb/activer-desactiver-cookies" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+    <li><a href="https://support.apple.com/fr-fr/guide/safari/sfri11471" target="_blank" rel="noopener">Apple Safari</a></li>
+    <li><a href="https://support.microsoft.com/fr-fr/topic/comment-supprimer-les-fichiers-de-cookies-dans-internet-explorer" target="_blank" rel="noopener">Microsoft Edge</a></li>
+  </ul>
+  <p>Attention : la désactivation de certains cookies peut empêcher le bon fonctionnement de la plateforme.</p>
+
+  <h2>5. Contact</h2>
+  <p>Pour toute question sur nos cookies : <a href="mailto:privacy@peakly.fr">privacy@peakly.fr</a></p>
+
+</div>
+
+<script src="../../js/store.js"></script>
+<script src="../../js/navigation.js"></script>
+<script src="../../js/app.js"></script>
+<script>
+function saveCookiePrefs(){
+  var prefs = {
+    fonctionnels: document.getElementById('pref-fonc').checked,
+    analytiques:  document.getElementById('pref-analytics').checked
+  };
+  localStorage.setItem('peakly_cookie_consent', JSON.stringify({ ...prefs, date: new Date().toISOString() }));
+  if(typeof showToast !== 'undefined') showToast('','Préférences enregistrées','Vos choix ont bien été pris en compte.','');
+}
+/* Charger les préférences sauvegardées */
+(function(){
+  try {
+    var saved = JSON.parse(localStorage.getItem('peakly_cookie_consent') || '{}');
+    if(saved.fonctionnels !== undefined) document.getElementById('pref-fonc').checked = saved.fonctionnels;
+    if(saved.analytiques  !== undefined) document.getElementById('pref-analytics').checked = saved.analytiques;
+  } catch(e){}
+})();
+</script>
+</body>
+</html>

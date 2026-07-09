@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rejoindre Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+body{padding-top:0;min-height:100vh;background:var(--nuit2);display:flex;flex-direction:column;align-items:center}
+.insc-header{width:100%;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;background:rgba(10,13,20,.92);backdrop-filter:blur(20px);z-index:100;border-bottom:1px solid var(--bordure)}
+.insc-header img{height:26px}
+.insc-header-lien{font-size:.83rem;color:var(--txt2)}
+.insc-header-lien a{color:var(--or);text-decoration:none;font-weight:700}
+.insc-wrap{width:100%;max-width:560px;padding:112px 24px 80px}
+
+/* Barre de progression */
+.prog-bar{display:flex;align-items:center;gap:0;margin-bottom:44px}
+.prog-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.prog-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:2px;background:rgba(255,255,255,.08);z-index:0;transition:background .3s}
+.prog-step.fait:not(:last-child)::after,.prog-step.actif:not(:last-child)::after{background:var(--or)}
+.prog-num{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.1);background:var(--nuit3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--txt3);position:relative;z-index:1;transition:all .25s}
+.prog-step.actif .prog-num{border-color:var(--or);color:var(--or);background:var(--or-dim)}
+.prog-step.fait .prog-num{border-color:var(--or);background:var(--or);color:var(--texte-fonce)}
+.prog-lbl{font-size:.62rem;color:var(--txt3);margin-top:6px;font-weight:600;text-align:center;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
+.prog-step.actif .prog-lbl{color:var(--or)}
+.prog-step.fait .prog-lbl{color:var(--txt2)}
+
+/* Titres d'étape */
+.etape-titre{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:1.5rem;color:var(--txt);margin-bottom:8px;letter-spacing:-.02em}
+.etape-sous{font-size:.87rem;color:var(--txt2);margin-bottom:28px;line-height:1.6}
+.etape-section{font-size:.72rem;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--bordure)}
+
+/* Choix de type */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.type-card{padding:22px 18px;border-radius:16px;border:2px solid var(--bordure);background:var(--glass);cursor:pointer;transition:all .2s;text-align:center;user-select:none}
+.type-card:hover{border-color:rgba(229,193,88,.3);background:var(--glass2)}
+.type-card.selectionne{border-color:var(--or);background:var(--or-dim)}
+.type-card-icone{display:flex;justify-content:center;margin-bottom:12px;color:var(--txt3)}
+.type-card.selectionne .type-card-icone{color:var(--or)}
+.type-card-titre{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:.95rem;color:var(--txt);margin-bottom:5px}
+.type-card-desc{font-size:.73rem;color:var(--txt2);line-height:1.5}
+.subtype-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+
+/* Champs */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
+.form-champ{margin-bottom:16px}
+.form-champ label{display:block;font-size:.71rem;font-weight:700;color:var(--txt2);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase}
+.form-champ label .opt{font-weight:400;color:var(--txt3);text-transform:none;letter-spacing:0}
+.form-input{width:100%;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;color:var(--txt);font-family:"Inter",sans-serif;font-size:.88rem;outline:none;transition:border-color .15s;box-sizing:border-box}
+.form-input:focus{border-color:rgba(229,193,88,.4)}
+.form-input::placeholder{color:rgba(148,163,184,.35)}
+select.form-input{cursor:pointer}
+select.form-input option{background:var(--nuit3)}
+textarea.form-input{resize:vertical;min-height:80px;line-height:1.6}
+.char-counter{font-size:.7rem;color:var(--txt3);text-align:right;margin-top:4px}
+
+/* Tags */
+.tags-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tag{padding:6px 14px;border-radius:999px;border:1px solid var(--bordure);background:var(--glass);font-size:.75rem;color:var(--txt2);cursor:pointer;transition:all .15s;user-select:none;font-weight:500}
+.tag:hover{border-color:rgba(229,193,88,.3);color:var(--txt)}
+.tag.actif{border-color:var(--or);background:var(--or-dim);color:var(--or);font-weight:700}
+
+/* Zone upload */
+.upload-zone{border:2px dashed rgba(255,255,255,.1);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02);margin-bottom:4px}
+.upload-zone:hover{border-color:rgba(229,193,88,.35);background:rgba(229,193,88,.04)}
+.upload-zone.has-file{border-color:rgba(229,193,88,.5);background:rgba(229,193,88,.06)}
+.upload-zone svg{display:block;margin:0 auto 8px;color:var(--txt3)}
+.upload-zone .uz-label{font-size:.82rem;color:var(--txt2);line-height:1.5}
+.upload-zone .uz-hint{font-size:.71rem;color:var(--txt3);margin-top:4px}
+.upload-zone .uz-nom{font-size:.8rem;color:var(--or);margin-top:6px;font-weight:600}
+.upload-zone input[type=file]{display:none}
+
+/* Plateforme rows */
+.platform-row{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;margin-bottom:12px}
+.platform-label{font-size:.78rem;color:var(--txt2);font-weight:600;display:flex;align-items:center;gap:8px}
+.platform-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pf-spotify{background:#1DB954}
+.pf-apple{background:#fc3c44}
+.pf-deezer{background:#ef5466}
+.pf-youtube{background:#FF0000}
+.pf-soundcloud{background:#FF5500}
+.pf-tiktok{background:#69C9D0}
+.pf-instagram{background:linear-gradient(135deg,#405DE6,#C13584,#FD1D1D)}
+.pf-audiomack{background:#FF7E00}
+.pf-bandcamp{background:#1DA0C3}
+.pf-autre{background:var(--txt3)}
+
+/* Toggle switch */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--glass);border:1px solid var(--bordure);border-radius:10px;margin-bottom:10px}
+.toggle-info{flex:1}
+.toggle-titre{font-size:.85rem;font-weight:600;color:var(--txt)}
+.toggle-desc{font-size:.73rem;color:var(--txt2);margin-top:2px}
+.toggle-switch{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:22px;cursor:pointer;transition:.25s}
+.toggle-slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
+.toggle-switch input:checked + .toggle-slider{background:var(--or)}
+.toggle-switch input:checked + .toggle-slider::before{transform:translateX(18px)}
+
+/* Tracks */
+.track-card{border:1px solid var(--bordure);border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--glass)}
+.track-header{padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:background .15s}
+.track-header:hover{background:var(--glass2)}
+.track-header-num{font-size:.72rem;font-weight:700;color:var(--or);letter-spacing:.06em;text-transform:uppercase;margin-right:10px}
+.track-header-titre{font-size:.88rem;font-weight:600;color:var(--txt);flex:1}
+.track-header-chevron{color:var(--txt3);transition:transform .2s}
+.track-header-chevron.open{transform:rotate(180deg)}
+.track-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.track-body.open{padding:4px 18px 18px;max-height:800px}
+
+/* Consentement */
+.consent-item{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border:1px solid var(--bordure);border-radius:10px;margin-bottom:10px;background:var(--glass)}
+.consent-item input[type=checkbox]{margin-top:2px;accent-color:var(--or);width:16px;height:16px;flex-shrink:0;cursor:pointer}
+.consent-item label{font-size:.83rem;color:var(--txt2);line-height:1.5;cursor:pointer}
+.consent-item label a{color:var(--or);text-decoration:none}
+.consent-item label strong{color:var(--txt)}
+.rgpd-note{font-size:.73rem;color:var(--txt3);line-height:1.6;padding:12px 14px;border-left:3px solid var(--or-dim);background:rgba(229,193,88,.04);border-radius:0 8px 8px 0;margin-top:8px}
+
+/* Navigation */
+.etape-nav{display:flex;justify-content:space-between;margin-top:28px;gap:12px}
+.btn-retour{padding:12px 22px;border-radius:10px;background:var(--glass);border:1px solid var(--bordure);color:var(--txt2);font-family:"Plus Jakarta Sans",sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-retour:hover{background:var(--glass2);color:var(--txt)}
+.btn-suivant{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--or),var(--or-h));color:var(--texte-fonce);font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:.95rem;border:none;cursor:pointer;transition:transform .18s,box-shadow .18s}
+.btn-suivant:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px rgba(229,193,88,.3)}
+.btn-suivant:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-passer{background:none;border:none;color:var(--txt3);font-size:.8rem;cursor:pointer;padding:10px;font-family:"Inter",sans-serif}
+.btn-passer:hover{color:var(--txt2)}
+
+/* Erreurs */
+.msg-err{display:none;padding:10px 14px;border-radius:8px;background:rgba(255,107,94,.07);border:1px solid rgba(255,107,94,.18);color:#ff9d94;font-size:.82rem;margin-top:12px;margin-bottom:4px;line-height:1.5}
+.msg-err.visible{display:block}
+
+/* Confirmation */
+.confirm-wrap{text-align:center;padding:24px 0}
+.confirm-icone{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--or),var(--or-h));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(229,193,88,.3)}
+.confirm-titre{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:1.7rem;color:var(--txt);margin-bottom:10px;letter-spacing:-.02em}
+.confirm-sous{font-size:.9rem;color:var(--txt2);line-height:1.7;margin-bottom:28px}
+
+/* Étapes cachées */
+.etape{display:none}
+.etape.visible{display:block}
+</style>
+<script src="../js/navigation.js"></script>
+</head>
+<body>
+
+<div class="insc-header">
+  <img src="../LOGO PEAKLY NAV.png" alt="Peakly">
+  <div class="insc-header-lien">Déjà membre ? <a href="login.html">Se connecter</a></div>
+</div>
+
+<div class="insc-wrap">
+
+  <!-- Barre de progression (rendue par JS) -->
+  <div id="progBar" class="prog-bar"></div>
+
+  <!-- ============================================================
+       ETAPE 1 — Compte (artiste + pro)
+  ============================================================ -->
+  <div class="etape visible" id="etape1">
+    <div class="etape-titre">Créez votre compte Peakly</div>
+    <div class="etape-sous">Choisissez votre profil, puis renseignez vos informations de base.</div>
+
+    <div class="type-grid">
+      <div class="type-card" id="cardArtiste" onclick="selectionnerType('artiste')">
+        <div class="type-card-icone">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <div class="type-card-titre">Artiste</div>
+        <div class="type-card-desc">Musicien, chanteur, compositeur, beatmaker, producteur ou DJ indépendant.</div>
+      </div>
+      <div class="type-card" id="cardPro" onclick="selectionnerType('professionnel')">
+        <div class="type-card-icone">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div class="type-card-titre">Professionnel</div>
+        <div class="type-card-desc">Label, manager, éditeur, investisseur ou organisateur de l'industrie musicale.</div>
+      </div>
+    </div>
+
+    <!-- Sous-type artiste (affiché si type = artiste) -->
+    <div id="blocSousType" style="display:none;margin-bottom:20px">
+      <div class="etape-section">Type de profil artiste</div>
+      <div class="subtype-grid" id="soustypeGrid">
+        <div class="tag" onclick="selectionnerSousType(this,'solo')">Artiste solo</div>
+        <div class="tag" onclick="selectionnerSousType(this,'groupe')">Groupe / Collectif</div>
+        <div class="tag" onclick="selectionnerSousType(this,'producteur')">Producteur</div>
+        <div class="tag" onclick="selectionnerSousType(this,'beatmaker')">Beatmaker</div>
+        <div class="tag" onclick="selectionnerSousType(this,'auteur')">Auteur</div>
+        <div class="tag" onclick="selectionnerSousType(this,'compositeur')">Compositeur</div>
+        <div class="tag" onclick="selectionnerSousType(this,'dj')">DJ</div>
+      </div>
+    </div>
+
+    <div id="blocProSup" style="display:none;margin-bottom:20px">
+      <div class="etape-section">Votre rôle</div>
+      <div class="form-row">
+        <div class="form-champ"><label>Poste</label>
+          <select id="poste1" class="form-input">
+            <option value="">Sélectionnez votre rôle...</option>
+            <option value="ar">Directeur A&amp;R</option>
+            <option value="manager">Manager</option>
+            <option value="label_manager">Label Manager</option>
+            <option value="editeur">Éditeur musical</option>
+            <option value="producteur_exec">Producteur exécutif</option>
+            <option value="investisseur">Investisseur</option>
+            <option value="booker">Booker</option>
+            <option value="da">Directeur artistique</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-champ"><label>LinkedIn <span class="opt">(facultatif)</span></label><input type="url" id="linkedin1" class="form-input" placeholder="https://linkedin.com/in/..."></div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-champ"><label>Prénom</label><input type="text" id="prenom" class="form-input" placeholder="Votre prénom" autocomplete="given-name"></div>
+      <div class="form-champ"><label>Nom</label><input type="text" id="nom" class="form-input" placeholder="Votre nom" autocomplete="family-name"></div>
+    </div>
+    <div class="form-champ"><label>Adresse e-mail</label><input type="email" id="email" class="form-input" placeholder="votre@email.com" autocomplete="email"></div>
+    <div class="form-champ"><label>Mot de passe</label><input type="password" id="mdp" class="form-input" placeholder="8 caractères minimum" autocomplete="new-password"></div>
+    <div class="form-row">
+      <div class="form-champ"><label>Téléphone <span class="opt">(facultatif)</span></label><input type="tel" id="telephone" class="form-input" placeholder="+33 6..." autocomplete="tel"></div>
+      <div class="form-champ"><label>Ville</label><input type="text" id="ville" class="form-input" placeholder="Paris, Lyon..."></div>
+    </div>
+    <div class="form-champ"><label>Pays</label>
+      <select id="pays" class="form-input">
+        <option value="France">France</option>
+        <option value="Belgique">Belgique</option>
+        <option value="Suisse">Suisse</option>
+        <option value="Canada">Canada</option>
+        <option value="Sénégal">Sénégal</option>
+        <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+        <option value="Cameroun">Cameroun</option>
+        <option value="Mali">Mali</option>
+        <option value="Maroc">Maroc</option>
+        <option value="Algérie">Algérie</option>
+        <option value="Tunisie">Tunisie</option>
+        <option value="RDC">RDC</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </div>
+    <div class="form-champ"><label>Langues parlées</label>
+      <div class="tags-grid" id="languesParlees">
+        <div class="tag" onclick="toggleTag(this)">Français</div>
+        <div class="tag" onclick="toggleTag(this)">Anglais</div>
+        <div class="tag" onclick="toggleTag(this)">Espagnol</div>
+        <div class="tag" onclick="toggleTag(this)">Portugais</div>
+        <div class="tag" onclick="toggleTag(this)">Arabe</div>
+        <div class="tag" onclick="toggleTag(this)">Wolof</div>
+        <div class="tag" onclick="toggleTag(this)">Lingala</div>
+        <div class="tag" onclick="toggleTag(this)">Créole</div>
+        <div class="tag" onclick="toggleTag(this)">Autre</div>
+      </div>
+    </div>
+
+    <div class="msg-err" id="err1"></div>
+    <div class="etape-nav">
+      <button class="btn-suivant" onclick="valider1()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ETAPE 2a — Identité artistique
+  ============================================================ -->
+  <div class="etape" id="etape2a">
+    <div class="etape-titre">Votre identité artistique</div>
+    <div class="etape-sous">Ces informations construisent votre profil public et alimentent l'algorithme de compatibilité Peakly.</div>
+
+    <div class="form-champ"><label>Nom d'artiste</label><input type="text" id="nomArtiste" class="form-input" placeholder="Votre nom de scène ou alias"></div>
+
+    <div class="etape-section">Visuels</div>
+    <div class="form-champ">
+      <label>Photo de profil <span class="opt">(JPG, PNG, max 5 Mo)</span></label>
+      <div class="upload-zone" id="uzPhoto" onclick="document.getElementById('inputPhoto').click()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div class="uz-label">Cliquez pour sélectionner une photo</div>
+        <div class="uz-hint">Format carré recommandé — 400x400 px inimum</div>
+        <div class="uz-nom" id="nomBanniere"></div>
+        <input type="file" id="inputBanniere" accept="image/*" onchange="handleUpload(this,'uzBanniere','nomBanniere','banniere')">
+      </div>
+    </div>
+
+    <div class="etape-section">Biographie</div>
+    <div class="form-champ">
+      <label>Bio courte <span class="opt">(affiché sur les cartes de découverte)</span></label>
+      <textarea id="bioCourte" class="form-input" placeholder="Décrivez votre univers en une phrase..." maxlength="160" oninput="compterChars(this,'ctBio',160)"></textarea>
+      <div class="char-counter"><span id="ctBio">0</span>/160</div>
+    </div>
+    <div class="form-champ">
+      <label>Biographie professionnelle <span class="opt">(visible sur votre profil complet)</span></label>
+      <textarea id="bioPro" class="form-input" style="min-height:110px" placeholder="Votre parcours, vos projets, vos accomplissements..."></textarea>
+    </div>
+
+    <div class="etape-section">Univers musical</div>
+    <div class="form-champ"><label>Genres principaux <span class="opt">(max 3)</span></label>
+      <div class="tags-grid" id="genresGrid">
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Rap / Hip-Hop</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">RnB / Soul</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Pop</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Afrobeats</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Reggae / Dancehall</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Jazz</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Électro / House</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Rock / Indie</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Classique</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Variété française</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Gospel</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Drill</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Amapiano</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresGrid',3)">Autre</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Sous-genres / style <span class="opt">(facultatif)</span></label><input type="text" id="sousGenres" class="form-input" placeholder="Ex : Trap mélancolique, Afro-drill..."></div>
+    <div class="form-champ"><label>Ambiance / Mood</label>
+      <div class="tags-grid" id="moodGrid">
+        <div class="tag" onclick="toggleTag(this)">Mélancolique</div>
+        <div class="tag" onclick="toggleTag(this)">Puissant</div>
+        <div class="tag" onclick="toggleTag(this)">Festif</div>
+        <div class="tag" onclick="toggleTag(this)">Introspectif</div>
+        <div class="tag" onclick="toggleTag(this)">Sensuel</div>
+        <div class="tag" onclick="toggleTag(this)">Militant</div>
+        <div class="tag" onclick="toggleTag(this)">Spirituel</div>
+        <div class="tag" onclick="toggleTag(this)">Énergique</div>
+        <div class="tag" onclick="toggleTag(this)">Doux / Intime</div>
+        <div class="tag" onclick="toggleTag(this)">Conscient</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Influences <span class="opt">(artistes, courants)</span></label><input type="text" id="influences" class="form-input" placeholder="Ex : Damso, Ninho, Burna Boy, Bob Marley..."></div>
+    <div class="form-champ"><label>Langues chantées</label>
+      <div class="tags-grid" id="langChantGrid">
+        <div class="tag" onclick="toggleTag(this)">Français</div>
+        <div class="tag" onclick="toggleTag(this)">Anglais</div>
+        <div class="tag" onclick="toggleTag(this)">Espagnol</div>
+        <div class="tag" onclick="toggleTag(this)">Arabe</div>
+        <div class="tag" onclick="toggleTag(this)">Wolof</div>
+        <div class="tag" onclick="toggleTag(this)">Lingala</div>
+        <div class="tag" onclick="toggleTag(this)">Créole</div>
+        <div class="tag" onclick="toggleTag(this)">Portugais</div>
+        <div class="tag" onclick="toggleTag(this)">Autre</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Compétences</label>
+      <div class="tags-grid" id="competencesGrid">
+        <div class="tag" onclick="toggleTag(this)">Auteur</div>
+        <div class="tag" onclick="toggleTag(this)">Compositeur</div>
+        <div class="tag" onclick="toggleTag(this)">Producteur</div>
+        <div class="tag" onclick="toggleTag(this)">Beatmaker</div>
+        <div class="tag" onclick="toggleTag(this)">Arrangeur</div>
+        <div class="tag" onclick="toggleTag(this)">Interprète</div>
+        <div class="tag" onclick="toggleTag(this)">DJ</div>
+        <div class="tag" onclick="toggleTag(this)">Ingénieur son</div>
+        <div class="tag" onclick="toggleTag(this)">Réalisateur artistique</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Statut actuel</label>
+      <select id="statutArtiste" class="form-input">
+        <option value="independant">Indépendant</option>
+        <option value="sous_label">Sous label</option>
+        <option value="en_negociation">En négociation avec un label</option>
+        <option value="distribue">Distribué sans label</option>
+        <option value="en_recherche">En recherche active</option>
+      </select>
+    </div>
+
+    <div class="msg-err" id="err2a"></div>
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape1')">Retour</button>
+      <button class="btn-suivant" onclick="valider2a()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 2b — Structure professionnelle -->
+  <div class="etape" id="etape2b">
+    <div class="etape-titre">Votre structure</div>
+    <div class="etape-sous">Ces informations construisent votre profil public. Elles sont visibles par les artistes sur votre page structure.</div>
+
+    <div class="form-champ"><label>Nom de la structure</label><input type="text" id="nomStructure" class="form-input" placeholder="Nom du label, de l'agence..."></div>
+    <div class="form-champ"><label>Type de structure</label>
+      <select id="typeStructure" class="form-input">
+        <option value="">Sélectionnez...</option>
+        <option value="label_major">Label Major</option>
+        <option value="label_independant">Label Indépendant</option>
+        <option value="edition">Maison d'édition</option>
+        <option value="management">Agence de management</option>
+        <option value="distributeur">Distributeur</option>
+        <option value="producteur_exec">Producteur exécutif</option>
+        <option value="studio">Studio d'enregistrement</option>
+        <option value="festival">Festival / Salle de concert</option>
+        <option value="media">Média musical</option>
+        <option value="investisseur">Investisseur / Fond</option>
+        <option value="sync">Sync Agency</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+    <div class="form-champ"><label>Site officiel <span class="opt">(facultatif)</span></label><input type="url" id="siteWebPro" class="form-input" placeholder="https://votre-label.com"></div>
+    <div class="form-row">
+      <div class="form-champ"><label>Email de domaine <span class="opt">(facultatif)</span></label><input type="email" id="emailDomaine" class="form-input" placeholder="contact@votre-label.com"></div>
+      <div class="form-champ"><label>Pays d'enregistrement</label>
+        <select id="paysEnreg" class="form-input">
+          <option value="France">France</option>
+          <option value="Belgique">Belgique</option>
+          <option value="Suisse">Suisse</option>
+          <option value="Canada">Canada</option>
+          <option value="USA">États-Unis</option>
+          <option value="Royaume-Uni">Royaume-Uni</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-champ"><label>Taille de la structure</label>
+        <select id="tailleStructure" class="form-input">
+          <option value="">Sélectionnez...</option>
+          <option value="solo">Indépendant (1 personne)</option>
+          <option value="petite">Petite structure (2-10)</option>
+          <option value="moyenne">Structure moyenne (11-50)</option>
+          <option value="grande">Grande structure (50+)</option>
+        </select>
+      </div>
+      <div class="form-champ"><label>Année de création <span class="opt">(facultatif)</span></label><input type="number" id="anneeCreation" class="form-input" placeholder="2018" min="1900" max="2030"></div>
+    </div>
+    <div class="form-champ">
+      <label>Logo <span class="opt">(PNG, JPG, max 5 Mo — facultatif)</span></label>
+      <div class="upload-zone" id="uzLogo" onclick="document.getElementById('inputLogo').click()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div class="uz-label">Cliquez pour sélectionner votre logo</div>
+        <div class="uz-hint">Fond transparent recommandé — format carré</div>
+        <div class="uz-nom" id="nomLogo"></div>
+        <input type="file" id="inputLogo" accept="image/*" onchange="handleUpload(this,'uzLogo','nomLogo','logo')">
+      </div>
+    </div>
+    <div class="form-champ"><label>Description de la structure <span class="opt">(facultatif)</span></label>
+      <textarea id="descPro" class="form-input" style="min-height:100px" placeholder="Votre positionnement, vos artistes signés, vos spécialités..."></textarea>
+    </div>
+
+    <div class="msg-err" id="err2b"></div>
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape1')">Retour</button>
+      <button class="btn-suivant" onclick="valider2b()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 3a — Plateformes artiste -->
+  <div class="etape" id="etape3a">
+    <div class="etape-titre">Vos plateformes</div>
+    <div class="etape-sous">Renseignez vos liens de streaming et réseaux. Peakly affichera ces données sur votre profil avec un badge de vérification.</div>
+
+    <div class="etape-section">Streaming</div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-spotify"></span>Spotify</div><input type="url" id="pf_spotify" class="form-input" placeholder="https://open.spotify.com/artist/..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-apple"></span>Apple Music</div><input type="url" id="pf_apple" class="form-input" placeholder="https://music.apple.com/..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-deezer"></span>Deezer</div><input type="url" id="pf_deezer" class="form-input" placeholder="https://www.deezer.com/artist/..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-youtube"></span>YouTube</div><input type="url" id="pf_youtube" class="form-input" placeholder="https://www.youtube.com/@..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-soundcloud"></span>SoundCloud</div><input type="url" id="pf_soundcloud" class="form-input" placeholder="https://soundcloud.com/..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-audiomack"></span>Audiomack</div><input type="url" id="pf_audiomack" class="form-input" placeholder="https://audiomack.com/..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-bandcamp"></span>Bandcamp</div><input type="url" id="pf_bandcamp" class="form-input" placeholder="https://votreartiste.bandcamp.com"></div>
+
+    <div class="etape-section">Réseaux sociaux</div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-tiktok"></span>TikTok</div><input type="url" id="pf_tiktok" class="form-input" placeholder="https://www.tiktok.com/@..."></div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-instagram"></span>Instagram</div><input type="url" id="pf_instagram" class="form-input" placeholder="https://www.instagram.com/..."></div>
+
+    <div class="etape-section">Autres</div>
+    <div class="platform-row"><div class="platform-label"><span class="platform-dot pf-autre"></span>Site / Linktree</div><input type="url" id="pf_site" class="form-input" placeholder="https://linktr.ee/..."></div>
+    <div class="form-champ" style="margin-top:16px"><label>ISRC de vos titres importants <span class="opt">(facultatif, séparés par des virgules)</span></label><input type="text" id="isrc_global" class="form-input" placeholder="FR-XYZ-23-00001, FR-XYZ-23-00002..."></div>
+
+    <div class="etape-section">Statistiques déclarées <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--txt3);font-size:.65rem">(sources non vérifiées — affichées avec badge "Déclaré")</span></div>
+    <div class="form-row">
+      <div class="form-champ"><label>Abonnés Spotify <span class="opt">(approx.)</span></label><input type="number" id="stat_spotify_followers" class="form-input" placeholder="0" min="0"></div>
+      <div class="form-champ"><label>Streams totaux déclarés</label><input type="number" id="stat_streams_declared" class="form-input" placeholder="0" min="0"></div>
+    </div>
+
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape2a')">Retour</button>
+      <button class="btn-suivant" onclick="valider3a()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 3b — Vérification professionnelle -->
+  <div class="etape" id="etape3b">
+    <div class="etape-titre">Vérification professionnelle</div>
+    <div class="etape-sous">Ces informations permettent à Peakly d'attribuer votre niveau de vérification. Un profil vérifié inspire confiance aux artistes.</div>
+
+    <div style="background:var(--glass);border:1px solid var(--bordure);border-radius:12px;padding:16px 20px;margin-bottom:24px">
+      <div style="font-size:.72rem;font-weight:700;color:var(--or);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Niveaux de vérification Peakly</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:rgba(148,163,184,.4);flex-shrink:0"></span><span style="font-size:.79rem;color:var(--txt2)">Déclaré — compte créé, aucune vérification</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#60a5fa;flex-shrink:0"></span><span style="font-size:.79rem;color:var(--txt2)">Email vérifié — adresse email confirmée</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:var(--or);flex-shrink:0"></span><span style="font-size:.79rem;color:var(--txt2)">Pro vérifié — SIRET ou équivalent validé</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#a78bfa;flex-shrink:0"></span><span style="font-size:.79rem;color:var(--txt2)">Structure vérifiée — Kbis ou document légal validé</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#34d399;flex-shrink:0"></span><span style="font-size:.79rem;color:var(--txt2)">Partenaire certifié — validation manuelle Peakly</span></div>
+      </div>
+    </div>
+
+    <div class="etape-section">Identifiants légaux <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--txt3);font-size:.65rem">(facultatifs — accélèrent votre vérification)</span></div>
+    <div class="form-champ"><label>SIRET / Numéro d'enregistrement <span class="opt">(SIRET 14 chiffres pour la France)</span></label><input type="text" id="siret" class="form-input" placeholder="123 456 789 00012" maxlength="17"></div>
+    <div class="form-champ">
+      <label>Kbis ou document d'enregistrement <span class="opt">(PDF ou image, max 10 Mo)</span></label>
+      <div class="upload-zone" id="uzKbis" onclick="document.getElementById('inputKbis').click()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div class="uz-label">Cliquez pour sélectionner votre Kbis ou extrait de registre</div>
+        <div class="uz-hint">Facultatif — requis pour le niveau Structure vérifiée</div>
+        <div class="uz-nom" id="nomKbis"></div>
+        <input type="file" id="inputKbis" accept=".pdf,image/*" onchange="handleUpload(this,'uzKbis','nomKbis','kbis')">
+      </div>
+    </div>
+
+    <div class="etape-section">Présence en ligne</div>
+    <div class="form-champ"><label>LinkedIn professionnel <span class="opt">(facultatif)</span></label><input type="url" id="linkedinPro" class="form-input" placeholder="https://linkedin.com/in/... ou /company/..."></div>
+    <div class="form-champ"><label>Domaine officiel <span class="opt">(si différent du site renseigné)</span></label><input type="text" id="domainePro" class="form-input" placeholder="votre-label.com"></div>
+
+    <div class="msg-err" id="err3b"></div>
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape2b')">Retour</button>
+      <button class="btn-suivant" onclick="valider3b()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 4b — Recherche artistique -->
+  <div class="etape" id="etape4b">
+    <div class="etape-titre">Profil d'artiste recherché</div>
+    <div class="etape-sous">Ces critères permettent à l'IA Peakly de vous recommander les artistes les plus compatibles avec votre recherche.</div>
+
+    <div class="form-champ"><label>Genres recherchés <span class="opt">(max 5)</span></label>
+      <div class="tags-grid" id="genresRech">
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Rap / Hip-Hop</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">RnB / Soul</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Pop</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Afrobeats</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Reggae / Dancehall</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Jazz</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Électro / House</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Rock / Indie</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Classique</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Variété française</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Gospel</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Drill</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Amapiano</div>
+        <div class="tag" onclick="toggleTagMax(this,'genresRech',5)">Tous genres</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Sous-genres / styles <span class="opt">(facultatif)</span></label><input type="text" id="sousGenresRech" class="form-input" placeholder="Ex : Afro-drill, Trap mélodique..."></div>
+    <div class="form-champ"><label>Territoires prioritaires</label>
+      <div class="tags-grid" id="territoiresRech">
+        <div class="tag" onclick="toggleTag(this)">France</div>
+        <div class="tag" onclick="toggleTag(this)">Belgique</div>
+        <div class="tag" onclick="toggleTag(this)">Suisse</div>
+        <div class="tag" onclick="toggleTag(this)">Canada / Québec</div>
+        <div class="tag" onclick="toggleTag(this)">Afrique subsaharienne</div>
+        <div class="tag" onclick="toggleTag(this)">Afrique du Nord</div>
+        <div class="tag" onclick="toggleTag(this)">Antilles</div>
+        <div class="tag" onclick="toggleTag(this)">Royaume-Uni</div>
+        <div class="tag" onclick="toggleTag(this)">États-Unis</div>
+        <div class="tag" onclick="toggleTag(this)">Monde entier</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Langues musicales recherchées</label>
+      <div class="tags-grid" id="languesMusicales">
+        <div class="tag" onclick="toggleTag(this)">Français</div>
+        <div class="tag" onclick="toggleTag(this)">Anglais</div>
+        <div class="tag" onclick="toggleTag(this)">Espagnol</div>
+        <div class="tag" onclick="toggleTag(this)">Arabe</div>
+        <div class="tag" onclick="toggleTag(this)">Wolof</div>
+        <div class="tag" onclick="toggleTag(this)">Lingala</div>
+        <div class="tag" onclick="toggleTag(this)">Créole</div>
+        <div class="tag" onclick="toggleTag(this)">Toutes langues</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Niveau d'artiste recherché</label>
+      <div class="tags-grid" id="niveauxArtiste">
+        <div class="tag" onclick="toggleTag(this)">Émergent</div>
+        <div class="tag" onclick="toggleTag(this)">Confirmé</div>
+        <div class="tag" onclick="toggleTag(this)">Signé</div>
+        <div class="tag" onclick="toggleTag(this)">Indépendant</div>
+        <div class="tag" onclick="toggleTag(this)">Viral réseaux sociaux</div>
+        <div class="tag" onclick="toggleTag(this)">Fort potentiel live</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Plateformes prioritaires <span class="opt">(sur lesquelles vous recrutez)</span></label>
+      <div class="tags-grid" id="plateformesPrio">
+        <div class="tag" onclick="toggleTag(this)">Spotify</div>
+        <div class="tag" onclick="toggleTag(this)">YouTube</div>
+        <div class="tag" onclick="toggleTag(this)">TikTok</div>
+        <div class="tag" onclick="toggleTag(this)">Instagram</div>
+        <div class="tag" onclick="toggleTag(this)">SoundCloud</div>
+        <div class="tag" onclick="toggleTag(this)">Deezer</div>
+        <div class="tag" onclick="toggleTag(this)">Apple Music</div>
+      </div>
+    </div>
+
+    <div class="etape-section">Seuils minimaux <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--txt3);font-size:.65rem">(facultatifs — laissez vide pour ignorer le critère)</span></div>
+    <div class="form-row">
+      <div class="form-champ"><label>Abonnés cumulés min.</label><input type="number" id="minFollowers" class="form-input" placeholder="0" min="0"></div>
+      <div class="form-champ"><label>Streams min.</label><input type="number" id="minStreams" class="form-input" placeholder="0" min="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-champ"><label>Croissance 30j min. (%)</label><input type="number" id="minGrowth" class="form-input" placeholder="0" min="0" max="10000"></div>
+      <div class="form-champ"><label>Engagement min. (%)</label><input type="number" id="minEngagement" class="form-input" placeholder="0" min="0" max="100" step="0.1"></div>
+    </div>
+
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape3b')">Retour</button>
+      <button class="btn-suivant" onclick="valider4b()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 5b — Opportunités -->
+  <div class="etape" id="etape5b">
+    <div class="etape-titre">Vos opportunités</div>
+    <div class="etape-sous">Décrivez les opportunités que vous proposez. Ces informations apparaissent sur votre profil public et dans les recommandations aux artistes.</div>
+
+    <div class="form-champ"><label>Objectifs <span class="opt">(sélectionnez tout ce qui s'applique)</span></label>
+      <div class="tags-grid" id="objectifsPro">
+        <div class="tag" onclick="toggleTag(this)">Signature label</div>
+        <div class="tag" onclick="toggleTag(this)">Distribution</div>
+        <div class="tag" onclick="toggleTag(this)">Publishing</div>
+        <div class="tag" onclick="toggleTag(this)">Management</div>
+        <div class="tag" onclick="toggleTag(this)">Booking</div>
+        <div class="tag" onclick="toggleTag(this)">Synchronisation</div>
+        <div class="tag" onclick="toggleTag(this)">Investissement</div>
+        <div class="tag" onclick="toggleTag(this)">Collaboration marque</div>
+        <div class="tag" onclick="toggleTag(this)">Placement playlist</div>
+        <div class="tag" onclick="toggleTag(this)">Festival / Concert</div>
+      </div>
+    </div>
+    <div class="form-champ"><label>Types de deal proposés</label>
+      <div class="tags-grid" id="dealTypes">
+        <div class="tag" onclick="toggleTag(this)">Distribution</div>
+        <div class="tag" onclick="toggleTag(this)">Licence</div>
+        <div class="tag" onclick="toggleTag(this)">Contrat artiste</div>
+        <div class="tag" onclick="toggleTag(this)">Publishing</div>
+        <div class="tag" onclick="toggleTag(this)">Management</div>
+        <div class="tag" onclick="toggleTag(this)">Avance</div>
+        <div class="tag" onclick="toggleTag(this)">Co-production</div>
+        <div class="tag" onclick="toggleTag(this)">Booking</div>
+        <div class="tag" onclick="toggleTag(this)">Synchro</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-champ"><label>Budget indicatif</label>
+        <select id="budgetRange" class="form-input">
+          <option value="non_public">Non public</option>
+          <option value="moins_5k">Moins de 5 000 €</option>
+          <option value="5k_20k">5 000 — 20 000 €</option>
+          <option value="20k_100k">20 000 — 100 000 €</option>
+          <option value="100k_plus">100 000 € et plus</option>
+        </select>
+      </div>
+      <div class="form-champ"><label>Disponibilité</label>
+        <select id="disponibilitePro" class="form-input">
+          <option value="ouvert">Ouvert aux candidatures</option>
+          <option value="veille">Veille passive</option>
+          <option value="ferme">Fermé temporairement</option>
+          <option value="invitation">Sur invitation uniquement</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-champ"><label>Artistes recherchés <span class="opt">(nombre)</span></label><input type="number" id="nbArtistes" class="form-input" placeholder="Ex : 3" min="1"></div>
+      <div class="form-champ"><label>Délai moyen de réponse</label>
+        <select id="delaiReponse" class="form-input">
+          <option value="">Non précisé</option>
+          <option value="24h">Moins de 24h</option>
+          <option value="3j">2 à 3 jours</option>
+          <option value="1s">1 semaine</option>
+          <option value="2s">2 semaines</option>
+          <option value="1m">1 mois</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-champ"><label>Documents demandés aux candidats</label>
+      <div class="tags-grid" id="docsDemandes">
+        <div class="tag" onclick="toggleTag(this)">Press kit</div>
+        <div class="tag" onclick="toggleTag(this)">Liens streaming</div>
+        <div class="tag" onclick="toggleTag(this)">Statistiques</div>
+        <div class="tag" onclick="toggleTag(this)">Démos</div>
+        <div class="tag" onclick="toggleTag(this)">Biographie</div>
+        <div class="tag" onclick="toggleTag(this)">Fiche droits</div>
+        <div class="tag" onclick="toggleTag(this)">Dates passées</div>
+      </div>
+    </div>
+
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape4b')">Retour</button>
+      <button class="btn-suivant" onclick="valider5b()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 6b — Publication et préférences -->
+  <div class="etape" id="etape6b">
+    <div class="etape-titre">Publication et préférences</div>
+    <div class="etape-sous">Configurez la visibilité de votre profil et vos préférences de contact avant de finaliser votre inscription.</div>
+
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Profil visible publiquement</div><div class="toggle-desc">Votre structure apparaît dans les résultats de recherche et les recommandations artistes</div></div><label class="toggle-switch"><input type="checkbox" id="togVisible" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Autoriser les candidatures</div><div class="toggle-desc">Les artistes peuvent postuler directement à vos opportunités</div></div><label class="toggle-switch"><input type="checkbox" id="togCandidatures" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Recommandations IA Peakly</div><div class="toggle-desc">Recevez des suggestions d'artistes compatibles calculées par l'algorithme</div></div><label class="toggle-switch"><input type="checkbox" id="togIA" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Alertes nouveaux talents</div><div class="toggle-desc">Soyez notifié des artistes émergents qui correspondent à vos critères</div></div><label class="toggle-switch"><input type="checkbox" id="togAlertes" checked><span class="toggle-slider"></span></label></div>
+    <div class="form-champ" style="margin-top:16px"><label>Préférence de contact</label>
+      <select id="contactPref" class="form-input">
+        <option value="message">Message Peakly (recommandé)</option>
+        <option value="email">Email</option>
+        <option value="appel">Appel téléphonique</option>
+      </select>
+    </div>
+
+    <div class="etape-section">Conditions d'utilisation</div>
+    <div class="consent-item"><input type="checkbox" id="cgu_pro"><label for="cgu_pro">J'accepte les <a href="legal/cgu.html" target="_blank">Conditions Générales d'Utilisation</a> de Peakly. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="conf_pro"><label for="conf_pro">J'ai lu la <a href="legal/confidentialite.html" target="_blank">Politique de confidentialité</a> et accepte le traitement de mes données conformément au RGPD. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="comm_pro"><label for="comm_pro"><span style="color:var(--txt3)">(Facultatif)</span> J'accepte de recevoir des communications Peakly : nouveaux artistes, fonctionnalités, opportunités.</label></div>
+    <div class="rgpd-note">Vos données professionnelles sont traitées par Peakly SAS dans le cadre de la mise en relation avec des artistes. Droit d'accès, rectification et suppression : <a href="mailto:privacy@peakly.fr" style="color:var(--or)">privacy@peakly.fr</a></div>
+
+    <div class="msg-err" id="err6b"></div>
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape5b')">Retour</button>
+      <button class="btn-suivant" id="btnCreerPro" onclick="creerComptePro()">Créer mon espace professionnel</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 4a — Catalogue artiste -->
+  <div class="etape" id="etape4a">
+    <div class="etape-titre">Votre catalogue</div>
+    <div class="etape-sous">Mettez en avant jusqu'à 3 titres représentatifs. Ces morceaux seront présentés en priorité aux professionnels.</div>
+
+    <div class="track-card">
+      <div class="track-header" onclick="ouvrirTrack(0)">
+        <span class="track-header-num">Titre 01</span>
+        <span class="track-header-titre" id="trackTitre0">Titre prioritaire</span>
+        <svg class="track-header-chevron open" id="chevron0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="track-body open" id="trackBody0">
+        <div class="form-champ"><label>Titre du morceau</label><input type="text" id="t0_titre" class="form-input" placeholder="Nom du morceau" oninput="document.getElementById('trackTitre0').textContent=this.value||'Titre prioritaire'"></div>
+        <div class="form-row">
+          <div class="form-champ"><label>Type</label><select id="t0_type" class="form-input"><option value="single">Single</option><option value="ep">Extrait EP</option><option value="album">Extrait album</option><option value="freestyle">Freestyle</option></select></div>
+          <div class="form-champ"><label>ISRC <span class="opt">(facultatif)</span></label><input type="text" id="t0_isrc" class="form-input" placeholder="FR-XYZ-23-00001"></div>
+        </div>
+        <div class="form-champ"><label>Date de sortie <span class="opt">(facultatif)</span></label><input type="date" id="t0_date" class="form-input"></div>
+        <div class="form-champ"><label>Lien Spotify <span class="opt">(facultatif)</span></label><input type="url" id="t0_spotify" class="form-input" placeholder="https://open.spotify.com/track/..."></div>
+        <div class="form-champ"><label>Lien YouTube <span class="opt">(facultatif)</span></label><input type="url" id="t0_youtube" class="form-input" placeholder="https://youtu.be/..."></div>
+        <div class="form-champ">
+          <label>Audio <span class="opt">(MP3/WAV, max 20 Mo — facultatif)</span></label>
+          <div class="upload-zone" id="uzAudio0" onclick="document.getElementById('inputAudio0').click()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <div class="uz-label">Cliquez pour ajouter un extrait audio</div>
+            <div class="uz-nom" id="nomAudio0"></div>
+            <input type="file" id="inputAudio0" accept="audio/*" onchange="handleUpload(this,'uzAudio0','nomAudio0','t0_audio')">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-champ"><label>Auteur</label><input type="text" id="t0_auteur" class="form-input" placeholder="Nom de l'auteur"></div>
+          <div class="form-champ"><label>Compositeur</label><input type="text" id="t0_compositeur" class="form-input" placeholder="Nom du compositeur"></div>
+        </div>
+        <div class="form-champ"><label>Producteur / Beatmaker</label><input type="text" id="t0_producteur" class="form-input" placeholder="Nom du producteur"></div>
+        <div class="form-champ"><label>Streams déclarés <span class="opt">(facultatif)</span></label><input type="number" id="t0_streams" class="form-input" placeholder="0" min="0"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--txt2);margin-top:4px;cursor:pointer"><input type="radio" name="prioritaire" value="0" style="accent-color:var(--or)" checked> Marquer comme morceau prioritaire</label>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-header" onclick="ouvrirTrack(1)">
+        <span class="track-header-num">Titre 02</span>
+        <span class="track-header-titre" id="trackTitre1">Ajouter un titre</span>
+        <svg class="track-header-chevron" id="chevron1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="track-body" id="trackBody1">
+        <div class="form-champ"><label>Titre</label><input type="text" id="t1_titre" class="form-input" placeholder="Nom du morceau" oninput="document.getElementById('trackTitre1').textContent=this.value||'Ajouter un titre'"></div>
+        <div class="form-row">
+          <div class="form-champ"><label>Type</label><select id="t1_type" class="form-input"><option value="single">Single</option><option value="ep">Extrait EP</option><option value="album">Extrait album</option><option value="freestyle">Freestyle</option></select></div>
+          <div class="form-champ"><label>ISRC <span class="opt">(facultatif)</span></label><input type="text" id="t1_isrc" class="form-input" placeholder="FR-XYZ-23-00001"></div>
+        </div>
+        <div class="form-champ"><label>Lien Spotify <span class="opt">(facultatif)</span></label><input type="url" id="t1_spotify" class="form-input" placeholder="https://open.spotify.com/track/..."></div>
+        <div class="form-row">
+          <div class="form-champ"><label>Auteur</label><input type="text" id="t1_auteur" class="form-input" placeholder="Nom de l'auteur"></div>
+          <div class="form-champ"><label>Producteur</label><input type="text" id="t1_producteur" class="form-input" placeholder="Nom du producteur"></div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--txt2);margin-top:4px;cursor:pointer"><input type="radio" name="prioritaire" value="1" style="accent-color:var(--or)"> Marquer comme morceau prioritaire</label>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-header" onclick="ouvrirTrack(2)">
+        <span class="track-header-num">Titre 03</span>
+        <span class="track-header-titre" id="trackTitre2">Ajouter un titre</span>
+        <svg class="track-header-chevron" id="chevron2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="track-body" id="trackBody2">
+        <div class="form-champ"><label>Titre</label><input type="text" id="t2_titre" class="form-input" placeholder="Nom du morceau" oninput="document.getElementById('trackTitre2').textContent=this.value||'Ajouter un titre'"></div>
+        <div class="form-row">
+          <div class="form-champ"><label>Type</label><select id="t2_type" class="form-input"><option value="single">Single</option><option value="ep">Extrait EP</option><option value="album">Extrait album</option><option value="freestyle">Freestyle</option></select></div>
+          <div class="form-champ"><label>ISRC <span class="opt">(facultatif)</span></label><input type="text" id="t2_isrc" class="form-input" placeholder="FR-XYZ-23-00001"></div>
+        </div>
+        <div class="form-champ"><label>Lien Spotify <span class="opt">(facultatif)</span></label><input type="url" id="t2_spotify" class="form-input" placeholder="https://open.spotify.com/track/..."></div>
+        <div class="form-row">
+          <div class="form-champ"><label>Auteur</label><input type="text" id="t2_auteur" class="form-input" placeholder="Nom de l'auteur"></div>
+          <div class="form-champ"><label>Producteur</label><input type="text" id="t2_producteur" class="form-input" placeholder="Nom du producteur"></div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--txt2);margin-top:4px;cursor:pointer"><input type="radio" name="prioritaire" value="2" style="accent-color:var(--or)"> Marquer comme morceau prioritaire</label>
+      </div>
+    </div>
+
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape3a')">Retour</button>
+      <button class="btn-suivant" onclick="valider4a()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 5a — Objectifs et données business -->
+  <div class="etape" id="etape5a">
+    <div class="etape-titre">Vos objectifs</div>
+    <div class="etape-sous">Ces informations permettent à Peakly de vous recommander les opportunités les plus pertinentes et d'affiner votre Talent Score.</div>
+
+    <div class="form-champ"><label>Objectif principal sur Peakly</label>
+      <select id="objectifPrincipal" class="form-input">
+        <option value="">Sélectionnez...</option>
+        <option value="contrat_label">Signer un contrat de label</option>
+        <option value="contrat_edition">Signer un contrat d'édition musicale</option>
+        <option value="distribution">Trouver un accord de distribution</option>
+        <option value="management">Trouver un manager</option>
+        <option value="featuring">Réaliser des featurings</option>
+        <option value="concerts">Obtenir des dates de concert</option>
+        <option value="financement">Trouver un financement / investisseur</option>
+        <option value="sync">Placement en synchronisation (film, pub, série)</option>
+        <option value="notoriete">Développer ma notoriété</option>
+      </select>
+    </div>
+
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Disponible pour des auditions</div><div class="toggle-desc">Les professionnels pourront vous contacter directement</div></div><label class="toggle-switch"><input type="checkbox" id="togDispo" checked><span class="toggle-slider"></span></label></div>
+
+    <div class="form-champ"><label>Territoires de développement <span class="opt">(marchés ciblés)</span></label>
+      <div class="tags-grid" id="territoiresGrid">
+        <div class="tag" onclick="toggleTag(this)">France</div>
+        <div class="tag" onclick="toggleTag(this)">Belgique</div>
+        <div class="tag" onclick="toggleTag(this)">Suisse</div>
+        <div class="tag" onclick="toggleTag(this)">Canada / Québec</div>
+        <div class="tag" onclick="toggleTag(this)">Afrique subsaharienne</div>
+        <div class="tag" onclick="toggleTag(this)">Afrique du Nord</div>
+        <div class="tag" onclick="toggleTag(this)">Antilles</div>
+        <div class="tag" onclick="toggleTag(this)">Royaume-Uni</div>
+        <div class="tag" onclick="toggleTag(this)">États-Unis</div>
+        <div class="tag" onclick="toggleTag(this)">Monde entier</div>
+      </div>
+    </div>
+
+    <div class="etape-section">Parcours live</div>
+    <div class="form-row">
+      <div class="form-champ"><label>Concerts passés <span class="opt">(approx.)</span></label><input type="number" id="concertsPassés" class="form-input" placeholder="0" min="0"></div>
+      <div class="form-champ"><label>Dates à venir <span class="opt">(facultatif)</span></label><input type="text" id="concertsFuturs" class="form-input" placeholder="Festival X en août..."></div>
+    </div>
+
+    <div class="etape-section">Visibilité</div>
+    <div class="form-champ"><label>Presse / Radio / Médias <span class="opt">(facultatif)</span></label><input type="text" id="presse" class="form-input" placeholder="Le Monde, Radio France, TRACE Urban..."></div>
+    <div class="form-champ"><label>Playlists editoriales obtenues <span class="opt">(facultatif)</span></label><input type="text" id="playlists" class="form-input" placeholder="New Music Friday, Rap FR..."></div>
+    <div class="form-champ"><label>Prix et concours <span class="opt">(facultatif)</span></label><input type="text" id="prixConcours" class="form-input" placeholder="Victoires de la Musique..."></div>
+    <div class="form-champ"><label>Certifications <span class="opt">(facultatif)</span></label>
+      <div class="tags-grid" id="certifGrid">
+        <div class="tag" onclick="toggleTag(this)">Disque de platine</div>
+        <div class="tag" onclick="toggleTag(this)">Disque d'or</div>
+        <div class="tag" onclick="toggleTag(this)">Disque de diamant</div>
+        <div class="tag" onclick="toggleTag(this)">Multi-platine</div>
+      </div>
+    </div>
+
+    <div class="etape-section">Statut juridique et droits</div>
+    <div class="form-champ"><label>Statut juridique</label>
+      <select id="statutJuridique" class="form-input">
+        <option value="">Non précisé</option>
+        <option value="auto_entrepreneur">Auto-entrepreneur</option>
+        <option value="sas">SAS</option>
+        <option value="sarl">SARL</option>
+        <option value="eurl">EURL</option>
+        <option value="association">Association</option>
+        <option value="particulier">Particulier (aucun statut)</option>
+      </select>
+    </div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Membre de la SACEM</div><div class="toggle-desc">Société des Auteurs, Compositeurs et Éditeurs de Musique</div></div><label class="toggle-switch"><input type="checkbox" id="togSacem" onchange="document.getElementById('blocSacemNum').style.display=this.checked?'block':'none'"><span class="toggle-slider"></span></label></div>
+    <div id="blocSacemNum" style="display:none;margin-bottom:10px"><div class="form-champ"><label>Numéro SACEM <span class="opt">(facultatif)</span></label><input type="text" id="sacemNum" class="form-input" placeholder="Votre identifiant SACEM"></div></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Détenteur des droits master</div><div class="toggle-desc">Vous êtes propriétaire de l'enregistrement</div></div><label class="toggle-switch"><input type="checkbox" id="togMaster" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Détenteur des droits d'édition (publishing)</div><div class="toggle-desc">Vous êtes propriétaire des droits de composition</div></div><label class="toggle-switch"><input type="checkbox" id="togPublishing" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-titre">Contrat de distribution actif</div><div class="toggle-desc">Distribué via DistroKid, TuneCore, Believe, IDOL...</div></div><label class="toggle-switch"><input type="checkbox" id="togDistrib"><span class="toggle-slider"></span></label></div>
+    <div class="form-row" style="margin-top:14px">
+      <div class="form-champ"><label>Label actuel <span class="opt">(si signé)</span></label><input type="text" id="labelActuel" class="form-input" placeholder="Nom du label"></div>
+      <div class="form-champ"><label>Manager actuel <span class="opt">(si applicable)</span></label><input type="text" id="managerActuel" class="form-input" placeholder="Nom du manager"></div>
+    </div>
+
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape4a')">Retour</button>
+      <button class="btn-suivant" onclick="valider5a()">Continuer</button>
+    </div>
+  </div>
+
+  <!-- ETAPE 6a — Consentement + création artiste -->
+  <div class="etape" id="etape6a">
+    <div class="etape-titre">Dernière étape</div>
+    <div class="etape-sous">Relisez et acceptez les conditions avant de finaliser la création de votre profil Peakly.</div>
+
+    <div class="consent-item"><input type="checkbox" id="cgu_art"><label for="cgu_art">J'accepte les <a href="legal/cgu.html" target="_blank">Conditions Générales d'Utilisation</a> de Peakly. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="conf_art"><label for="conf_art">J'ai lu la <a href="legal/confidentialite.html" target="_blank">Politique de confidentialité</a> et accepte le traitement de mes données conformément au RGPD. <strong>Obligatoire.</strong></label></div>
+    <div class="consent-item"><input type="checkbox" id="rgpd_art"><label for="rgpd_art">Je confirme que les données renseignées me concernent et que j'ai le droit de les partager.</label></div>
+    <div class="consent-item"><input type="checkbox" id="sync_art"><label for="sync_art"><span style="color:var(--txt3)">(Facultatif)</span> J'autorise Peakly à synchroniser automatiquement mes statistiques de streaming via les API des plateformes renseignées.</label></div>
+    <div class="consent-item"><input type="checkbox" id="comm_art"><label for="comm_art"><span style="color:var(--txt3)">(Facultatif)</span> J'accepte de recevoir les actualités Peakly : nouvelles opportunités, alertes compatibilité, événements.</label></div>
+
+    <div class="rgpd-note">Vos données artistiques sont utilisées uniquement pour la mise en relation avec des professionnels et le calcul de votre Talent Score. Elles sont hébergées dans l'UE et ne sont jamais revendues. Les métriques non vérifiées sont affichées avec le badge "Données déclarées". Contact RGPD : <a href="mailto:privacy@peakly.fr" style="color:var(--or)">privacy@peakly.fr</a></div>
+
+    <div class="msg-err" id="err6a"></div>
+    <div class="etape-nav">
+      <button class="btn-retour" onclick="allerEtape('etape5a')">Retour</button>
+      <button class="btn-suivant" id="btnCreerArtiste" onclick="creerCompteArtiste()">Créer mon profil Peakly</button>
+    </div>
+  </div>
+
+  <!-- ETAPE OK — Confirmation -->
+  <div class="etape" id="etapeOK">
+    <div class="confirm-wrap">
+      <div class="confirm-icone">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--texte-fonce)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="confirm-titre">Bienvenue sur Peakly.</div>
+      <div class="confirm-sous" id="confirmSous">Votre profil a été créé avec succès.</div>
+      <button class="btn-suivant" onclick="allerPlateforme()">Accéder à ma plateforme</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="../js/services/supabase.js"></script>
+<script src="../js/services/auth.js"></script>
+<script src="../js/services/api.js"></script>
+<script src="../js/utils/validation.js"></script>
+<script>
+const OB = {
+  type: null, type_artiste: null,
+  prenom: '', nom: '', email: '', mdp: '', telephone: '', ville: '', pays: 'France',
+  langues_parlees: [], poste: '', linkedin: '',
+  nom_artiste: '', photo: null, banniere: null,
+  bio_courte: '', bio_pro: '', genres: [], sous_genres: '', mood: [],
+  influences: '', langues_chantees: [], competences: [], statut_artiste: 'independant',
+  nom_structure: '', type_structure: '', site_web_pro: '', email_domaine: '',
+  pays_enreg: 'France', taille_structure: '', annee_creation: '', logo: null, desc_pro: '',
+  siret: '', kbis: null, linkedin_pro: '', domaine_pro: '',
+  platforms: {}, isrc_global: '', stat_spotify_followers: 0, stat_streams_declared: 0,
+  tracks: [],
+  objectif: '', disponible_audition: true, territoires: [],
+  concerts_passes: 0, concerts_futurs: '', presse: '', playlists: '',
+  prix_concours: '', certifications: [],
+  statut_juridique: '', sacem: false, sacem_num: '',
+  droits_master: true, droits_publishing: true, distribution: false,
+  label: '', manager: '',
+  genres_rech: [], sous_genres_rech: '', territoires_rech: [], langues_musicales: [],
+  niveaux_artiste: [], plateformes_prio: [],
+  min_followers: 0, min_streams: 0, min_growth: 0, min_engagement: 0,
+  objectifs_pro: [], deal_types: [], budget: 'non_public', disponibilite_pro: 'ouvert',
+  nb_artistes: '', delai_reponse: '', docs_demandes: [],
+  profil_visible: true, accepte_candidatures: true, rec_ia: true, alertes: true,
+  contact_pref: 'message'
+};
+
+const STEPS_ARTISTE = [
+  {id:'etape1', num:1, lbl:'Compte'},
+  {id:'etape2a',num:2, lbl:'Identité'},
+  {id:'etape3a',num:3, lbl:'Plateformes'},
+  {id:'etape4a',num:4, lbl:'Catalogue'},
+  {id:'etape5a',num:5, lbl:'Objectifs'},
+  {id:'etape6a',num:6, lbl:'Finalisation'}
+];
+const STEPS_PRO = [
+  {id:'etape1', num:1, lbl:'Compte'},
+  {id:'etape2b',num:2, lbl:'Structure'},
+  {id:'etape3b',num:3, lbl:'Vérification'},
+  {id:'etape4b',num:4, lbl:'Recherche'},
+  {id:'etape5b',num:5, lbl:'Opportunités'},
+  {id:'etape6b',num:6, lbl:'Publication'}
+];
+
+let etapeCourante = 'etape1';
+
+function rendreProgBar(steps, active) {
+  const bar = document.getElementById('progBar');
+  bar.innerHTML = steps.map((s, i) => {
+    const idx   = steps.findIndex(x => x.id === active);
+    const fait  = i < idx;
+    const actif = s.id === active;
+    const cls   = fait ? 'fait' : actif ? 'actif' : '';
+    const inner = fait
+      ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      : s.num;
+    return `<div class="prog-step ${cls}"><div class="prog-num">${inner}</div><div class="prog-lbl">${s.lbl}</div></div>`;
+  }).join('');
+}
+
+function allerEtape(id) {
+  document.querySelectorAll('.etape').forEach(e => e.classList.remove('visible'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('visible');
+  etapeCourante = id;
+  const steps = OB.type === 'professionnel' ? STEPS_PRO : STEPS_ARTISTE;
+  rendreProgBar(steps, id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function selectionnerType(type) {
+  OB.type = type;
+  document.getElementById('cardArtiste').classList.toggle('selectionne', type === 'artiste');
+  document.getElementById('cardPro').classList.toggle('selectionne', type === 'professionnel');
+  document.getElementById('blocSousType').style.display = type === 'artiste' ? 'block' : 'none';
+  document.getElementById('blocProSup').style.display = type === 'professionnel' ? 'block' : 'none';
+  rendreProgBar(type === 'professionnel' ? STEPS_PRO : STEPS_ARTISTE, 'etape1');
+}
+
+function selectionnerSousType(el, val) {
+  document.querySelectorAll('#soustypeGrid .tag').forEach(t => t.classList.remove('actif'));
+  el.classList.add('actif');
+  OB.type_artiste = val;
+}
+
+function toggleTag(el) { el.classList.toggle('actif'); }
+function toggleTagMax(el, gridId, max) {
+  const grid  = document.getElementById(gridId);
+  const nb    = grid.querySelectorAll('.tag.actif').length;
+  if (el.classList.contains('actif')) { el.classList.remove('actif'); }
+  else if (nb < max) { el.classList.add('actif'); }
+}
+function lireTags(gridId) {
+  return [...document.querySelectorAll('#' + gridId + ' .tag.actif')].map(e => e.textContent.trim());
+}
+
+function handleUpload(input, zoneId, nomId, obKey) {
+  const f = input.files[0];
+  if (!f) return;
+  OB[obKey] = f;
+  document.getElementById(zoneId).classList.add('has-file');
+  document.getElementById(nomId).textContent = f.name;
+}
+
+function compterChars(el, ctId, max) {
+  document.getElementById(ctId).textContent = el.value.length;
+}
+
+function ouvrirTrack(i) {
+  const body    = document.getElementById('trackBody' + i);
+  const chevron = document.getElementById('chevron' + i);
+  const open    = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  chevron.classList.toggle('open', !open);
+}
+
+function montrerErr(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('visible');
+  setTimeout(() => el.classList.remove('visible'), 5000);
+}
+
+/* === Validations === */
+function valider1() {
+  if (!OB.type)  { montrerErr('err1', 'Choisissez un type de compte pour continuer.'); return; }
+  const prenom = document.getElementById('prenom').value.trim();
+  const nom    = document.getElementById('nom').value.trim();
+  const email  = document.getElementById('email').value.trim();
+  const mdp    = document.getElementById('mdp').value;
+  const ville  = document.getElementById('ville').value.trim();
+  if (!prenom) { montrerErr('err1', 'Entrez votre prénom.'); return; }
+  if (!nom)    { montrerErr('err1', 'Entrez votre nom.'); return; }
+  if (!email || !email.includes('@')) { montrerErr('err1', 'Adresse e-mail invalide.'); return; }
+  if (!mdp || mdp.length < 8)  { montrerErr('err1', 'Mot de passe trop court (8 caractères minimum).'); return; }
+  if (!ville)  { montrerErr('err1', 'Indiquez votre ville.'); return; }
+  OB.prenom = prenom; OB.nom = nom; OB.email = email; OB.mdp = mdp;
+  OB.telephone = document.getElementById('telephone').value.trim();
+  OB.ville = ville; OB.pays = document.getElementById('pays').value;
+  OB.langues_parlees = lireTags('languesParlees');
+  if (OB.type === 'professionnel') {
+    OB.poste   = document.getElementById('poste1')?.value || '';
+    OB.linkedin = document.getElementById('linkedin1')?.value.trim() || '';
+  }
+  allerEtape(OB.type === 'professionnel' ? 'etape2b' : 'etape2a');
+}
+
+function valider2a() {
+  const nomArtiste = document.getElementById('nomArtiste').value.trim();
+  if (!nomArtiste) { montrerErr('err2a', 'Entrez votre nom d'artiste.'); return; }
+  if (lireTags('genresGrid').length === 0) { montrerErr('err2a', 'Sélectionnez au moins un genre musical.'); return; }
+  OB.nom_artiste = nomArtiste;
+  OB.bio_courte = document.getElementById('bioCourte').value.trim();
+  OB.bio_pro = document.getElementById('bioPro').value.trim();
+  OB.genres = lireTags('genresGrid'); OB.sous_genres = document.getElementById('sousGenres').value.trim();
+  OB.mood = lireTags('moodGrid'); OB.influences = document.getElementById('influences').value.trim();
+  OB.langues_chantees = lireTags('langChantGrid'); OB.competences = lireTags('competencesGrid');
+  OB.statut_artiste = document.getElementById('statutArtiste').value;
+  allerEtape('etape3a');
+}
+
+function valider2b() {
+  const nom = document.getElementById('nomStructure').value.trim();
+  const typ = document.getElementById('typeStructure').value;
+  if (!nom) { montrerErr('err2b', 'Entrez le nom de votre structure.'); return; }
+  if (!typ) { montrerErr('err2b', 'Sélectionnez le type de structure.'); return; }
+  OB.nom_structure    = nom;
+  OB.type_structure   = typ;
+  OB.site_web_pro     = document.getElementById('siteWebPro')?.value.trim() || '';
+  OB.email_domaine    = document.getElementById('emailDomaine')?.value.trim() || '';
+  OB.pays_enreg       = document.getElementById('paysEnreg')?.value || 'France';
+  OB.taille_structure = document.getElementById('tailleStructure')?.value || '';
+  OB.annee_creation   = document.getElementById('anneeCreation')?.value || '';
+  OB.desc_pro         = document.getElementById('descPro')?.value.trim() || '';
+  allerEtape('etape3b');
+}
+
+function valider3a() {
+  const pfs = ['spotify','apple','deezer','youtube','soundcloud','tiktok','instagram','audiomack','bandcamp','site'];
+  OB.platforms = {};
+  pfs.forEach(p => { const v = document.getElementById('pf_' + p)?.value.trim(); if (v) OB.platforms[p] = v; });
+  OB.isrc_global = document.getElementById('isrc_global').value.trim();
+  OB.stat_spotify_followers = parseInt(document.getElementById('stat_spotify_followers').value) || 0;
+  OB.stat_streams_declared  = parseInt(document.getElementById('stat_streams_declared').value)  || 0;
+  allerEtape('etape4a');
+}
+
+function valider4a() {
+  OB.tracks = [];
+  const prio = document.querySelector('input[name="prioritaire"]:checked')?.value;
+  [0,1,2].forEach(i => {
+    const titre = document.getElementById('t'+i+'_titre')?.value.trim();
+    if (!titre) return;
+    OB.tracks.push({
+      titre, position: i,
+      type:         document.getElementById('t'+i+'_type')?.value || 'single',
+      isrc:         document.getElementById('t'+i+'_isrc')?.value.trim() || null,
+      date_sortie:  document.getElementById('t'+i+'_date')?.value || null,
+      spotify_url:  document.getElementById('t'+i+'_spotify')?.value.trim() || null,
+      youtube_url:  document.getElementById('t'+i+'_youtube')?.value.trim() || null,
+      auteur:       document.getElementById('t'+i+'_auteur')?.value.trim() || null,
+      compositeur:  document.getElementById('t'+i+'_compositeur')?.value.trim() || null,
+      producteur:   document.getElementById('t'+i+'_producteur')?.value.trim() || null,
+      prioritaire:  String(i) === String(prio),
+      streams_declares: parseInt(document.getElementById('t'+i+'_streams')?.value) || 0
+    });
+  });
+  allerEtape('etape5a');
+}
+
+function valider5a() {
+  OB.objectif = document.getElementById('objectifPrincipal').value;
+  OB.disponible_audition = document.getElementById('togDispo').checked;
+  OB.territoires = lireTags('territoiresGrid');
+  OB.concerts_passes = parseInt(document.getElementById('concertsPassés').value) || 0;
+  OB.concerts_futurs = document.getElementById('concertsFuturs').value.trim();
+  OB.presse     = document.getElementById('presse').value.trim();
+  OB.playlists  = document.getElementById('playlists').value.trim();
+  OB.prix_concours = document.getElementById('prixConcours').value.trim();
+  OB.certifications = lireTags('certifGrid');
+  OB.statut_juridique = document.getElementById('statutJuridique').value;
+  OB.sacem = document.getElementById('togSacem').checked;
+  OB.sacem_num = document.getElementById('sacemNum').value.trim();
+  OB.droits_master = document.getElementById('togMaster').checked;
+  OB.droits_publishing = document.getElementById('togPublishing').checked;
+  OB.distribution = document.getElementById('togDistrib').checked;
+  OB.label = document.getElementById('labelActuel').value.trim();
+  OB.manager = document.getElementById('managerActuel').value.trim();
+  allerEtape('etape6a');
+}
+
+function valider3b() {
+  OB.siret        = document.getElementById('siret')?.value.trim() || '';
+  OB.linkedin_pro = document.getElementById('linkedinPro')?.value.trim() || '';
+  OB.domaine_pro  = document.getElementById('domainePro')?.value.trim() || '';
+  allerEtape('etape4b');
+}
+
+function valider4b() {
+  OB.genres_rech      = lireTags('genresRech');
+  OB.sous_genres_rech = document.getElementById('sousGenresRech')?.value.trim() || '';
+  OB.territoires_rech = lireTags('territoiresRech');
+  OB.langues_musicales = lireTags('languesMusicales');
+  OB.niveaux_artiste  = lireTags('niveauxArtiste');
+  OB.plateformes_prio = lireTags('plateformesPrio');
+  OB.min_followers    = parseInt(document.getElementById('minFollowers')?.value) || 0;
+  OB.min_streams      = parseInt(document.getElementById('minStreams')?.value) || 0;
+  OB.min_growth       = parseFloat(document.getElementById('minGrowth')?.value) || 0;
+  OB.min_engagement   = parseFloat(document.getElementById('minEngagement')?.value) || 0;
+  allerEtape('etape5b');
+}
+
+function valider5b() {
+  OB.objectifs_pro   = lireTags('objectifsPro');
+  OB.deal_types      = lireTags('dealTypes');
+  OB.budget          = document.getElementById('budgetRange')?.value || 'non_public';
+  OB.disponibilite_pro = document.getElementById('disponibilitePro')?.value || 'ouvert';
+  OB.nb_artistes     = document.getElementById('nbArtistes')?.value || '';
+  OB.delai_reponse   = document.getElementById('delaiReponse')?.value || '';
+  OB.docs_demandes   = lireTags('docsDemandes');
+  allerEtape('etape6b');
+}
+
+
+/* === Création compte artiste === */
+async function creerCompteArtiste() {
+  if (!document.getElementById('cgu_art').checked) { montrerErr('err6a', 'Acceptez les CGU pour continuer.'); return; }
+  if (!document.getElementById('conf_art').checked) { montrerErr('err6a', 'Acceptez la Politique de confidentialité pour continuer.'); return; }
+  const btn = document.getElementById('btnCreerArtiste');
+  btn.disabled = true; btn.textContent = 'Création en cours...';
+  try {
+    const data = await PeaklyAuth.register({
+      email: OB.email, password: OB.mdp,
+      nom:   OB.nom_artiste || (OB.prenom + ' ' + OB.nom).trim(),
+      role:  'artiste',
+      meta: { type_artiste: OB.type_artiste, telephone: OB.telephone, ville: OB.ville, pays: OB.pays, langues_parlees: OB.langues_parlees.join(',') }
+    });
+    if (data?.session) { try { await _sauvegarderProfilArtiste(); } catch(e) { console.warn('Sauvegarde partielle', e); } }
+    else { try { localStorage.setItem('peakly_ob_pending', JSON.stringify({...OB, mdp: null})); } catch(e) {} }
+    document.getElementById('confirmSous').innerHTML =
+      'Profil artiste <strong style="color:var(--txt)">' + (OB.nom_artiste || OB.prenom) + '</strong> créé.' +
+      (data?.session ? '' : '<br>Un e-mail de confirmation vous a été envoyé.');
+    allerEtape('etapeOK');
+  } catch(err) {
+    montrerErr('err6a', err.message === 'User already registered'
+      ? 'Cette adresse e-mail est déjà utilisée. Connectez-vous ou réinitialisez votre mot de passe.'
+      : (err.message || 'Une erreur est survenue. Réessayez.'));
+    btn.disabled = false; btn.textContent = 'Créer mon profil Peakly';
+  }
+}
+
+async function _sauvegarderProfilArtiste() {
+  await PeaklyAPI.artiste.updateProfile({
+    nom_artiste: OB.nom_artiste, bio_courte: OB.bio_courte, bio_pro: OB.bio_pro,
+    genres: OB.genres, sous_genres: OB.sous_genres, mood: OB.mood, influences: OB.influences,
+    langues_chantees: OB.langues_chantees, competences: OB.competences,
+    statut_artiste: OB.statut_artiste, ville: OB.ville, pays: OB.pays,
+    telephone: OB.telephone, langues_parlees: OB.langues_parlees,
+    objectif_principal: OB.objectif, disponible_audition: OB.disponible_audition,
+    territoires: OB.territoires, concerts_passes: OB.concerts_passes,
+    presse: OB.presse ? [OB.presse] : [], playlists_obtenues: OB.playlists ? [OB.playlists] : [],
+    prix_concours: OB.prix_concours ? [OB.prix_concours] : [], certifications: OB.certifications,
+    statut_juridique: OB.statut_juridique, sacem_membre: OB.sacem, sacem_numero: OB.sacem_num,
+    droits_master: OB.droits_master, droits_publishing: OB.droits_publishing,
+    distribution_contrat: OB.distribution, label_actuel: OB.label, manager_actuel: OB.manager,
+    type_artiste: OB.type_artiste
+  });
+  const pfsToSave = Object.entries(OB.platforms).map(([p, url]) => ({
+    platform: p, url, data_source: 'manual',
+    followers: p === 'spotify' ? OB.stat_spotify_followers : 0,
+    streams_declared: OB.stat_streams_declared
+  }));
+  if (pfsToSave.length) await PeaklyAPI.artiste.savePlatforms(pfsToSave);
+  if (OB.tracks.length) await PeaklyAPI.artiste.saveTracks(OB.tracks);
+  if (OB.photo) {
+    const url = await PeaklyAPI.upload.file(OB.photo, 'avatars');
+    const uid = (await PeaklySupabase.auth.getUser()).data.user.id;
+    await PeaklySupabase.from('profiles').update({ avatar_url: url }).eq('id', uid);
+  }
+  if (OB.banniere) {
+    const url = await PeaklyAPI.upload.file(OB.banniere, 'banners');
+    await PeaklyAPI.artiste.updateProfile({ banner_url: url });
+  }
+}
+
+/* === Création compte pro === */
+async function creerComptePro() {
+  if (!document.getElementById('cgu_pro').checked) { montrerErr('err6b', 'Acceptez les CGU pour continuer.'); return; }
+  if (!document.getElementById('conf_pro').checked) { montrerErr('err6b', 'Acceptez la Politique de confidentialité pour continuer.'); return; }
+  OB.profil_visible       = document.getElementById('togVisible')?.checked ?? true;
+  OB.accepte_candidatures = document.getElementById('togCandidatures')?.checked ?? true;
+  OB.rec_ia               = document.getElementById('togIA')?.checked ?? true;
+  OB.alertes              = document.getElementById('togAlertes')?.checked ?? true;
+  OB.contact_pref         = document.getElementById('contactPref')?.value || 'message';
+
+  const btn = document.getElementById('btnCreerPro');
+  btn.disabled = true; btn.textContent = 'Création en cours...';
+
+  try {
+    const data = await PeaklyAuth.register({
+      email: OB.email, password: OB.mdp,
+      nom:   OB.nom_structure || (OB.prenom + ' ' + OB.nom).trim(),
+      role:  'professionnel', siret: OB.siret || null,
+      nom_structure: OB.nom_structure, type_structure: OB.type_structure,
+      meta: {
+        telephone: OB.telephone, ville: OB.ville, pays: OB.pays,
+        poste: OB.poste, linkedin: OB.linkedin,
+        site_web: OB.site_web_pro, email_domaine: OB.email_domaine,
+        pays_enreg: OB.pays_enreg, taille_structure: OB.taille_structure,
+        annee_creation: OB.annee_creation, description: OB.desc_pro,
+        linkedin_pro: OB.linkedin_pro, domaine_pro: OB.domaine_pro,
+        verification_level: 'declare',
+        visible_public: OB.profil_visible, accepts_submissions: OB.accepte_candidatures
+      }
+    });
+
+    if (data?.session && typeof PeaklyAPI !== 'undefined' && PeaklyAPI.pro) {
+      try {
+        await PeaklyAPI.pro.savePreferences({
+          searched_genres: OB.genres_rech, sous_genres: OB.sous_genres_rech,
+          searched_territories: OB.territoires_rech, searched_languages: OB.langues_musicales,
+          artist_levels: OB.niveaux_artiste, priority_platforms: OB.plateformes_prio,
+          min_followers: OB.min_followers, min_streams: OB.min_streams,
+          min_growth_30d: OB.min_growth, min_engagement_rate: OB.min_engagement
+        });
+        await PeaklyAPI.pro.saveOpportunities({
+          objectives: OB.objectifs_pro, deal_types: OB.deal_types,
+          budget_range: OB.budget, availability: OB.disponibilite_pro,
+          nb_artists_sought: OB.nb_artistes ? parseInt(OB.nb_artistes) : null,
+          average_response_time: OB.delai_reponse, required_docs: OB.docs_demandes
+        });
+        await PeaklyAPI.pro.saveContactPrefs({
+          receives_ia_recommendations: OB.rec_ia,
+          receives_talent_alerts: OB.alertes,
+          contact_preference: OB.contact_pref
+        });
+        if (OB.logo) {
+          const logoUrl = await PeaklyAPI.upload.file(OB.logo, 'logos');
+          const uid = (await PeaklySupabase.auth.getUser()).data.user.id;
+          await PeaklySupabase.from('professionnels').update({ logo_url: logoUrl }).eq('profile_id', uid);
+        }
+        if (OB.kbis) {
+          const kbisUrl = await PeaklyAPI.upload.file(OB.kbis, 'documents');
+          const uid = (await PeaklySupabase.auth.getUser()).data.user.id;
+          await PeaklySupabase.from('professionnels').update({
+            kbis_url: kbisUrl, verification_requested_at: new Date().toISOString()
+          }).eq('profile_id', uid);
+        }
+      } catch(e) { console.warn('Sauvegarde préférences pro partielle', e); }
+    } else {
+      try { localStorage.setItem('peakly_pro_ob_pending', JSON.stringify({...OB, mdp: null, kbis: null, logo: null})); } catch(e) {}
+    }
+
+    document.getElementById('confirmSous').innerHTML =
+      'Espace professionnel <strong style="color:var(--txt)">' + OB.nom_structure + '</strong> créé.' +
+      '<br>Un e-mail de confirmation vous a été envoyé. La vérification de votre structure débutera sous 72h.';
+    allerEtape('etapeOK');
+
+  } catch(err) {
+    montrerErr('err6b', err.message === 'User already registered'
+      ? 'Cette adresse e-mail est déjà utilisée.'
+      : (err.message || 'Une erreur est survenue. Réessayez.'));
+    btn.disabled = false; btn.textContent = 'Créer mon espace professionnel';
+  }
+}
+
+function allerPlateforme() {
+  window.location.href = OB.type === 'professionnel' ? '../crm.html' : '../feed.html';
+}
+
+rendreProgBar(STEPS_ARTISTE, 'etape1');
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>
