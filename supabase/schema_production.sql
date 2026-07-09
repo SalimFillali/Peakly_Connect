@@ -360,7 +360,7 @@ CREATE TABLE IF NOT EXISTS public.scoring_ia (
   virality_score  SMALLINT,
   momentum_score  SMALLINT,
   growth_score    SMALLINT,
-  analyse         JSONB,
+  "analyse"       JSONB,
   computed_at     TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
