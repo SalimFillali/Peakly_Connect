@@ -1,14 +1,9 @@
 {
   "version": 2,
-  "outputDirectory": ".",
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)\\.html", "dest": "/$1.html" },
-    { "src": "/pages/(.*)", "dest": "/pages/$1" },
-    { "src": "/css/(.*)", "dest": "/css/$1" },
-    { "src": "/js/(.*)", "dest": "/js/$1" },
-    { "src": "/supabase/(.*)", "dest": "/supabase/$1" },
     { "src": "/", "dest": "/index.html" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "headers": [
@@ -16,12 +11,7 @@
       "source": "/(.*)",
       "headers": [
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net js.stripe.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com data:; img-src 'self' data: blob: *.supabase.co; connect-src 'self' *.supabase.co *.stripe.com api.stripe.com; frame-src js.stripe.com; object-src 'none';"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
       ]
     }
   ]
