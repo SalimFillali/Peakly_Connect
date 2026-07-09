@@ -156,7 +156,7 @@
   }
 
   /* ── Menu avatar ── */
-  global.ouvrirMenuAvatar = function(el) {
+  window.ouvrirMenuAvatar = function(el) {
     var menu = document.getElementById('menuAvatar');
     if (!menu) return;
     var isOpen = menu.classList.contains('open');
