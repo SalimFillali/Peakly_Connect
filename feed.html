@@ -1133,11 +1133,10 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ── SCROLL REVEAL ──────────────────────────────────────────── */
- div.className='cmd-result';
-    div.innerHTML = `<div class="cmd-result-avatar" style="background:${a.bg};color:${a.col}">${a.init}</div><div class="cmd-result-info"><div class="cmd-result-name">${a.name}</div><div class="cmd-result-sub">${a.sub}</div></div><div class="cmd-result-score">${a.ts}</div>`;
-    cmdResults.appendChild(div);
-  });
-});
+var revealObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('revealed'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(function(el){ revealObs.observe(el); });
 
 function renderDefaultCmd() {
   cmdResults.innerHTML = `

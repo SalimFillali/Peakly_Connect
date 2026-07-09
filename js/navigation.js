@@ -115,24 +115,15 @@
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
             Mon profil
           </a>
-          <a href="${ROOT}espace-artiste.html" class="menu-avatar-item">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Espace privé
-          </a>
-          <a href="${ROOT}${PAGES}settings.html" class="menu-avatar-item">
+          <a href="${ROOT}pages/settings.html" class="menu-avatar-item">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Paramètres
-          </a>
-          <a href="${ROOT}${PAGES}pricing.html" class="menu-avatar-item">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-            Abonnements
-            <span class="menu-badge-pro">Pro</span>
+            Parametres
           </a>
           <div class="menu-avatar-sep"></div>
-          <div class="menu-avatar-item menu-avatar-item-danger" onclick="deconnexion('${ROOT}')">
+          <a href="#" class="menu-avatar-item menu-avatar-logout" onclick="event.preventDefault(); if(typeof PeaklyAuth !== 'undefined') PeaklyAuth.logout();">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Se déconnecter
-          </div>
+            Deconnexion
+          </a>
         </div>
       </div>
 
@@ -140,30 +131,59 @@
   </div>
 </header>`;
 
-  /* ── Injection dans #nav-root ── */
-  const root = document.getElementById('nav-root');
-  if(root) root.outerHTML = NAV_HTML;
+  /* ── Injection ── */
+  var placeholder = document.getElementById('navPlaceholder');
+  if(placeholder){
+    placeholder.outerHTML = NAV_HTML;
+  } else {
+    document.body.insertAdjacentHTML('afterbegin', NAV_HTML);
+  }
 
-  /* ── Init après injection ── */
-  document.addEventListener('DOMContentLoaded', initNav);
-  // Si DOMContentLoaded déjà passé (script en fin de body)
-  if(document.readyState !== 'loading') initNav();
+  /* ── Comportement scroll ── */
+  var header = document.getElementById('headerApp');
+  if(header){
+    var lastScroll = 0;
+    window.addEventListener('scroll', function(){
+      var curr = window.scrollY;
+      if(curr > 60){
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      lastScroll = curr;
+    }, { passive: true });
+  }
 
-  function initNav(){
-    /* Recherche nav */
-    const inp = document.getElementById('navSearchInput');
-    if(inp){
-      inp.addEventListener('focus', function(){
-        const wrap = document.getElementById('navSearchWrap');
-        if(wrap) wrap.classList.add('focused');
-      });
-      inp.addEventListener('blur', function(){
-        const wrap = document.getElementById('navSearchWrap');
-        if(wrap) wrap.classList.remove('focused');
-      });
-      inp.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' && inp.value.trim()){
-          window.location.href = ROOT + PAGES + 'recherche.html?q=' + encodeURIComponent(inp.value.trim());
+  /* ── Menu avatar ── */
+  global.ouvrirMenuAvatar = function(el){
+    var menu = document.getElementById('menuAvatar');
+    if(!menu) return;
+    var isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open', !isOpen);
+    menu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+  };
+
+  /* Fermer le menu au clic exterieur */
+  document.addEventListener('click', function(e){
+    var wrapper = document.getElementById('avatarWrapper');
+    if(wrapper && !wrapper.contains(e.target)){
+      var menu = document.getElementById('menuAvatar');
+      if(menu){ menu.classList.remove('open'); menu.setAttribute('aria-hidden','true'); }
+    }
+  });
+
+  /* ── Recherche nav ── */
+  var navSearch = document.getElementById('navSearchInput');
+  if(navSearch){
+    navSearch.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && navSearch.value.trim()){
+        window.location.href = ROOT + PAGES + 'recherche.html?q=' + encodeURIComponent(navSearch.value.trim());
+      }
+    });
+  }
+
+})();
+l?q=' + encodeURIComponent(inp.value.trim());
         }
       });
     }

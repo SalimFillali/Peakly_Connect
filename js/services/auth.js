@@ -168,6 +168,7 @@
     },
 
     /* ── Utilitaire chemin racine ── */
+ 
     _rootPath(){
       return window.location.pathname.includes('/pages/') ? '../' : '';
     }

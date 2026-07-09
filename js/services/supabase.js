@@ -9,25 +9,28 @@
 
 (function(global){
 
-  /* ── Configuration (remplacer par vos clés depuis .env ou Vercel env vars) ── */
-  const SUPABASE_URL  = window.ENV_SUPABASE_URL  || 'https://VOTRE_PROJECT_ID.supabase.co';
-  const SUPABASE_ANON = window.ENV_SUPABASE_ANON || 'VOTRE_ANON_KEY';
-
-  /* ── Initialisation du client ── */
-  let client = null;
+  /* ── Initialisation du client (config chargee via /api/config) ── */
+  var client = null;
 
   function getClient(){
     if(client) return client;
-    if(typeof supabase === 'undefined'){
-      console.error('[Peakly] Supabase JS non chargé. Ajouter le CDN avant ce fichier.');
+    if(typeof supabase === 'undefined' || !supabase.createClient){
+      console.error('[Peakly] Supabase JS non charge. Ajouter le CDN avant ce fichier.');
       return null;
     }
-    client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+    var cfg = global.__PEAKLY_CONFIG__ || {};
+    var url  = cfg.supabaseUrl  || '';
+    var anon = cfg.supabaseAnonKey || '';
+    if(!url || !anon){
+      console.warn('[Peakly] Supabase non configure -- mode demo.');
+      return null;
+    }
+    client = supabase.createClient(url, anon, {
       auth: {
-        autoRefreshToken:    true,
-        persistSession:      true,
-        detectSessionInUrl:  true,
-        storageKey:          'peakly_session'
+        autoRefreshToken:   true,
+        persistSession:     true,
+        detectSessionInUrl: true,
+        storageKey:         'peakly_session'
       },
       realtime: {
         params: { eventsPerSecond: 10 }
@@ -36,43 +39,54 @@
     return client;
   }
 
+  /* ── Chargement de la config depuis /api/config ── */
+  function initSupabase(cfg){
+    global.__PEAKLY_CONFIG__ = cfg;
+    if(typeof supabase !== 'undefined' && supabase.createClient){
+      getClient();
+    }
+    global.__PEAKLY_READY__ = true;
+    document.dispatchEvent(new CustomEvent('peakly:ready', { detail: { client: client } }));
+  }
+
+  if(global.__PEAKLY_CONFIG__){
+    initSupabase(global.__PEAKLY_CONFIG__);
+  } else {
+    fetch('/api/config')
+      .then(function(r){ return r.json(); })
+      .then(function(cfg){ initSupabase(cfg); })
+      .catch(function(e){
+        console.warn('[Peakly] Config fetch failed, mode demo:', e);
+        global.__PEAKLY_READY__ = true;
+        document.dispatchEvent(new CustomEvent('peakly:ready', { detail: { client: null } }));
+      });
+  }
+
   /* ── API publique ── */
-  const PeaklySupabase = {
+  var PeaklySupabase = {
 
     get client(){ return getClient(); },
 
-    /* Raccourcis tables */
-    from(table){ return getClient().from(table); },
+    from: function(table){ return getClient().from(table); },
 
-    /* Auth */
     auth: {
-      signUp(params)       { return getClient().auth.signUp(params); },
-      signIn(params)       { return getClient().auth.signInWithPassword(params); },
-      signInOAuth(provider){ return getClient().auth.signInWithOAuth({ provider, options: { redirectTo: window.location.origin + '/feed.html' } }); },
-      signOut()            { return getClient().auth.signOut(); },
-      getSession()         { return getClient().auth.getSession(); },
-      getUser()            { return getClient().auth.getUser(); },
-      onAuthStateChange(cb){ return getClient().auth.onAuthStateChange(cb); },
-      resetPassword(email) { return getClient().auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/pages/reset-password.html' }); },
-      updateUser(params)   { return getClient().auth.updateUser(params); }
+      signUp: function(params)            { return getClient().auth.signUp(params); },
+      signInWithPassword: function(params){ return getClient().auth.signInWithPassword(params); },
+      signInWithOAuth: function(opts)     { return getClient().auth.signInWithOAuth(opts); },
+      signOut: function()                 { return getClient().auth.signOut(); },
+      getSession: function()              { return getClient() ? getClient().auth.getSession() : Promise.resolve({ data: { session: null } }); },
+      getUser: function()                 { return getClient() ? getClient().auth.getUser() : Promise.resolve({ data: { user: null } }); },
+      onAuthStateChange: function(cb)     { return getClient() ? getClient().auth.onAuthStateChange(cb) : null; },
+      resetPasswordForEmail: function(email, opts){ return getClient().auth.resetPasswordForEmail(email, opts); },
+      updateUser: function(params)        { return getClient().auth.updateUser(params); }
     },
 
-    /* Storage */
     storage: {
-      upload(bucket, path, file, opts){
-        return getClient().storage.from(bucket).upload(path, file, opts);
-      },
-      getPublicUrl(bucket, path){
-        return getClient().storage.from(bucket).getPublicUrl(path);
-      },
-      remove(bucket, paths){
-        return getClient().storage.from(bucket).remove(paths);
-      }
+      from: function(bucket){ return getClient().storage.from(bucket); }
     },
 
-    /* Realtime */
-    channel(name){ return getClient().channel(name); },
-    removeChannel(channel){ return getClient().removeChannel(channel); }
+    channel: function(name){ return getClient().channel(name); },
+    removeChannel: function(channel){ return getClient().removeChannel(channel); }
 
   };
 

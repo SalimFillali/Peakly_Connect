@@ -1,91 +1,28 @@
 {
   "version": 2,
-  "name": "peakly",
-  "cleanUrls": true,
-  "trailingSlash": false,
-
+  "outputDirectory": ".",
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)\\.html", "dest": "/$1.html" },
+    { "src": "/pages/(.*)", "dest": "/pages/$1" },
+    { "src": "/css/(.*)", "dest": "/css/$1" },
+    { "src": "/js/(.*)", "dest": "/js/$1" },
+    { "src": "/supabase/(.*)", "dest": "/supabase/$1" },
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options",    "value": "nosniff" },
-        { "key": "X-Frame-Options",           "value": "DENY" },
-        { "key": "X-XSS-Protection",          "value": "1; mode=block" },
-        { "key": "Referrer-Policy",           "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy",        "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://js.stripe.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co; frame-src https://js.stripe.com;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net js.stripe.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com data:; img-src 'self' data: blob: *.supabase.co; connect-src 'self' *.supabase.co *.stripe.com api.stripe.com; frame-src js.stripe.com; object-src 'none';"
         }
       ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin",  "value": "https://peakly.fr" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
-      ]
-    },
-    {
-      "source": "/css/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    },
-    {
-      "source": "/js/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
-      ]
-    },
-    {
-      "source": "/(.*).html",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=300, stale-while-revalidate=60" }
-      ]
     }
-  ],
-
-  "rewrites": [
-    { "source": "/api/stripe/checkout", "destination": "/api/stripe/checkout.js" },
-    { "source": "/api/stripe/webhook",  "destination": "/api/stripe/webhook.js"  },
-    { "source": "/api/stripe/portal",   "destination": "/api/stripe/portal.js"   },
-    { "source": "/api/auth/register",   "destination": "/api/auth/register.js"   },
-    { "source": "/api/auth/verify",     "destination": "/api/auth/verify.js"     }
-  ],
-
-  "redirects": [
-    { "source": "/login",            "destination": "/pages/login.html",                  "permanent": false },
-    { "source": "/inscription",      "destination": "/pages/inscription.html",            "permanent": false },
-    { "source": "/pricing",          "destination": "/pages/pricing.html",                "permanent": false },
-    { "source": "/settings",         "destination": "/pages/settings.html",               "permanent": false },
-    { "source": "/mentions-legales", "destination": "/pages/legal/mentions-legales.html", "permanent": false },
-    { "source": "/cgu",              "destination": "/pages/legal/cgu.html",              "permanent": false },
-    { "source": "/confidentialite",  "destination": "/pages/legal/confidentialite.html",  "permanent": false },
-    { "source": "/cookies",          "destination": "/pages/legal/cookies.html",          "permanent": false }
-  ],
-
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/404.html", "status": 404 }
-  ],
-
-  "env": {
-    "SUPABASE_URL":                  "@supabase_url",
-    "SUPABASE_ANON_KEY":             "@supabase_anon_key",
-    "SUPABASE_SERVICE_KEY":          "@supabase_service_key",
-    "STRIPE_PUBLIC_KEY":             "@stripe_public_key",
-    "STRIPE_SECRET_KEY":             "@stripe_secret_key",
-    "STRIPE_WEBHOOK_SECRET":         "@stripe_webhook_secret",
-    "STRIPE_PRICE_STARTER_MONTHLY":  "@stripe_price_starter_monthly",
-    "STRIPE_PRICE_STARTER_YEARLY":   "@stripe_price_starter_yearly",
-    "STRIPE_PRICE_PRO_MONTHLY":      "@stripe_price_pro_monthly",
-    "STRIPE_PRICE_PRO_YEARLY":       "@stripe_price_pro_yearly",
-    "STRIPE_PRICE_LABEL_MONTHLY":    "@stripe_price_label_monthly",
-    "STRIPE_PRICE_LABEL_YEARLY":     "@stripe_price_label_yearly",
-    "APP_URL":                       "@app_url",
-    "RESEND_API_KEY":                "@resend_api_key"
-  }
+  ]
 }

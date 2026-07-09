@@ -1,140 +1,154 @@
 /* ================================================================
-   PEAKLY — Stripe Webhooks (Vercel Serverless Function)
+   PEAKLY -- Stripe Webhooks (Vercel Serverless Function)
    api/stripe/webhook.js
 
    Variables d'environnement requises :
-     STRIPE_SECRET_KEY      — clé secrète Stripe
-     STRIPE_WEBHOOK_SECRET  — secret du webhook (whsec_...)
+     STRIPE_SECRET_KEY      -- cle secrete Stripe
+     STRIPE_WEBHOOK_SECRET  -- secret du webhook (whsec_...)
      SUPABASE_URL
      SUPABASE_SERVICE_KEY
    ================================================================ */
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
 
-const SUPABASE = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
-
-/* Map plan_type → features */
-const PLAN_FEATURES = {
-  gratuit: { plan: 'gratuit', premium: false },
-  starter: { plan: 'starter', premium: true  },
-  pro:     { plan: 'pro',     premium: true  },
-  label:   { plan: 'label',   premium: true  }
-};
-
-/* ── Disable bodyParser pour Stripe signature ── */
-export const config = { api: { bodyParser: false } };
-
 async function getRawBody(req){
-  return new Promise((resolve, reject) => {
-    let data = '';
-    req.on('data', chunk => (data += chunk));
-    req.on('end',  () => resolve(Buffer.from(data)));
+  return new Promise(function(resolve, reject){
+    var chunks = [];
+    req.on('data', function(chunk){ chunks.push(chunk); });
+    req.on('end',  function(){ resolve(Buffer.concat(chunks)); });
     req.on('error', reject);
   });
 }
 
-module.exports = async function handler(req, res){
+async function handler(req, res){
   if(req.method !== 'POST') return res.status(405).end();
 
-  const sig  = req.headers['stripe-signature'];
-  const body = await getRawBody(req);
+  var sig           = req.headers['stripe-signature'];
+  var webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  var body          = await getRawBody(req);
 
-  let event;
+  var stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  var supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+  );
+
+  var event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch(err){
     console.error('[Webhook] Signature invalide:', err.message);
-    return res.status(400).json({ error: `Webhook Error: ${err.message}` });
+    return res.status(400).json({ error: 'Webhook Error: ' + err.message });
   }
 
-  const data = event.data.object;
+  var data = event.data.object;
 
   switch(event.type){
 
     case 'checkout.session.completed': {
-      const uid  = data.metadata?.supabase_uid;
-      const plan = data.metadata?.plan || 'starter';
+      var uid  = data.metadata && data.metadata.supabase_uid;
+      var plan = (data.metadata && data.metadata.plan) || 'starter';
       if(!uid) break;
 
-      await SUPABASE.from('profiles').update({
-        plan,
+      await supabase.from('profiles').update({
+        plan: plan,
         premium: true,
         stripe_customer_id: data.customer
       }).eq('id', uid);
 
-      await SUPABASE.from('abonnements').upsert({
-        profile_id:           uid,
+      await supabase.from('abonnements').upsert({
+        profile_id:             uid,
         stripe_subscription_id: data.subscription,
-        plan,
-        status: 'active',
-        updated_at: new Date()
+        plan:                   plan,
+        status:                 'active',
+        updated_at:             new Date().toISOString()
       }, { onConflict: 'profile_id' });
 
-      console.log(`[Webhook] Abonnement activé : ${uid} → ${plan}`);
+      /* Table subscriptions (schema_production.sql) */
+      await supabase.from('subscriptions').upsert({
+        user_id:                uid,
+        plan:                   plan,
+        status:                 'active',
+        stripe_customer_id:     data.customer,
+        stripe_subscription_id: data.subscription,
+        updated_at:             new Date().toISOString()
+      }, { onConflict: 'user_id' });
+
+      console.log('[Webhook] Abonnement active : ' + uid + ' -> ' + plan);
       break;
     }
 
     case 'customer.subscription.updated': {
-      const uid    = data.metadata?.supabase_uid;
-      const plan   = data.metadata?.plan || 'starter';
-      const status = data.status;
-      if(!uid) break;
+      var uid2    = data.metadata && data.metadata.supabase_uid;
+      var plan2   = (data.metadata && data.metadata.plan) || 'starter';
+      var status2 = data.status;
+      if(!uid2) break;
 
-      await SUPABASE.from('abonnements').upsert({
-        profile_id:             uid,
+      await supabase.from('abonnements').upsert({
+        profile_id:             uid2,
         stripe_subscription_id: data.id,
-        stripe_price_id:        data.items.data[0]?.price?.id,
-        plan,
-        status,
-        cancel_at_period_end:  data.cancel_at_period_end,
-        canceled_at:           data.canceled_at ? new Date(data.canceled_at * 1000) : null,
-        current_period_start:  new Date(data.current_period_start * 1000),
-        current_period_end:    new Date(data.current_period_end   * 1000),
-        updated_at:            new Date()
+        stripe_price_id:        data.items && data.items.data[0] && data.items.data[0].price && data.items.data[0].price.id,
+        plan:                   plan2,
+        status:                 status2,
+        cancel_at_period_end:   data.cancel_at_period_end,
+        canceled_at:            data.canceled_at ? new Date(data.canceled_at * 1000).toISOString() : null,
+        current_period_start:   new Date(data.current_period_start * 1000).toISOString(),
+        current_period_end:     new Date(data.current_period_end   * 1000).toISOString(),
+        updated_at:             new Date().toISOString()
       }, { onConflict: 'profile_id' });
 
-      const isPremium = ['active', 'trialing'].includes(status);
-      await SUPABASE.from('profiles').update({ plan: isPremium ? plan : 'gratuit', premium: isPremium }).eq('id', uid);
+      var isPremium = ['active', 'trialing'].includes(status2);
+      await supabase.from('profiles').update({ plan: isPremium ? plan2 : 'gratuit', premium: isPremium }).eq('id', uid2);
 
-      console.log(`[Webhook] Abonnement mis à jour : ${uid} → ${plan} (${status})`);
+      await supabase.from('subscriptions').upsert({
+        user_id:                uid2,
+        plan:                   isPremium ? plan2 : 'gratuit',
+        status:                 status2,
+        stripe_subscription_id: data.id,
+        updated_at:             new Date().toISOString()
+      }, { onConflict: 'user_id' });
+
+      console.log('[Webhook] Abonnement mis a jour : ' + uid2 + ' -> ' + plan2 + ' (' + status2 + ')');
       break;
     }
 
     case 'customer.subscription.deleted': {
-      const uid = data.metadata?.supabase_uid;
-      if(!uid) break;
+      var uid3 = data.metadata && data.metadata.supabase_uid;
+      if(!uid3) break;
 
-      await SUPABASE.from('abonnements').upsert({
-        profile_id:             uid,
+      await supabase.from('abonnements').upsert({
+        profile_id:             uid3,
         stripe_subscription_id: data.id,
         plan:                   'gratuit',
         status:                 'canceled',
-        canceled_at:            new Date(),
-        updated_at:             new Date()
+        canceled_at:            new Date().toISOString(),
+        updated_at:             new Date().toISOString()
       }, { onConflict: 'profile_id' });
 
-      await SUPABASE.from('profiles').update({ plan: 'gratuit', premium: false }).eq('id', uid);
+      await supabase.from('profiles').update({ plan: 'gratuit', premium: false }).eq('id', uid3);
 
-      console.log(`[Webhook] Abonnement résilié : ${uid}`);
+      await supabase.from('subscriptions').update({
+        status:     'cancelled',
+        updated_at: new Date().toISOString()
+      }).eq('user_id', uid3);
+
+      console.log('[Webhook] Abonnement resilie : ' + uid3);
       break;
     }
 
     case 'invoice.payment_failed': {
-      const customerId = data.customer;
-      const { data: profile } = await SUPABASE.from('profiles')
+      var customerId = data.customer;
+      var profileRes = await supabase.from('profiles')
         .select('id').eq('stripe_customer_id', customerId).single();
-      if(profile){
-        await SUPABASE.from('abonnements').update({ status: 'past_due' }).eq('profile_id', profile.id);
-        /* Envoyer une notification à l'utilisateur */
-        await SUPABASE.from('notifications').insert({
-          profile_id: profile.id,
+      if(profileRes.data){
+        var pid = profileRes.data.id;
+        await supabase.from('abonnements').update({ status: 'past_due', updated_at: new Date().toISOString() }).eq('profile_id', pid);
+        await supabase.from('notifications').insert({
+          profile_id: pid,
           type:       'system',
-          titre:      'Paiement échoué',
-          contenu:    'Votre paiement n\'a pas pu être traité. Veuillez mettre à jour votre moyen de paiement.',
+          titre:      'Paiement echoue',
+          contenu:    'Votre paiement n\'a pas pu etre traite. Veuillez mettre a jour votre moyen de paiement.',
           lien:       '/pages/settings.html#abonnement'
         });
       }
@@ -142,8 +156,11 @@ module.exports = async function handler(req, res){
     }
 
     default:
-      console.log(`[Webhook] Événement non géré: ${event.type}`);
+      console.log('[Webhook] Evenement non gere: ' + event.type);
   }
 
   return res.status(200).json({ received: true });
-};
+}
+
+module.exports = handler;
+module.exports.config = { api: { bodyParser: false } };

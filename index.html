@@ -908,7 +908,9 @@ document.querySelectorAll('.how-card, .feature-card, .temoignage-card, .tarif-ca
 /* ============================================================
    SCROLL REVEAL
    ============================================================ */
-, { threshold: 0.12 });
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('revealed'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 /* ============================================================
