@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -454,19 +454,6 @@ select.field-input { cursor: pointer; }
 </style>
 </head>
 <body>
-<script>
-(function(){
-  try {
-    var raw = localStorage.getItem("peakly_session");
-    var s = raw ? JSON.parse(raw) : null;
-    if(!s || !s.access_token || s.expires_at < Math.floor(Date.now()/1000)){
-      window.location.replace("/pages/login.html?redirect="+encodeURIComponent(window.location.pathname));
-    }
-  } catch(e){
-    window.location.replace("/pages/login.html");
-  }
-})();
-</script>
 
 <!-- Fond animé -->
 <div class="settings-bg">
@@ -1017,4 +1004,7 @@ window.addEventListener('DOMContentLoaded', function(){
   }
 
 })();
-</scr
+</script>
+</body>
+</html>
+

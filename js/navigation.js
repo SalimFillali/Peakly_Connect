@@ -136,8 +136,12 @@
   var placeholder = document.getElementById('navPlaceholder');
   if(placeholder){
     placeholder.outerHTML = NAV_HTML;
-  } else {
+  } else if(document.body) {
     document.body.insertAdjacentHTML('afterbegin', NAV_HTML);
+  } else {
+    document.addEventListener('DOMContentLoaded', function(){
+      document.body.insertAdjacentHTML('afterbegin', NAV_HTML);
+    });
   }
 
   /* ── Comportement scroll ── */

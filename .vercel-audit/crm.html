@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -203,19 +203,6 @@
 </style>
 </head>
 <body>
-<script>
-(function(){
-  try {
-    var raw = localStorage.getItem("peakly_session");
-    var s = raw ? JSON.parse(raw) : null;
-    if(!s || !s.access_token || s.expires_at < Math.floor(Date.now()/1000)){
-      window.location.replace("/pages/login.html?redirect="+encodeURIComponent(window.location.pathname));
-    }
-  } catch(e){
-    window.location.replace("/pages/login.html");
-  }
-})();
-</script>
 
 <div id="nav-root"></div>
 
@@ -813,4 +800,7 @@ setTimeout(() => showToast('','Analyse terminée','17 artistes compatibles trouv
 setTimeout(() => showToast('','Alerte pipeline','Awa Kouyaté : contrat prêt pour signature',''), 4000);
 setTimeout(() => showToast('','Nouvelle opportunité','Sony Music FR : audition ouverte, délai 12 jours',''), 7000);
 
-</script
+</script>
+</body>
+</html>
+

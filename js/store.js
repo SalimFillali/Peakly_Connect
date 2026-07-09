@@ -3,7 +3,8 @@
    Couche de persistance localStorage pour toute la plateforme
    ================================================================ */
 
-const PeaklyStore = (function(){
+if(typeof window.PeaklyStore !== 'undefined'){ /* déjà chargé */ } else
+window.PeaklyStore = (function(){
 
 /* ----------------------------------------------------------------
    DONNÉES ARTISTES
@@ -247,7 +248,6 @@ init();
 
 return { getArtistes, getPros, getMessages, getNotifs, getSession, isLoggedIn,
   getNbNotifNonLues, getNbMessagesNonLus, login, logout,
-  toggleFollow, isSuivi, marquerNotifsLues, envoyerMessage,
-  searchArtistes, searchTous };
-
+  toggleFollow, isSuivi
+};
 })();

@@ -1,0 +1,952 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Def Jam France : Profil Label Peakly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<style>
+
+.barre-recherche input{width:100%;padding:8px 14px 8px 36px;background:rgba(255,255,255,.05);border:1px solid var(--b1);border-radius:999px;font-size:.83rem;color:var(--txt);font-family:'Inter',sans-serif;transition:all .15s}
+.barre-recherche input:focus{outline:none;border-color:var(--or-glow);background:rgba(255,255,255,.08)}
+.barre-recherche input::placeholder{color:rgba(148,163,184,.45)}
+.barre-recherche svg{position:absolute;left:11px;color:var(--txt2);pointer-events:none}
+.kbd-badge{position:absolute;right:12px;font-size:.6rem;color:var(--txt3);font-family:'JetBrains Mono',monospace;pointer-events:none}
+.nav-icone.actif::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:22px;height:2px;background:var(--or);border-radius:2px}
+
+.crm-hero{background:linear-gradient(135deg,rgba(10,13,20,1) 0%,rgba(26,33,51,1) 50%,rgba(10,13,20,1) 100%);border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
+.crm-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 200% at 100% 50%,rgba(229,193,88,.06),transparent 60%)}
+.crm-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 40% 100% at 0% 50%,rgba(96,165,250,.04),transparent 60%)}
+.hero-inner{max-width:1500px;margin:0 auto;padding:28px 24px 0;display:flex;align-items:start;gap:24px;flex-wrap:wrap}
+.label-logo-wrap{width:72px;height:72px;border-radius:var(--r-lg);background:linear-gradient(135deg,#E5C158,#C9A53F);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.5rem;color:var(--texte-fonce);flex-shrink:0;box-shadow:0 0 0 1px rgba(229,193,88,.3),0 8px 24px rgba(229,193,88,.2)}
+.label-identity{flex:1;min-width:200px}
+.label-name{font-size:1.6rem;font-weight:900;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.verified-pro{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);font-size:.65rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.verified-pro svg{width:10px;height:10px;stroke:var(--or)}
+.label-sub{font-size:.88rem;color:var(--txt2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.sub-dot{width:3px;height:3px;border-radius:50%;background:var(--txt3)}
+.label-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-crm{padding:9px 20px;border-radius:var(--r-sm);font-weight:700;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.btn-crm-primary{background:var(--or);color:var(--texte-fonce);box-shadow:0 4px 14px rgba(229,193,88,.25)}
+.btn-crm-primary:hover{background:var(--or-h);transform:translateY(-1px);box-shadow:0 6px 20px rgba(229,193,88,.35)}
+.btn-crm-secondary{background:rgba(255,255,255,.06);border:1px solid var(--b2);color:var(--txt)}
+.btn-crm-secondary:hover{background:rgba(255,255,255,.1);border-color:var(--b3)}
+.btn-crm-ghost{border:1px solid var(--b1);color:var(--txt2)}
+.btn-crm-ghost:hover{background:rgba(255,255,255,.05);color:var(--txt)}
+
+.kpi-strip{max-width:1500px;margin:0 auto;padding:20px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--b1)}
+@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
+.kpi-cell{padding:14px 20px;border-right:1px solid var(--b1);position:relative}
+.kpi-cell:last-child{border-right:none}
+.kpi-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.kpi-label svg{width:11px;height:11px}
+.kpi-val{font-size:1.65rem;font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;color:var(--txt);line-height:1;margin-bottom:3px}
+.kpi-change{font-size:.7rem;font-weight:600;display:flex;align-items:center;gap:4px}
+.kpi-spark{height:24px;width:80px;margin-top:6px}
+
+.crm-tab-bar{max-width:1500px;margin:0 auto;display:flex;align-items:center;gap:2px;padding:0 24px;border-bottom:1px solid var(--b1);background:rgba(5,5,7,.6);backdrop-filter:blur(12px)}
+.crm-tab{padding:14px 18px;font-size:.8rem;font-weight:600;color:var(--txt2);cursor:pointer;transition:color .15s;position:relative;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.crm-tab:hover{color:var(--txt)}
+.crm-tab.active{color:var(--or);border-bottom-color:var(--or)}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or);font-size:.62rem;font-weight:800;margin-left:6px;padding:0 4px;font-family:'Plus Jakarta Sans',sans-serif}
+.tab-actions{margin-left:auto;display:flex;gap:8px;padding:8px 0}
+
+.crm-layout{max-width:1500px;margin:0 auto;padding:20px 24px 60px;display:grid;grid-template-columns:1fr 300px;gap:20px}
+@media(max-width:1100px){.crm-layout{grid-template-columns:1fr}}
+
+.card-title svg{width:15px;height:15px;flex-shrink:0}
+.card-actions{display:flex;gap:6px;align-items:center}
+.icon-btn{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;color:var(--txt2);transition:all .15s}
+.icon-btn:hover{background:rgba(255,255,255,.07);color:var(--txt);border-color:var(--b2)}
+
+.ai-hero-section{border:1px solid rgba(74,222,128,.18);border-radius:var(--r-xl);background:linear-gradient(135deg,rgba(5,5,7,.97),rgba(10,14,26,.98));position:relative;overflow:hidden;margin-bottom:20px}
+.ai-hero-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.5),rgba(229,193,88,.3),transparent)}
+.ai-hero-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,rgba(5,5,7,.5),transparent);pointer-events:none}
+.ai-top{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid rgba(74,222,128,.1);flex-wrap:wrap;gap:12px}
+.ai-brand{display:flex;align-items:center;gap:10px}
+.ai-pulse{width:8px;height:8px;border-radius:50%;background:var(--vert);box-shadow:0 0 10px var(--vert);animation:pulse-green 1.8s infinite}
+@keyframes pulse-green{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.ai-title{font-size:.92rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.ai-sub{font-size:.72rem;color:var(--vert);font-family:'JetBrains Mono',monospace}
+.ai-status{display:flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.72rem;color:var(--vert);font-weight:600;font-family:'JetBrains Mono',monospace}
+
+.ai-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px 24px;overflow:hidden}
+@media(max-width:900px){.ai-cards-grid{grid-template-columns:repeat(2,1fr)}}
+.ai-artist-card{border-radius:var(--r-lg);border:1px solid var(--b1);background:rgba(255,255,255,.03);padding:16px;cursor:pointer;transition:border-color var(--T),background var(--T),transform var(--T),box-shadow var(--T);position:relative;overflow:hidden}
+.ai-artist-card:hover{border-color:var(--or-glow);background:rgba(229,193,88,.04);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4),0 0 20px rgba(229,193,88,.08)}
+.ai-card-head{display:flex;align-items:start;gap:12px;margin-bottom:12px}
+.ai-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0;border:2px solid var(--b2)}
+.ai-card-info{flex:1;min-width:0}
+.ai-card-name{font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:2px}
+.ai-card-sub{font-size:.7rem;color:var(--txt2)}
+.ai-match{padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0}
+.ai-match-hot{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--vert)}
+.ai-match-mid{background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or)}
+.ai-reasons{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.ai-reason{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--txt2)}
+.ai-reason-icon{color:var(--vert);flex-shrink:0;font-size:.72rem}
+.ai-card-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.ai-metric{background:rgba(255,255,255,.04);border-radius:var(--r-sm);padding:6px 8px;text-align:center}
+.ai-metric-val{font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.ai-metric-lbl{font-size:.58rem;color:var(--txt2)}
+.ai-card-sparkline{height:24px;width:100%;margin-bottom:10px}
+.ai-card-footer{display:flex;gap:6px}
+.ai-card-btn{flex:1;padding:7px;border-radius:var(--r-sm);font-size:.72rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;transition:all .15s}
+.ai-card-btn-primary{background:var(--or);color:var(--texte-fonce)}
+.ai-card-btn-primary:hover{background:var(--or-h)}
+.ai-card-btn-ghost{border:1px solid var(--b1);color:var(--txt2)}
+.ai-card-btn-ghost:hover{border-color:var(--b2);color:var(--txt)}
+.ai-card-glow{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(229,193,88,.06),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.ai-artist-card:hover .ai-card-glow{opacity:1}
+
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.data-table thead tr{border-bottom:1px solid var(--b1)}
+.data-table th{padding:10px 14px;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt2);text-align:left;white-space:nowrap}
+.data-table th:first-child{padding-left:20px}
+.data-table th:last-child{padding-right:20px;text-align:right}
+.data-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .12s;cursor:pointer}
+.data-table tbody tr:hover{background:rgba(255,255,255,.04)}
+.data-table td{padding:14px 14px;color:var(--txt2);vertical-align:middle}
+.data-table td:first-child{padding-left:20px}
+.data-table td:last-child{padding-right:20px;text-align:right}
+.td-artist{display:flex;align-items:center;gap:12px}
+.td-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0}
+.td-name{font-size:.9rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.td-handle{font-size:.7rem;color:var(--txt2)}
+.td-score{font-size:1rem;font-weight:900;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif}
+.td-mini-bar{height:5px;width:72px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
+.td-mini-fill{height:100%;border-radius:2px;background:var(--vert)}
+.table-search{display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--b1)}
+.table-search-wrap{flex:1;position:relative}
+.table-search-input{width:100%;padding:7px 14px 7px 32px;background:rgba(255,255,255,.04);border:1px solid var(--b1);border-radius:var(--r-sm);font-size:.8rem;color:var(--txt);font-family:'Inter',sans-serif;outline:none}
+.table-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--txt2);pointer-events:none;z-index:1}
+.table-search-input:focus{border-color:var(--or-glow)}
+.table-filter-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:0 0 auto}
+.table-filter-chips::-webkit-scrollbar{display:none}
+.filter-chip{padding:5px 12px;border-radius:999px;font-size:.72rem;font-weight:600;border:1px solid var(--b1);color:var(--txt2);background:none;white-space:nowrap;transition:all .15s;cursor:pointer}
+.filter-chip:hover{border-color:var(--b2);color:var(--txt)}
+.filter-chip.active{background:var(--or-dim);border-color:var(--or-glow);color:var(--or)}
+
+.sidebar-stack{display:flex;flex-direction:column;gap:16px}
+.widget-header{padding:14px 16px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.widget-title{font-size:.8rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:7px}
+.widget-link{font-size:.7rem;color:var(--or);cursor:pointer}
+.genre-pill{padding:5px 12px;border-radius:999px;font-size:.74rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;border:1px solid var(--b1);color:var(--txt2)}
+.genre-pill:hover{border-color:var(--b2);color:var(--txt)}
+.genre-pill.active{background:var(--or-dim);border-color:var(--or-glow);color:var(--or)}
+.similar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-sm);transition:background .15s;cursor:pointer}
+.similar-item:hover{background:rgba(255,255,255,.04)}
+.sim-logo{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0}
+.sim-info{flex:1;min-width:0}
+.sim-name{font-size:.82rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.sim-sub{font-size:.68rem;color:var(--txt2)}
+.sim-score{font-size:.75rem;font-weight:700;color:var(--vert);font-family:'Plus Jakarta Sans',sans-serif}
+
+.cmd-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:start;justify-content:center;padding-top:12vh;background:rgba(5,5,7,.85);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s}
+.cmd-overlay.open{opacity:1;pointer-events:all}
+.cmd-palette{width:100%;max-width:600px;border-radius:var(--r-xl);background:rgba(15,20,32,.99);border:1px solid var(--b2);box-shadow:0 40px 80px rgba(0,0,0,.8),0 0 60px rgba(229,193,88,.07);overflow:hidden}
+.cmd-input-row{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--b1)}
+.cmd-input-row svg{width:18px;height:18px;color:var(--txt2);flex-shrink:0}
+.cmd-input{flex:1;background:none;border:none;font-size:1rem;color:var(--txt);outline:none;font-family:'Inter',sans-serif;caret-color:var(--or)}
+.cmd-input::placeholder{color:var(--txt3)}
+.cmd-kbd{padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid var(--b1);font-size:.68rem;color:var(--txt2);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.cmd-results{max-height:380px;overflow-y:auto;padding:8px 0}
+.cmd-section{padding:6px 22px 4px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);font-family:'Plus Jakarta Sans',sans-serif}
+.cmd-item{display:flex;align-items:center;gap:12px;padding:10px 22px;cursor:pointer;transition:background .1s}
+.cmd-item:hover,.cmd-item.sel{background:rgba(255,255,255,.05)}
+.cmd-item-icon{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.cmd-item-text{flex:1}
+.cmd-item-title{font-size:.88rem;font-weight:600;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.cmd-item-sub{font-size:.7rem;color:var(--txt2)}
+.cmd-item-enter{font-size:.65rem;color:var(--txt3);font-family:'JetBrains Mono',monospace}
+.cmd-footer{padding:10px 22px;border-top:1px solid var(--b1);display:flex;gap:16px}
+.cmd-hint{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--txt3)}
+.cmd-hint kbd{padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid var(--b1);font-family:'JetBrains Mono',monospace;font-size:.62rem}
+
+.toast{padding:12px 16px;border-radius:var(--r);background:rgba(15,20,32,.98);border:1px solid var(--b2);box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px;pointer-events:all;transform:translateX(120%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);max-width:320px}
+.toast.show{transform:translateX(0)}
+.toast-icon{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem}
+.toast-text{flex:1;font-size:.78rem;color:var(--txt);line-height:1.35}
+.toast-text small{color:var(--txt2);display:block;font-size:.7rem}
+
+#postulerDrawer.open{transform:translateX(0)}
+#postulerOverlay.open{opacity:1;pointer-events:all}
+.tab-panel{display:flex;flex-direction:column;gap:20px}
+</style>
+</head>
+<body>
+
+<div id="nav-root"></div>
+
+<div class="crm-hero">
+  <div class="hero-inner">
+    <div class="label-logo-wrap">DJ</div>
+    <div class="label-identity">
+      <div class="label-name">
+        Def Jam France
+        <div class="verified-pro">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          Label Vérifié Peakly
+        </div>
+      </div>
+      <div class="label-sub">
+        Major · Urbain / Rap / RnB
+        <span class="sub-dot"></span>
+        Paris, France
+        <span class="sub-dot"></span>
+        Fondé en 1994
+        <span class="sub-dot"></span>
+        <span style="color:var(--vert);font-weight:600">Recrutement actif</span>
+      </div>
+      <div class="label-actions">
+        <button class="btn-crm btn-crm-primary" onclick="showToast('suivi','Def Jam France','Vous suivez maintenant ce label','')">Suivre</button>
+        <button class="btn-crm btn-crm-secondary" onclick="(function(){var t=document.querySelector('[data-panel=panel-opport]');if(t)setTab(t);t&&t.scrollIntoView({behavior:'smooth'});})()">Voir les opportunités</button>
+        <button class="btn-crm btn-crm-ghost" onclick="window.location='feed.html'">Fil d'actualité</button>
+      </div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;padding-bottom:20px">
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.72rem;color:var(--vert);font-weight:600;font-family:'JetBrains Mono',monospace;margin-bottom:8px">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--vert);animation:pulse-green 1.5s infinite"></div>
+        Recrutement actif
+      </div>
+      <div style="font-size:.75rem;color:var(--txt2);text-align:right">Dernière analyse<br><strong style="color:var(--txt)">Il y a 4 minutes</strong></div>
+    </div>
+  </div>
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Artistes suivis</div>
+      <div class="kpi-val" id="kpi0">0</div>
+      <div class="kpi-change up">+12 ce mois</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,20 13,18 26,15 40,12 53,8 66,5 80,2" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Signatures cette année</div>
+      <div class="kpi-val" id="kpi1">0</div>
+      <div class="kpi-change up">+3 par rapport à 2024</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,22 13,20 26,17 40,14 53,11 66,7 80,4" fill="none" stroke="#E5C158" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Temps moyen de réponse</div>
+      <div class="kpi-val">47j</div>
+      <div class="kpi-change down">-8 jours ce trimestre</div>
+      <svg class="kpi-spark" viewBox="0 0 80 24"><polyline points="0,4 13,7 26,10 40,13 53,16 66,19 80,22" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+  </div>
+</div>
+
+<div class="crm-tab-bar">
+  <div class="crm-tab active" data-panel="panel-reco" onclick="setTab(this)">Recommandations <span class="tab-badge">17</span></div>
+  <div class="crm-tab" data-panel="panel-suivis" onclick="setTab(this)">Artistes suivis <span class="tab-badge">42</span></div>
+  <div class="crm-tab" data-panel="panel-opport" onclick="setTab(this)">Opportunités <span class="tab-badge" style="color:var(--vert)">12</span></div>
+  <div class="tab-actions">
+    <button style="background:var(--or-dim);border:1px solid var(--or-glow);color:var(--or);font-size:.75rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;border-radius:var(--r-sm);padding:6px 14px;cursor:pointer" onclick="openCmd()">⌘K Rechercher</button>
+    <button style="background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.75rem;font-family:'Plus Jakarta Sans',sans-serif;border-radius:var(--r-sm);padding:6px 14px;cursor:pointer">Filtres</button>
+  </div>
+</div>
+
+<div class="crm-layout">
+  <div style="display:flex;flex-direction:column;gap:20px">
+
+    <div id="panel-reco" class="tab-panel" style="display:flex;flex-direction:column;gap:20px">
+    <div class="ai-hero-section reveal">
+      <div class="ai-top">
+        <div class="ai-brand">
+          <div class="ai-pulse"></div>
+          <div>
+            <div class="ai-title">Recommandations Peakly</div>
+            <div class="ai-sub">Sélection personnalisée · 2 347 artistes analysés</div>
+          </div>
+        </div>
+        <div class="ai-status">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Dernière analyse : 4 min
+        </div>
+      </div>
+      <div style="padding:16px 24px 12px;border-bottom:1px solid rgba(74,222,128,.08)">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2)">Peakly recommande pour Def Jam France</div>
+      </div>
+      <div class="ai-cards-grid">
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000">AK</div>
+            <div class="ai-card-info">
+              <div class="ai-card-name">Awa Kouyaté</div>
+              <div class="ai-card-sub">Rap · Afrotrap · Paris</div>
+            </div>
+            <div class="ai-match ai-match-hot">91%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Audience identique à votre cible</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Style Rap / Afrotrap, genre principal</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Croissance +42%, momentum rare</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Disponible, aucune offre active</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">92</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">2.4M</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">8.4%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,20 33,17 66,13 100,10 133,7 166,4 200,1" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Awa Kouyaté contactée','Demande de rendez-vous envoyée via Peakly','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost" onclick="window.location='profil-artiste.html'">Voir profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">SM</div>
+            <div class="ai-card-info">
+              <div class="ai-card-name">Sonya Mbaye</div>
+              <div class="ai-card-sub">RnB · Soul · Dakar-Paris</div>
+            </div>
+            <div class="ai-match ai-match-hot">87%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Même cible démographique 18-34</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Voix identifiée dans le top 5% RnB France</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Audience diaspora, portée internationale</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">87</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">890K</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">9.1%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,22 33,19 66,16 100,13 133,9 166,6 200,3" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Sonya Mbaye contactée','Invitation audition Def Jam envoyée','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Voir profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">WR</div>
+            <div class="ai-card-info">
+              <div class="ai-card-name">Willy Ramos</div>
+              <div class="ai-card-sub">Afrobeats · Dance · Paris</div>
+            </div>
+            <div class="ai-match ai-match-mid">82%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Afrobeats, segment en croissance de 40%</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Viral TikTok, 4 millions de vues organiques</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Profil similaire à votre artiste phare 2023</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">82</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">1.1M</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">7.8%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,21 33,18 66,15 100,12 133,8 166,5 200,2" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Willy Ramos contacté','Demande envoyée','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Voir profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card" style="border-color:rgba(167,139,250,.2)">
+          <div class="ai-card-glow" style="background:radial-gradient(ellipse at center,rgba(167,139,250,.06),transparent 60%)"></div>
+          <div style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--violet);font-size:.65rem;font-weight:700;margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif">Forte croissance +340%</div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">TR</div>
+            <div class="ai-card-info">
+              <div class="ai-card-name">TiRoy</div>
+              <div class="ai-card-sub">Rap · Cloud · Lyon</div>
+            </div>
+            <div class="ai-match ai-match-mid" style="color:var(--violet);background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.2)">74%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon" style="color:var(--violet)">✓</span>+340% de streams en 30 jours</div>
+            <div class="ai-reason"><span class="ai-reason-icon" style="color:var(--violet)">✓</span>Fenêtre de signature ouverte</div>
+            <div class="ai-reason"><span class="ai-reason-icon" style="color:var(--violet)">✓</span>Coût de signature encore accessible</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">67</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">340%</div><div class="ai-metric-lbl" style="color:var(--violet)">Croissance</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">6.2%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,24 33,22 66,20 100,17 133,12 166,7 200,1" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','TiRoy : alerte croissance','Artiste à surveiller, progression exceptionnelle','')">Suivre de près</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Profil complet</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);color:#fff">SL</div>
+            <div class="ai-card-info">
+              <div class="ai-card-name">Sola Lefebvre</div>
+              <div class="ai-card-sub">RnB · Pop · Bordeaux</div>
+            </div>
+            <div class="ai-match ai-match-mid">79%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Voix exceptionnelle, top 3%</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Showcase récent, couverture presse nationale</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">79</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">420K</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">11.2%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,23 33,20 66,17 100,14 133,10 166,6 200,3" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Sola Lefebvre contactée','Message envoyé','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Profil</div>
+          </div>
+        </div>
+        <div class="ai-artist-card">
+          <div class="ai-card-glow"></div>
+          <div class="ai-card-head">
+            <div class="ai-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">BK</div>
+            <div class="ai-card-info">
+              <div class="ai-card-name">Bamba Koné</div>
+              <div class="ai-card-sub">Afrobeats · Abidjan</div>
+            </div>
+            <div class="ai-match ai-match-mid">76%</div>
+          </div>
+          <div class="ai-reasons">
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Marché diaspora afro-française</div>
+            <div class="ai-reason"><span class="ai-reason-icon">✓</span>Audience 18-24 ans, 68% de la base</div>
+          </div>
+          <div class="ai-card-metrics">
+            <div class="ai-metric"><div class="ai-metric-val">83</div><div class="ai-metric-lbl">Talent Score</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">680K</div><div class="ai-metric-lbl">Streams</div></div>
+            <div class="ai-metric"><div class="ai-metric-val">9.4%</div><div class="ai-metric-lbl">Engagement</div></div>
+          </div>
+          <svg class="ai-card-sparkline" viewBox="0 0 200 24"><polyline points="0,22 33,19 66,16 100,13 133,9 166,6 200,2" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="ai-card-footer">
+            <div class="ai-card-btn ai-card-btn-primary" onclick="showToast('','Bamba Koné contacté','Invitation envoyée','')">Contacter</div>
+            <div class="ai-card-btn ai-card-btn-ghost">Profil</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 24px 16px;display:flex;gap:8px;border-top:1px solid rgba(74,222,128,.08)">
+        <div style="padding:7px 16px;border-radius:var(--r-sm);background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.15);font-size:.75rem;color:var(--vert);font-weight:600;cursor:pointer">Voir les 11 autres artistes compatibles</div>
+        <div style="padding:7px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1);font-size:.75rem;color:var(--txt2);cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Filtrer par genre</div>
+        <div style="padding:7px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1);font-size:.75rem;color:var(--txt2);cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Score 90% et plus</div>
+      </div>
+    </div>
+    </div><!-- /panel-reco -->
+
+    <div id="panel-suivis" class="tab-panel" style="display:none">
+    <div class="card reveal">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Artistes suivis (42 profils actifs)
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn" onclick="showToast('','Export CSV','42 artistes exportés','')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+        </div>
+      </div>
+      <div class="table-search">
+        <div class="table-search-wrap">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="table-search-input" type="text" placeholder="Filtrer par nom, genre, score...">
+        </div>
+        <div class="table-filter-chips">
+          <button class="filter-chip active">Tous</button>
+          <button class="filter-chip">Rap / Trap</button>
+          <button class="filter-chip">RnB / Soul</button>
+          <button class="filter-chip">Afro</button>
+          <button class="filter-chip">Pop</button>
+          <button class="filter-chip">Score 80+</button>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:30%">Artiste</th>
+            <th>Genre</th>
+            <th>Talent Score</th>
+            <th>Streams</th>
+            <th>Croissance</th>
+            <th style="text-align:right">Compatibilité</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#E5C158,#C9A53F);color:#000">AK</div><div><div class="td-name">Awa Kouyaté</div><div class="td-handle">@awa.kouyate · Paris</div></div></div></td>
+            <td>Rap · Afrotrap</td>
+            <td><span class="td-score">92</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">2.4M</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700">+42%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:91%"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--vert)">91%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">SM</div><div><div class="td-name">Sonya Mbaye</div><div class="td-handle">@sonya.mbaye · Dakar</div></div></div></td>
+            <td>RnB · Soul</td>
+            <td><span class="td-score">87</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">890K</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700">+28%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:87%"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--vert)">87%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff">ZF</div><div><div class="td-name">Zahra Fakhr</div><div class="td-handle">@zahra.fakhr · Lyon</div></div></div></td>
+            <td>Pop · Electro</td>
+            <td><span class="td-score">85</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">1.3M</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700">+19%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:85%"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--vert)">85%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#4ade80,#16a34a);color:#000">BK</div><div><div class="td-name">Bamba Koné</div><div class="td-handle">@bamba.kone · Abidjan</div></div></div></td>
+            <td>Afrobeats</td>
+            <td><span class="td-score">83</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">680K</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700">+54%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:76%;background:var(--or)"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--or)">76%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">WR</div><div><div class="td-name">Willy Ramos</div><div class="td-handle">@willy.ramos · Paris</div></div></div></td>
+            <td>Afrobeats · Dance</td>
+            <td><span class="td-score">82</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">1.1M</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700">+31%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:82%;background:var(--or)"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--or)">82%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);color:#fff">SL</div><div><div class="td-name">Sola Lefebvre</div><div class="td-handle">@sola.lef · Bordeaux</div></div></div></td>
+            <td>RnB · Pop</td>
+            <td><span class="td-score">79</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">420K</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700">+22%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:79%;background:var(--or)"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--or)">79%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="td-artist"><div class="td-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">TR</div><div><div class="td-name">TiRoy</div><div class="td-handle">@tiroy.music · Lyon</div></div></div></td>
+            <td>Rap · Cloud</td>
+            <td><span class="td-score" style="color:var(--violet)">67</span></td>
+            <td style="font-size:.85rem;color:var(--txt)">180K</td>
+            <td><span class="up" style="font-size:.82rem;font-weight:700;color:var(--violet)">+340%</span></td>
+            <td><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><div class="td-mini-bar"><div class="td-mini-fill" style="width:74%;background:var(--violet)"></div></div><span style="font-size:.8rem;font-weight:700;color:var(--violet)">74%</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding:14px 20px;border-top:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:.75rem;color:var(--txt2)">Affichage de 7 sur 42 artistes</div>
+        <button style="padding:7px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.75rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Voir les 35 artistes restants</button>
+      </div>
+    </div>
+    </div><!-- /panel-suivis -->
+
+<div id="panel-opport" class="tab-panel" style="display:none">
+    <div class="card reveal">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          Offres actives : Def Jam France
+        </div>
+        <div class="card-actions">
+          <span class="tab-badge" style="color:var(--vert)">3 actives</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:20px">
+
+        <!-- Offre 1 : Contrat de signature -->
+        <div style="border-radius:var(--r-lg);border:1px solid var(--or-glow);background:linear-gradient(135deg,rgba(229,193,88,.04),rgba(10,13,20,.98));padding:20px;position:relative;overflow:hidden;transition:all .2s" onmouseover="this.style.borderColor='rgba(229,193,88,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--or-glow)';this.style.transform=''">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent)"></div>
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="padding:3px 10px;border-radius:999px;background:var(--or-dim);border:1px solid var(--or-glow);font-size:.65rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif">Contrat de signature</span>
+                <span style="padding:3px 10px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.65rem;font-weight:700;color:var(--vert);font-family:'Plus Jakarta Sans',sans-serif">Ouvert</span>
+              </div>
+              <div style="font-size:1rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:3px">Artiste Rap / Afrotrap / RnB</div>
+              <div style="font-size:.78rem;color:var(--txt2)">Def Jam France recherche un artiste en développement pour un contrat 2 ans, avec option de renouvellement.</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:1.2rem;font-weight:900;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif">30 à 80K€</div>
+              <div style="font-size:.68rem;color:var(--txt2)">Avance sur royalties</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Streams minimum</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">200K / mois</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Délai de réponse</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">3 semaines</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Candidatures reçues</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif">47</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <div style="font-size:.7rem;color:var(--txt2)">Critères :</div>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">18-30 ans</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Basé en France</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Disponible pour tournée</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Droits libres</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="openDrawer({titre:'Artiste Rap / Afrotrap / RnB',type:'Contrat de signature',genre:'Rap · Afrotrap · RnB',budget:'30-80K€'})" style="flex:1;padding:10px;border-radius:var(--r-sm);background:var(--or);color:var(--texte-fonce);font-weight:700;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;transition:all .2s" onmouseover="this.style.background='var(--or-h)'" onmouseout="this.style.background='var(--or)'">Postuler à cette offre</button>
+            <button onclick="showToast('','Offre sauvegardée','Ajoutée à vos favoris','')" style="padding:10px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Sauvegarder</button>
+          </div>
+        </div>
+
+        <!-- Offre 2 : Distribution -->
+        <div style="border-radius:var(--r-lg);border:1px solid rgba(96,165,250,.2);background:rgba(10,13,20,.98);padding:20px;transition:all .2s" onmouseover="this.style.borderColor='rgba(96,165,250,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(96,165,250,.2)';this.style.transform=''">
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="padding:3px 10px;border-radius:999px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);font-size:.65rem;font-weight:700;color:var(--bleu);font-family:'Plus Jakarta Sans',sans-serif">Accord de distribution</span>
+                <span style="padding:3px 10px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.65rem;font-weight:700;color:var(--vert);font-family:'Plus Jakarta Sans',sans-serif">Ouvert</span>
+              </div>
+              <div style="font-size:1rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:3px">Tous genres, catalogue existant</div>
+              <div style="font-size:.78rem;color:var(--txt2)">Accord de distribution numérique et physique pour artistes indépendants avec catalogue constitué.</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:1.2rem;font-weight:900;color:var(--bleu);font-family:'Plus Jakarta Sans',sans-serif">Variable</div>
+              <div style="font-size:.68rem;color:var(--txt2)">Selon catalogue</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Streams minimum</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">50K / mois</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Délai de réponse</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">4 semaines</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Candidatures reçues</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--bleu);font-family:'Plus Jakarta Sans',sans-serif">23</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <div style="font-size:.7rem;color:var(--txt2)">Critères :</div>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">5 titres minimum</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Droits libres</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">ISRC disponibles</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="openDrawer({titre:'Catalogue indépendant : Distribution',type:'Accord de distribution',genre:'Tous genres',budget:'Variable'})" style="flex:1;padding:10px;border-radius:var(--r-sm);background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:var(--bleu);font-weight:700;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(96,165,250,.2)'" onmouseout="this.style.background='rgba(96,165,250,.12)'">Postuler à cette offre</button>
+            <button onclick="showToast('','Offre sauvegardée','Ajoutée à vos favoris','')" style="padding:10px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Sauvegarder</button>
+          </div>
+        </div>
+
+        <!-- Offre 3 : Collaboration artistique -->
+        <div style="border-radius:var(--r-lg);border:1px solid rgba(167,139,250,.2);background:rgba(10,13,20,.98);padding:20px;transition:all .2s" onmouseover="this.style.borderColor='rgba(167,139,250,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(167,139,250,.2)';this.style.transform=''">
+          <div style="display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="padding:3px 10px;border-radius:999px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);font-size:.65rem;font-weight:700;color:var(--violet);font-family:'Plus Jakarta Sans',sans-serif">Collaboration artistique</span>
+                <span style="padding:3px 10px;border-radius:999px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18);font-size:.65rem;font-weight:700;color:var(--vert);font-family:'Plus Jakarta Sans',sans-serif">Ouvert</span>
+              </div>
+              <div style="font-size:1rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:3px">Feat / Vocal : Rap · Soul · RnB</div>
+              <div style="font-size:.78rem;color:var(--txt2)">Recherche voix ou artiste pour collaboration sur un projet EP en production. Présence à Paris requise.</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:1.2rem;font-weight:900;color:var(--violet);font-family:'Plus Jakarta Sans',sans-serif">5 à 15K€</div>
+              <div style="font-size:.68rem;color:var(--txt2)">Cachet de session</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Streams minimum</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">Aucun requis</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Délai de réponse</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">2 semaines</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid var(--b1)">
+              <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:3px">Candidatures reçues</div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--violet);font-family:'Plus Jakarta Sans',sans-serif">12</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <div style="font-size:.7rem;color:var(--txt2)">Critères :</div>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Disponible Paris</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Profil vocal distinctif</span>
+            <span style="padding:3px 10px;border-radius:999px;font-size:.7rem;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2)">Expérience studio</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="openDrawer({titre:'Feat / Vocal : Rap · Soul · RnB',type:'Collaboration artistique',genre:'Rap · Soul · RnB',budget:'5-15K€'})" style="flex:1;padding:10px;border-radius:var(--r-sm);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);color:var(--violet);font-weight:700;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(167,139,250,.2)'" onmouseout="this.style.background='rgba(167,139,250,.12)'">Postuler à cette offre</button>
+            <button onclick="showToast('','Offre sauvegardée','Ajoutée à vos favoris','')" style="padding:10px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--txt2);font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt2)'">Sauvegarder</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div><!-- /panel-opport -->
+
+  </div>
+
+  <div class="sidebar-stack">
+
+    <div style="border-radius:var(--r-lg);background:linear-gradient(135deg,rgba(26,33,51,.9),rgba(10,13,20,.95));border:1px solid var(--or-glow);padding:22px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent)"></div>
+      <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif">Espace professionnel</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px">Pipeline et analyse CRM</div>
+      <div style="font-size:.78rem;color:var(--txt2);line-height:1.5;margin-bottom:18px">Accédez au tableau de bord complet réservé aux labels, managers et professionnels.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px">
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--txt2)"><span style="color:var(--vert);font-weight:700">✓</span>Pipeline de recrutement</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--txt2)"><span style="color:var(--vert);font-weight:700">✓</span>Entonnoir de conversion</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--txt2)"><span style="color:var(--vert);font-weight:700">✓</span>Timeline des signatures 2026</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--txt2)"><span style="color:var(--vert);font-weight:700">✓</span>Analyse de performance</div>
+      </div>
+      <button onclick="window.location='crm.html'" style="width:100%;padding:10px 16px;border-radius:var(--r-sm);background:var(--or);color:var(--texte-fonce);font-size:.82rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;transition:all .2s" onmouseover="this.style.background='var(--or-h)'" onmouseout="this.style.background='var(--or)'">Ouvrir le CRM</button>
+    </div>
+
+    <div class="card reveal">
+      <div class="widget-header">
+        <div class="widget-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Genres recherchés</div>
+        <div class="widget-link">Modifier</div>
+      </div>
+      <div style="padding:14px 16px 16px;display:flex;flex-wrap:wrap;gap:7px">
+        <div class="genre-pill active">Rap</div>
+        <div class="genre-pill active">Afrotrap</div>
+        <div class="genre-pill active">RnB</div>
+        <div class="genre-pill active">Afrobeats</div>
+        <div class="genre-pill">Pop urbaine</div>
+        <div class="genre-pill">Drill</div>
+        <div class="genre-pill">Soul</div>
+        <div class="genre-pill">Trap</div>
+      </div>
+      <div style="padding:0 16px 16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="padding:10px 12px;border-radius:var(--r-sm);background:var(--nuit3);border:1px solid var(--b1)"><div style="font-size:.62rem;color:var(--txt2);margin-bottom:2px">Budget avance</div><div style="font-size:.84rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">30-100K€</div></div>
+          <div style="padding:10px 12px;border-radius:var(--r-sm);background:var(--nuit3);border:1px solid var(--b1)"><div style="font-size:.62rem;color:var(--txt2);margin-bottom:2px">Streams minimum</div><div style="font-size:.84rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif">50K / mois</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="widget-header">
+        <div class="widget-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Labels similaires</div>
+        <div class="widget-link">Voir tout</div>
+      </div>
+      <div style="padding:8px 0 8px">
+        <div class="similar-item"><div class="sim-logo" style="background:rgba(229,193,88,.1);color:var(--or)">U</div><div class="sim-info"><div class="sim-name">Universal Music France</div><div class="sim-sub">Major · Rap / Pop</div></div><div class="sim-score">96%</div></div>
+        <div class="similar-item"><div class="sim-logo" style="background:rgba(96,165,250,.1);color:var(--bleu)">S</div><div class="sim-info"><div class="sim-name">Sony Music FR</div><div class="sim-sub">Major · Urban</div></div><div class="sim-score">91%</div></div>
+        <div class="similar-item"><div class="sim-logo" style="background:rgba(74,222,128,.1);color:var(--vert)">B</div><div class="sim-info"><div class="sim-name">Believe Distribution</div><div class="sim-sub">Indé · Artiste-centric</div></div><div class="sim-score">84%</div></div>
+        <div class="similar-item"><div class="sim-logo" style="background:rgba(167,139,250,.1);color:var(--violet)">W</div><div class="sim-info"><div class="sim-name">Warner Music FR</div><div class="sim-sub">Major · Divers</div></div><div class="sim-score">78%</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cmd-overlay" id="cmdOverlay" onclick="closeCmd(event)">
+  <div class="cmd-palette" onclick="event.stopPropagation()">
+    <div class="cmd-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="cmd-input" id="cmdInput" placeholder="Rechercher un rappeur parisien, une chanteuse RnB, un producteur..." autocomplete="off">
+      <span class="cmd-kbd">Echap</span>
+    </div>
+    <div class="cmd-results" id="cmdResults">
+      <div class="cmd-section">Recherches rapides</div>
+      <div class="cmd-item" onclick="cmdSearch('Rappeur parisien 200K+ streams')"><div class="cmd-item-icon" style="background:var(--or-dim)">🎤</div><div class="cmd-item-text"><div class="cmd-item-title">Rappeur parisien 200K+ streams</div><div class="cmd-item-sub">Rap / Trap · Score 75+</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="cmdSearch('Artistes disponibles sous 30 jours')"><div class="cmd-item-icon" style="background:rgba(74,222,128,.1)">⚡</div><div class="cmd-item-text"><div class="cmd-item-title">Artistes disponibles sous 30 jours</div><div class="cmd-item-sub">Compatibilité 80%+ · Fenêtre ouverte</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="cmdSearch('Chanteuse RnB diaspora africaine')"><div class="cmd-item-icon" style="background:rgba(167,139,250,.1)">🎶</div><div class="cmd-item-text"><div class="cmd-item-title">Chanteuse RnB diaspora africaine</div><div class="cmd-item-sub">RnB / Soul · International</div></div><div class="cmd-item-enter">↵</div></div>
+      <div class="cmd-item" onclick="cmdSearch('Top croissance 30 jours')"><div class="cmd-item-icon" style="background:rgba(96,165,250,.1)">📈</div><div class="cmd-item-text"><div class="cmd-item-title">Top croissance 30 jours</div><div class="cmd-item-sub">Artistes en forte progression</div></div><div class="cmd-item-enter">↵</div></div>
+    </div>
+    <div class="cmd-footer">
+      <div class="cmd-hint"><kbd>↑↓</kbd> Naviguer</div>
+      <div class="cmd-hint"><kbd>↵</kbd> Sélectionner</div>
+      <div class="cmd-hint"><kbd>Echap</kbd> Fermer</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Drawer Postuler -->
+<div id="postulerOverlay" style="position:fixed;inset:0;z-index:400;background:rgba(5,5,7,.75);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s"></div>
+<div id="postulerDrawer" style="position:fixed;right:0;top:0;bottom:0;z-index:401;width:min(520px,100vw);background:rgba(13,18,32,.99);border-left:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 60px rgba(0,0,0,.6)">
+  <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <div>
+      <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:4px">Postuler : Def Jam France</div>
+      <div id="drawerOffreTitre" style="font-size:.95rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif"></div>
+    </div>
+    <button onclick="closeDrawer()" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:var(--txt2);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;background:rgba(255,255,255,.04);transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.09)'" onmouseout="this.style.background='rgba(255,255,255,.04)'">✕</button>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:24px">
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+      <div style="padding:6px 14px;border-radius:var(--r-sm);background:var(--or-dim);border:1px solid var(--or-glow);font-size:.72rem;font-weight:700;color:var(--or);font-family:'Plus Jakarta Sans',sans-serif" id="drawerOffreType"></div>
+      <div style="padding:6px 14px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);font-size:.72rem;color:var(--txt2)" id="drawerOffreGenre"></div>
+      <div style="padding:6px 14px;border-radius:var(--r-sm);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);font-size:.72rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif" id="drawerOffreBudget"></div>
+    </div>
+
+    <div id="drawerFormContent">
+
+      <div style="margin-bottom:20px">
+        <div style="background:rgba(229,193,88,.06);border:1px solid rgba(229,193,88,.12);border-radius:var(--r);padding:14px 16px;font-size:.8rem;color:var(--txt2);line-height:1.6">
+          Votre candidature sera transmise directement à l'équipe A&amp;R de Def Jam France. Répondez aux critères de l'offre et présentez votre projet en quelques lignes.
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:.75rem;font-weight:700;color:var(--txt2);margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif">Votre message, présentation &amp; motivation <span style="color:var(--corail)">*</span></label>
+        <textarea id="drawerCommentaire" placeholder="Décrivez votre projet, votre univers musical, pourquoi cette offre vous correspond. Soyez concis et authentique..." rows="6" style="width:100%;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:.85rem;line-height:1.6;resize:vertical;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='rgba(229,193,88,.3)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"></textarea>
+        <div style="font-size:.67rem;color:var(--txt3);margin-top:5px">Minimum 50 caractères recommandé</div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:.75rem;font-weight:700;color:var(--txt2);margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif">Lien SoundCloud / Spotify / YouTube</label>
+        <input type="url" placeholder="https://open.spotify.com/artist/..." style="width:100%;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:.85rem;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='rgba(229,193,88,.3)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
+      </div>
+
+      <div style="margin-bottom:24px">
+        <label style="display:block;font-size:.75rem;font-weight:700;color:var(--txt2);margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif">Pièce jointe : démo ou EPK (PDF · MP3 · WAV)</label>
+        <div style="position:relative">
+          <input type="file" id="drawerFichier" accept=".pdf,.mp3,.wav,.zip" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          <div style="padding:14px 16px;border:1px dashed rgba(255,255,255,.12);border-radius:var(--r);display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s;background:rgba(255,255,255,.02)" onmouseover="this.style.borderColor='rgba(229,193,88,.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,.12)'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(148,163,184,.5)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span id="drawerFichierLabel" style="font-size:.8rem;color:var(--txt2)">Aucun fichier sélectionné</span>
+          </div>
+        </div>
+        <div style="font-size:.67rem;color:var(--txt3);margin-top:5px">Optionnel · 20 Mo maximum</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:14px 16px;margin-bottom:24px">
+        <div style="font-size:.72rem;font-weight:700;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:8px">En postulant vous confirmez</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="font-size:.75rem;color:var(--txt2);display:flex;align-items:center;gap:7px"><span style="color:var(--vert);font-weight:700">✓</span>Ne pas avoir d'exclusivité label en cours</div>
+          <div style="font-size:.75rem;color:var(--txt2);display:flex;align-items:center;gap:7px"><span style="color:var(--vert);font-weight:700">✓</span>Être disponible pour une rencontre à Paris si sélectionné</div>
+          <div style="font-size:.75rem;color:var(--txt2);display:flex;align-items:center;gap:7px"><span style="color:var(--vert);font-weight:700">✓</span>Accepter que votre profil Peakly soit partagé avec l'équipe A&amp;R</div>
+        </div>
+      </div>
+
+    </div><!-- /drawerFormContent -->
+
+    <div id="drawerConfirmation" style="display:none;flex-direction:column;align-items:center;text-align:center;padding:20px 0">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(74,222,128,.12);border:2px solid rgba(74,222,128,.3);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.6rem">✓</div>
+      <div style="font-size:1.1rem;font-weight:800;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:8px">Candidature envoyée</div>
+      <div style="font-size:.85rem;color:var(--txt2);line-height:1.6;margin-bottom:24px">
+        Votre candidature a bien été transmise à l'équipe A&R de Def Jam France.<br>
+        Vous recevrez une réponse dans un délai de 2 à 4 semaines.
+      </div>
+      <button onclick="closeDrawer()" style="padding:12px 28px;border-radius:10px;background:var(--or);color:var(--texte-fonce);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.88rem;border:none;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        Fermer
+      </button>
+    </div><!-- /drawerConfirmation -->
+  </div><!-- /drawer body -->
+</div><!-- /postulerDrawer -->
+
+
+<script src="js/store.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ============================================================
+   TAB SWITCHING : panneau profil pro
+   ============================================================ */
+/* Init premier panneau */
+(function(){
+  const firstTab = document.querySelector('.crm-tab.active, .profile-tab.active');
+  if(firstTab){ const pid = firstTab.dataset.panel; if(pid){ const p = document.getElementById(pid); if(p){p.style.display='flex';p.style.flexDirection='column';p.style.gap='20px';} } }
+  else { const panels = document.querySelectorAll('[id^="panel-"]'); panels.forEach((p,i) => { p.style.display = i===0?'flex':'none'; if(i===0){p.style.flexDirection='column';p.style.gap='20px';} }); }
+})();
+
+/* ============================================================
+   TOAST NOTIFICATIONS
+   ============================================================ */
+
+/* ============================================================
+   COMMAND PALETTE
+   ============================================================ */
+function openCmd(){
+  const o = document.getElementById('cmdOverlay');
+  if(o){ o.style.display='flex'; setTimeout(()=>{o.style.opacity='1';o.style.transition='opacity .2s';}, 10); }
+  const inp = document.getElementById('cmdInput');
+  if(inp) setTimeout(()=>inp.focus(), 100);
+}
+function closeCmd(event){
+  if(event && event.target !== document.getElementById('cmdOverlay')) return;
+  const o = document.getElementById('cmdOverlay');
+  if(o){ o.style.opacity='0'; setTimeout(()=>{ o.style.display='none'; }, 200); }
+}
+function cmdSearch(query){
+  const inp = document.getElementById('cmdInput');
+  if(inp) inp.value = query;
+  showToast('', 'Recherche lancée', query, '');
+  const o = document.getElementById('cmdOverlay');
+  if(o){ o.style.opacity='0'; setTimeout(()=>{ o.style.display='none'; }, 200); }
+}
+document.addEventListener('keydown', e => {
+  if((e.ctrlKey || e.metaKey) && e.key==='k'){ e.preventDefault(); openCmd(); }
+  if(e.key==='Escape'){ const o=document.getElementById('cmdOverlay'); if(o&&o.style.display==='flex') closeCmd({target:o}); closeDrawer(); }
+});
+
+/* ============================================================
+   DRAWER POSTULER
+   ============================================================ */
+function openDrawer(offre){
+  const overlay = document.getElementById('postulerOverlay');
+  const drawer  = document.getElementById('postulerDrawer');
+  const titrEl  = document.getElementById('drawerOffreTitre');
+  const typeEl  = document.getElementById('drawerOffreType');
+  const genreEl = document.getElementById('drawerOffreGenre');
+  const budgetEl = document.getElementById('drawerOffreBudget');
+  if(titrEl && offre) titrEl.textContent = offre.titre || '';
+  if(typeEl && offre) typeEl.textContent = offre.type || '';
+  if(genreEl && offre) genreEl.textContent = offre.genre || '';
+  if(budgetEl && offre) budgetEl.textContent = offre.budget || '';
+  if(overlay){ overlay.style.opacity='1'; overlay.style.pointerEvents='all'; }
+  if(drawer) drawer.style.transform='translateX(0)';
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(){
+  const overlay = document.getElementById('postulerOverlay');
+  const drawer  = document.getElementById('postulerDrawer');
+  if(overlay){ overlay.style.opacity='0'; overlay.style.pointerEvents='none'; }
+  if(drawer) drawer.style.transform='translateX(100%)';
+  document.body.style.overflow = '';
+}
+
+/* ── Animation cards ── */
+document.querySelectorAll('.ai-artist-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = `perspective(600px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
+
+/* ── Compteurs KPI ── */
+(function() {
+  function animKPI(id, target) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var t0 = performance.now(), dur = 1300;
+    function step(now) {
+      var p = Math.min((now - t0) / dur, 1);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  /* KPI strip visible au chargement : appel direct */
+  setTimeout(function() {
+    animKPI('kpi0', 42);
+    animKPI('kpi1', 8);
+  }, 400);
+})();
+
+/* Init CMD overlay */
+(function(){
+  const o = document.getElementById('cmdOverlay');
+  if(o) o.style.display = 'none';
+})();
+</script>
+<style>
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:600;display:flex;flex-direction:column;gap:10px}
+</style>
+</body>
+</html>
