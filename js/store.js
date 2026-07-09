@@ -248,6 +248,7 @@ init();
 
 return { getArtistes, getPros, getMessages, getNotifs, getSession, isLoggedIn,
   getNbNotifNonLues, getNbMessagesNonLus, login, logout,
-  toggleFollow, isSuivi
+  toggleFollow, isSuivi,
+  searchArtistes, searchTous, marquerNotifsLues, envoyerMessage
 };
 })();
